@@ -7,6 +7,7 @@ Reusable skills for [Claude Code](https://claude.ai/claude-code) that enhance AI
 | Skill | Description |
 |-------|-------------|
 | [pre-mortem](pre-mortem/) | Multi-agent project pre-mortem based on Gary Klein's technique. Spawns parallel AI agents with different failure-finding mandates, synthesizes ranked risks with mitigations. |
+| [speaker](speaker/) | Build an honest, multidimensional profile of the user from their digital footprint. Produces personal portraits, professional portraits, working-with-me guides, and system prompts. Inspired by Orson Scott Card's *Speaker for the Dead*. |
 
 ## Installation
 
