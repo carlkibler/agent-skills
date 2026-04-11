@@ -36,16 +36,32 @@ Or just ask naturally — Claude will invoke the right skill based on context.
 
 ## Skills
 
+### Better Products
+
+Find failure modes, trust problems, and support burden before your users do.
+
 | Plugin name | Skill | Description |
 |-------------|-------|-------------|
-| `pre-mortem` | `/pre-mortem:run` | Multi-agent project pre-mortem (Gary Klein technique) |
-| `profile-me` | `/profile-me:run` | Build AI profile from digital footprint |
+| `pre-mortem` | `/pre-mortem:run` | Multi-agent project pre-mortem — ranked risks with mitigations |
+| `trust-audit` | `/trust-audit:run` | Audit permissions, privacy, billing, and silent failures for creepiness |
+| `support-inbox-simulation` | `/support-inbox-simulation:run` | Simulate the support emails and refunds a launch will generate |
+| `first-run-red-team` | `/first-run-red-team:run` | Red-team onboarding and first-run experience for abandonment traps |
+
+### Dev Workflow
+
+Tools for the day-to-day of writing and reviewing code.
+
+| Plugin name | Skill | Description |
+|-------------|-------|-------------|
+| `handle-pr` | `/handle-pr:run` | Autonomously address PR review comments end-to-end |
 | `getting-second-opinions` | `/getting-second-opinions:run` | Validate decisions with gpt-5.4-codex via Copilot CLI |
-| `handle-pr` | `/handle-pr:run` | Auto-handle PR review comments end-to-end |
-| `chezmoi-drift` | `/chezmoi-drift:run` | Audit chezmoi dotfiles drift and broken skill installs |
-| `trust-audit` | `/trust-audit:run` | Audit trust risks: permissions, privacy, billing, silent failures |
-| `support-inbox-simulation` | `/support-inbox-simulation:run` | Simulate support emails and founder-tax before launch |
-| `first-run-red-team` | `/first-run-red-team:run` | Red-team onboarding, permissions, and first-run abandonment |
+
+### Utilities
+
+| Plugin name | Skill | Description |
+|-------------|-------|-------------|
+| `profile-me` | `/profile-me:run` | Build a portable AI profile from your digital footprint |
+| `chezmoi-drift` | `/chezmoi-drift:run` | Audit chezmoi dotfiles for drift and broken skill installs |
 | `wifi-qr` | `/wifi-qr:run` | Generate a WiFi QR code PNG |
 
 ## Managing plugins
