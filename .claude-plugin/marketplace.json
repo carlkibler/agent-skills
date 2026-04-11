@@ -24,10 +24,10 @@
       "version": "1.0.0"
     },
     {
-      "name": "getting-second-opinions",
+      "name": "second-opinions",
       "description": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation.",
       "source": "./",
-      "skills": ["./skills/getting-second-opinions"],
+      "skills": ["./skills/second-opinions"],
       "category": "development",
       "version": "1.0.0"
     },

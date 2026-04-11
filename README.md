@@ -54,7 +54,7 @@ Tools for the day-to-day of writing and reviewing code.
 | Plugin name | Skill | Description |
 |-------------|-------|-------------|
 | `handle-pr` | `/handle-pr:run` | Autonomously address PR review comments end-to-end |
-| `getting-second-opinions` | `/getting-second-opinions:run` | Validate decisions with gpt-5.4-codex via Copilot CLI |
+| `second-opinions` | `/second-opinions:run` | Validate decisions with gpt-5.4-codex via Copilot CLI |
 
 ### Utilities
 
