@@ -1,6 +1,6 @@
 ---
 name: run
-description: Autonomously handle GitHub PR review comments with no hand-holding. Detects the PR, evaluates each comment, implements HIGH/MEDIUM changes, runs tests, does a Copilot quality pass, commits, replies to every thread on GitHub, then watches for follow-up comments for 12 minutes. Use when asked to "handle", "address", "respond to", or "work through" PR review comments.
+description: Autonomously handle GitHub PR review comments with no hand-holding. Detects the PR, evaluates each comment, implements HIGH/MEDIUM changes, runs tests, does a quality pass with whatever code agent is available, commits, replies to every thread on GitHub, then watches for follow-up comments for 12 minutes. Use when asked to "handle", "address", "respond to", or "work through" PR review comments.
 ---
 
 # Handle PR Comments
@@ -15,7 +15,7 @@ Verify tools once, upfront. Note availability — it shapes later steps.
 
 ```bash
 which gh && gh auth status          # required — stop if missing or unauthenticated
-which ask-copilot && echo "ok"      # optional quality pass
+bash scripts/detect-llms.sh --quiet # detect available code agents for quality pass
 ```
 
 Check for MCP GitHub tools by attempting `mcp__github__list_pull_requests` with a trivial call. Note whether MCP is available — use it where noted, fall back to `gh` otherwise.
@@ -117,19 +117,20 @@ If tests fail: fix the failure (if clearly caused by your changes) or revert the
 
 ---
 
-## Step 5: Copilot Quality Pass (Max 3 Rounds)
+## Step 5: Quality Pass (Max 3 Rounds)
 
-If `ask-copilot` is available:
+If any code agent was detected in Step 0, pipe the diff to it:
 
 ```bash
-git diff HEAD~1 | ask-copilot "Review these changes made in response to PR comments. Flag real issues only — bugs, correctness problems, security concerns. Skip style opinions. Be concise."
+# Use the INVOKE_PATTERN from detect-llms.sh output, substituting {prompt}
+git diff HEAD~1 | <agent> "Review these changes made in response to PR comments. Flag real issues only — bugs, correctness problems, security concerns. Skip style opinions. Be concise."
 ```
 
 After each round, log a 1–3 line assessment: what was flagged, whether it's HIGH/MEDIUM/LOW, and your decision. Implement valid HIGH/MEDIUM feedback, then loop.
 
 **Stop early** on a clean report. **Stop after 3 rounds** regardless.
 
-If `ask-copilot` is unavailable, skip this step.
+If no agent was detected, skip this step.
 
 ---
 
@@ -161,17 +162,17 @@ If MCP is available, `mcp__github__add_reply_to_pull_request_comment` works too.
 **Implemented:**
 > Addressed — [one sentence: what specifically changed and where].
 >
-> *[by Claude]*
+> *[automated review]*
 
 **Skipped (LOW):**
 > Noted — skipping: [specific reason, e.g., "conflicts with kebab-case convention in CLAUDE.md" or "this abstraction would only be used once"].
 >
-> *[by Claude]*
+> *[automated review]*
 
 **Skipped (SKIP):**
 > Already handled — [why it's a no-op, e.g., "nil check added at line 42 in the previous commit"].
 >
-> *[by Claude]*
+> *[automated review]*
 
 Keep replies factual. Not defensive, not snarky, not over-explained.
 
@@ -208,7 +209,7 @@ At each poll:
 
 If a new-batch change breaks tests: revert, commit the revert, post a note on the relevant thread:
 > "Attempted fix caused test failure — needs manual attention. Reverted."
-> *[by Claude]*
+> *[automated review]*
 
 ---
 
@@ -216,7 +217,7 @@ If a new-batch change breaks tests: revert, commit the revert, post a note on th
 
 - **No confirmation for HIGH/MEDIUM** — report what was done, not what will be done
 - **Every thread gets a reply** — even LOW/SKIP; silence looks like ignoring
-- **Tagline is required** on every reply: `*[by Claude]*`
+- **Tagline is required** on every reply: `*[automated review]*`
 - **Never resolve threads** — the reviewer decides if the response is satisfactory
 - **Never force-push** — always stop and ask if push fails
 - **CLAUDE.md > reviewer** — project conventions take precedence; explain when skipping

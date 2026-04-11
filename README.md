@@ -55,6 +55,7 @@ Tools for the day-to-day of writing and reviewing code.
 |-------------|-------|-------------|
 | `handle-pr` | `/handle-pr:run` | Autonomously address PR review comments end-to-end |
 | `second-opinions` | `/second-opinions:run` | Get a second opinion from a different AI on complex changes |
+| `parallel-isolated-app-testing` | `/parallel-isolated-app-testing:run` | Design parallel isolated test lanes for apps with shared local state |
 
 ### Utilities
 
