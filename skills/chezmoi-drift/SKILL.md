@@ -1,6 +1,6 @@
 ---
 name: run
-description: Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken shared-skill installs. Use when checking whether home-directory config has diverged from chezmoi, cleaning up dotfiles, or debugging Claude/Codex skill symlinks.
+description: Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken shared-skill installs. Use when checking whether home-directory config has diverged from chezmoi, cleaning up dotfiles, or debugging agent skill symlinks (Claude Code, Codex, OpenCode, Gemini, Continue, Cursor).
 ---
 
 # Chezmoi Drift
@@ -46,8 +46,8 @@ Flag only files that look intentional and reusable, especially in:
 - `~/`
 - `~/.local/bin/`
 - `~/.config/`
-- `~/.claude/`
-- `~/.codex/`
+- `~/.claude/`, `~/.codex/`, `~/.gemini/`, `~/.continue/`, `~/.cursor/`
+- `~/.local/share/opencode/`
 
 Skip app noise, caches, session files, logs, and secrets.
 
@@ -75,7 +75,14 @@ If a local agent-skills repo exists (e.g. `~/dev/me/agent-skills/skills`), prefe
 Inspect:
 
 ```bash
-for host in ~/.claude/skills ~/.codex/skills ~/.agents/skills; do
+for host in \
+  ~/.claude/skills \
+  ~/.codex/skills \
+  ~/.agents/skills \
+  ~/.local/share/opencode/skills \
+  ~/.gemini/skills \
+  ~/.continue/skills \
+  ~/.cursor/skills; do
   [ -d "$host" ] || continue
   echo "== $host =="
   ls -ld "$host"/chezmoi-drift 2>/dev/null || true

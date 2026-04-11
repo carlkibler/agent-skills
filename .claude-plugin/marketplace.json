@@ -78,6 +78,14 @@
       "skills": ["./skills/wifi-qr"],
       "category": "productivity",
       "version": "1.0.0"
+    },
+    {
+      "name": "parallel-isolated-app-testing",
+      "description": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state — maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes.",
+      "source": "./",
+      "skills": ["./skills/parallel-isolated-app-testing"],
+      "category": "development",
+      "version": "1.0.0"
     }
   ]
 }
