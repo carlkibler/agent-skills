@@ -161,17 +161,17 @@ If MCP is available, `mcp__github__add_reply_to_pull_request_comment` works too.
 **Implemented:**
 > Addressed — [one sentence: what specifically changed and where].
 >
-> *[by Claude on Carl's behalf]*
+> *[by Claude]*
 
 **Skipped (LOW):**
 > Noted — skipping: [specific reason, e.g., "conflicts with kebab-case convention in CLAUDE.md" or "this abstraction would only be used once"].
 >
-> *[by Claude on Carl's behalf]*
+> *[by Claude]*
 
 **Skipped (SKIP):**
 > Already handled — [why it's a no-op, e.g., "nil check added at line 42 in the previous commit"].
 >
-> *[by Claude on Carl's behalf]*
+> *[by Claude]*
 
 Keep replies factual. Not defensive, not snarky, not over-explained.
 
@@ -208,7 +208,7 @@ At each poll:
 
 If a new-batch change breaks tests: revert, commit the revert, post a note on the relevant thread:
 > "Attempted fix caused test failure — needs manual attention. Reverted."
-> *[by Claude on Carl's behalf]*
+> *[by Claude]*
 
 ---
 
@@ -216,7 +216,7 @@ If a new-batch change breaks tests: revert, commit the revert, post a note on th
 
 - **No confirmation for HIGH/MEDIUM** — report what was done, not what will be done
 - **Every thread gets a reply** — even LOW/SKIP; silence looks like ignoring
-- **Tagline is required** on every reply: `*[by Claude on Carl's behalf]*`
+- **Tagline is required** on every reply: `*[by Claude]*`
 - **Never resolve threads** — the reviewer decides if the response is satisfactory
 - **Never force-push** — always stop and ask if push fails
 - **CLAUDE.md > reviewer** — project conventions take precedence; explain when skipping

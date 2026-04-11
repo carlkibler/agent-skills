@@ -1,19 +1,18 @@
+---
+name: wifi-qr
+description: Generate a WiFi QR code PNG that phones can scan to join a network instantly. Use when the user wants to create a scannable WiFi QR code, generate WiFi credentials as a QR image, or embed a WiFi join code in a web page or document.
+allowed-tools: Bash(uv run *)
+---
+
 # wifi-qr
 
-Generate a WiFi QR code PNG that phones can scan to join a network instantly.
+Generate a WiFi QR code PNG phones can scan to join a network instantly.
 Uses a self-contained `uv run` Python script — no pre-installed packages needed.
-
-## Trigger
-
-Use when the user wants to:
-- Generate a QR code for WiFi credentials
-- Create a scannable WiFi join code
-- Embed WiFi QR in a web page or document
 
 ## Usage
 
 ```bash
-uv run ~/.claude/skills/wifi-qr/generate-wifi-qr.py \
+uv run "${CLAUDE_SKILL_DIR}/generate-wifi-qr.py" \
   --ssid "My Network" \
   --password "s3cr3t" \
   --output /path/to/wifi-qr.png
