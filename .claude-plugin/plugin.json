@@ -1,10 +1,11 @@
 {
-  "name": "carl-skills",
-  "version": "0.1.0",
-  "description": "Reusable skills for Claude Code and Claude Cowork",
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "Claude Code and Codex skills for multi-agent workflows, PR automation, product analysis, and more.",
   "author": {
-    "name": "Carl Kibler"
+    "name": "carlkibler"
   },
-  "repository": "https://github.com/carlkibler/claude-skills",
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
   "license": "MIT"
 }

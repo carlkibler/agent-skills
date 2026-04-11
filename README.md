@@ -1,52 +1,99 @@
-# Claude/Codex Skills
+# agent-skills
 
-Personal skills for Claude Code and Codex.
+Claude Code skills for multi-agent workflows, PR automation, product analysis, and more.
+
+## Install
+
+Add this repo as a Claude Code marketplace:
+
+```
+/plugin marketplace add carlkibler/agent-skills
+```
+
+Then install individual skills:
+
+```
+/plugin install pre-mortem@agent-skills
+/plugin install handle-pr@agent-skills
+/plugin install trust-audit@agent-skills
+```
+
+Or browse and install from the UI: run `/plugin` → **Discover** tab.
+
+After installing, run `/reload-plugins` to activate.
+
+## Usage
+
+Skills are namespaced by plugin name. Invoke directly or let Claude trigger them automatically:
+
+```
+/pre-mortem:pre-mortem
+/handle-pr:handle-pr
+/trust-audit:trust-audit
+```
+
+Or just ask naturally — Claude will invoke the right skill based on context.
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
-| [pre-mortem](skills/pre-mortem/) | Multi-agent project pre-mortem (Gary Klein technique) |
-| [profile-me](skills/profile-me/) | Build AI profile from digital footprint |
-| [getting-second-opinions](skills/getting-second-opinions/) | Validate decisions with gpt-5.4-codex via Copilot CLI |
-| [handle-pr](skills/handle-pr/) | Auto-handle PR review comments, reply, watch for new ones |
-| [chezmoi-drift](skills/chezmoi-drift/) | Audit chezmoi drift, unmanaged dotfiles, and broken shared-skill installs |
-| [trust-audit](skills/trust-audit/) | Audit trust risks across permissions, privacy, billing, file mutation, and silent failure |
-| [support-inbox-simulation](skills/support-inbox-simulation/) | Simulate support emails, reviews, refunds, and founder-tax before launch |
-| [first-run-red-team](skills/first-run-red-team/) | Red-team onboarding, permissions, activation, and first-run abandonment risk |
+| Plugin name | Skill | Description |
+|-------------|-------|-------------|
+| `pre-mortem` | `/pre-mortem:pre-mortem` | Multi-agent project pre-mortem (Gary Klein technique) |
+| `profile-me` | `/profile-me:profile-me` | Build AI profile from digital footprint |
+| `getting-second-opinions` | `/getting-second-opinions:getting-second-opinions` | Validate decisions with gpt-5.4-codex via Copilot CLI |
+| `handle-pr` | `/handle-pr:handle-pr` | Auto-handle PR review comments end-to-end |
+| `chezmoi-drift` | `/chezmoi-drift:chezmoi-drift` | Audit chezmoi dotfiles drift and broken skill installs |
+| `trust-audit` | `/trust-audit:trust-audit` | Audit trust risks: permissions, privacy, billing, silent failures |
+| `support-inbox-simulation` | `/support-inbox-simulation:support-inbox-simulation` | Simulate support emails and founder-tax before launch |
+| `first-run-red-team` | `/first-run-red-team:first-run-red-team` | Red-team onboarding, permissions, and first-run abandonment |
+| `wifi-qr` | `/wifi-qr:wifi-qr` | Generate a WiFi QR code PNG |
 
-## Setup
+## Managing plugins
 
-These skills use a shared `SKILL.md` format that works in both tools.
+```
+# Disable without uninstalling
+/plugin disable handle-pr@agent-skills
 
-- **Claude Code:** install into `~/.claude/skills/`
-- **Codex:** install into `~/.codex/skills/`
-- **Local Carl harness:** also expose shared skills in `~/.agents/skills/`
+# Re-enable
+/plugin enable handle-pr@agent-skills
 
-Symlink individual skills:
-```bash
-ln -s ~/dev/me/claude-skills/skills/pre-mortem ~/.claude/skills/pre-mortem
-ln -s ~/dev/me/claude-skills/skills/pre-mortem ~/.codex/skills/pre-mortem
+# Uninstall
+/plugin uninstall handle-pr@agent-skills
+
+# Update marketplace listings
+/plugin marketplace update agent-skills
 ```
 
-Or symlink all for Claude + Codex:
-```bash
-mkdir -p ~/.claude/skills ~/.codex/skills
-for skill in ~/dev/me/claude-skills/skills/*/; do
-  ln -sf "$skill" ~/.claude/skills/$(basename "$skill")
-  ln -sf "$skill" ~/.codex/skills/$(basename "$skill")
-done
+## Scope
+
+Install at user scope (default, available across all projects) or project scope:
+
+```
+# Project scope — adds to .claude/settings.json, shared with team
+claude plugin install pre-mortem@agent-skills --scope project
 ```
 
-If you want the local harness to see them too:
-```bash
-mkdir -p ~/.agents/skills
-for skill in ~/dev/me/claude-skills/skills/*/; do
-  ln -sf "$skill" ~/.agents/skills/$(basename "$skill")
-done
+## Pre-configure for a team
+
+Add to your project's `.claude/settings.json` to prompt teammates to install on first run:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "carlkibler/agent-skills"
+      }
+    }
+  }
+}
 ```
 
-Or use the helper script for Claude + Codex + the local harness:
+## Local development
+
+Test locally without installing from GitHub:
+
 ```bash
-~/dev/me/claude-skills/scripts/install-local-skills.sh
+claude --plugin-dir ./skills/pre-mortem
 ```

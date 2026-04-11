@@ -1,66 +1,83 @@
 {
-  "name": "carlkibler-skills",
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "Claude Code skills for multi-agent workflows, PR automation, product analysis, and more.",
   "owner": {
     "name": "carlkibler"
   },
   "plugins": [
     {
       "name": "pre-mortem",
-      "source": "./skills/pre-mortem",
-      "description": "Multi-agent project pre-mortem based on Gary Klein's technique. Spawns parallel AI agents with different failure-finding mandates, synthesizes ranked risks with mitigations.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Carl Kibler"
-      }
+      "description": "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations.",
+      "source": "./",
+      "skills": ["./skills/pre-mortem"],
+      "category": "productivity",
+      "version": "1.0.0"
     },
     {
       "name": "profile-me",
-      "source": "./skills/profile-me",
-      "description": "Build a portable AI profile of the user from their digital footprint. Produces personal portraits, professional portraits, working-with-me guides, and a compact system prompt for any AI assistant.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Carl Kibler"
-      }
+      "description": "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant.",
+      "source": "./",
+      "skills": ["./skills/profile-me"],
+      "category": "productivity",
+      "version": "1.0.0"
     },
     {
       "name": "getting-second-opinions",
-      "source": "./skills/getting-second-opinions",
-      "description": "Use GitHub Copilot CLI to validate decisions with gpt-5.4-codex for critical code reviews, design decisions, and pre-merge validation.",
+      "description": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation.",
+      "source": "./",
+      "skills": ["./skills/getting-second-opinions"],
+      "category": "development",
       "version": "1.0.0"
     },
     {
       "name": "handle-pr",
-      "source": "./skills/handle-pr",
-      "description": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, and watch for follow-up comments for 12 minutes.",
+      "description": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes.",
+      "source": "./",
+      "skills": ["./skills/handle-pr"],
+      "category": "productivity",
       "version": "1.1.0"
     },
     {
       "name": "chezmoi-drift",
-      "source": "./skills/chezmoi-drift",
       "description": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
+      "source": "./",
+      "skills": ["./skills/chezmoi-drift"],
+      "category": "productivity",
       "version": "1.0.0"
     },
     {
       "name": "trust-audit",
-      "source": "./skills/trust-audit",
-      "description": "Audit whether a product will feel trustworthy, creepy, deceptive, risky, or surprisingly unsafe to users across permissions, privacy, billing, file mutation, and silent-failure surfaces.",
+      "description": "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users — across permissions, privacy, billing, file mutation, and silent-failure surfaces.",
+      "source": "./",
+      "skills": ["./skills/trust-audit"],
+      "category": "security",
       "version": "1.0.0"
     },
     {
       "name": "support-inbox-simulation",
-      "source": "./skills/support-inbox-simulation",
-      "description": "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the diagnostics and product fixes that cut founder-tax.",
+      "description": "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut founder-tax.",
+      "source": "./",
+      "skills": ["./skills/support-inbox-simulation"],
+      "category": "productivity",
       "version": "1.0.0"
     },
     {
       "name": "first-run-red-team",
-      "source": "./skills/first-run-red-team",
       "description": "Red-team a product's onboarding, permissions, activation, and first-success experience to find where new users get confused, think the app is broken, or abandon setup.",
+      "source": "./",
+      "skills": ["./skills/first-run-red-team"],
+      "category": "security",
+      "version": "1.0.0"
+    },
+    {
+      "name": "wifi-qr",
+      "description": "Generate a WiFi QR code PNG phones can scan to join a network instantly. Self-contained uv script, no pre-installed packages needed.",
+      "source": "./",
+      "skills": ["./skills/wifi-qr"],
+      "category": "productivity",
       "version": "1.0.0"
     }
-  ],
-  "metadata": {
-    "description": "Personal Claude skills by Carl Kibler.",
-    "version": "1.0.0"
-  }
+  ]
 }

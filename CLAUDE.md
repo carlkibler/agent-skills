@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Personal shared skill collection by Carl Kibler for Claude Code and Codex.
+Shared skill collection for Claude Code and Codex.
 
 ## Conventions
 
@@ -45,17 +45,18 @@ description: Specific description of what it does and when to use it.
 ---
 ```
 
-### Claude/Codex Compatibility
+### Distribution via Plugin Marketplace
 
-Write skills in the shared `SKILL.md` format:
-- YAML frontmatter with `name` + `description`
-- markdown body instructions
+This repo is a Claude Code plugin marketplace. Users install via:
 
-That format is portable across Claude Code and Codex. What is **not** portable is the install location and any tool-specific marketplace metadata.
+```
+/plugin marketplace add carlkibler/agent-skills
+/plugin install <skill-name>@agent-skills
+```
 
-- Claude Code install path: `~/.claude/skills/<skill>/`
-- Codex install path: `~/.codex/skills/<skill>/`
-- Local Carl harness path: `~/.agents/skills/<skill>/`
+Each skill in `skills/<name>/` is its own installable plugin. Register new skills in `.claude-plugin/marketplace.json`.
+
+Skills follow the [Agent Skills open standard](https://agentskills.io) and work across Claude Code and Codex. Use `${CLAUDE_SKILL_DIR}` in scripts to reference bundled files at runtime instead of hardcoded paths.
 
 ### Naming
 
@@ -75,11 +76,17 @@ Never include credentials, API keys, or secrets in skills. Tokens go in `.env` f
 ## Directory Structure
 
 ```
+.claude-plugin/
+  ├── marketplace.json           # Marketplace catalog (one entry per skill)
+  └── plugin.json                # Plugin manifest for the repo itself
 skills/
   ├── pre-mortem/                # Multi-agent pre-mortem analysis
   ├── profile-me/                # Build AI profile from digital footprint
   ├── getting-second-opinions/   # Copilot CLI validation with gpt-5.4-codex
   ├── handle-pr/                 # Auto-handle PR review comments
   ├── chezmoi-drift/             # Dotfiles drift + shared-skill install audit
-  └── okta-sso-debugger/         # Okta CIAM SSO debugging for Leap tenants
+  ├── trust-audit/               # Product trust surface audit
+  ├── support-inbox-simulation/  # Pre-launch support email simulation
+  ├── first-run-red-team/        # First-run experience red-teaming
+  └── wifi-qr/                   # WiFi QR code generator
 ```

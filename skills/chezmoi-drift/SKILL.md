@@ -1,6 +1,6 @@
 ---
 name: chezmoi-drift
-description: Audit Carl's chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken shared-skill installs. Use when checking whether home-directory config has diverged from chezmoi, cleaning up dotfiles, or debugging Claude/Codex skill symlinks.
+description: Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken shared-skill installs. Use when checking whether home-directory config has diverged from chezmoi, cleaning up dotfiles, or debugging Claude/Codex skill symlinks.
 ---
 
 # Chezmoi Drift
@@ -70,7 +70,7 @@ Report new scripts or config directories that look worth managing.
 
 ### 4. Check shared skill install health
 
-If `~/dev/me/claude-skills/skills` exists, prefer symlinks from the live skill directories back to that repo.
+If a local agent-skills repo exists (e.g. `~/dev/me/agent-skills/skills`), prefer symlinks from the live skill directories back to that repo rather than copying.
 
 Inspect:
 
@@ -86,7 +86,7 @@ done
 Call out:
 - missing installs
 - copied directories where a symlink should exist
-- stale links pointing somewhere other than `~/dev/me/claude-skills/skills/chezmoi-drift`
+- stale links (broken or pointing to a moved/deleted source)
 
 ### 5. Report
 
@@ -109,4 +109,4 @@ Then propose exact commands for anything worth fixing.
 - Do **not** run `chezmoi add`, `chezmoi re-add`, `chezmoi apply`, `rm`, or git commands unless the user explicitly asks.
 - Prefer `chezmoi source-path` over hard-coding the source repo path.
 - Never add secrets or token-bearing files without converting them to a safe template first.
-- For shared skills, prefer `ln -sfn ~/dev/me/claude-skills/skills/<skill> <target>` over copying directories around.
+- For shared skills, prefer `ln -sfn <repo>/skills/<skill> <target>` over copying directories around.
