@@ -47,14 +47,25 @@ description: Specific description of what it does and when to use it.
 
 ### Distribution via Plugin Marketplace
 
-This repo is a Claude Code plugin marketplace. Users install via:
+This repo supports both Claude Code and Codex distribution patterns.
+
+**Claude Code marketplace**
 
 ```
 /plugin marketplace add carlkibler/agent-skills
 /plugin install <skill-name>@agent-skills
 ```
 
-Each skill in `skills/<name>/` is its own installable plugin. Register new skills in `.claude-plugin/marketplace.json`.
+Register Claude marketplace entries in `.claude-plugin/marketplace.json`.
+
+**Codex local discovery and marketplace**
+
+- Repo-local skills live in `skills/` and are exposed to Codex through `.agents/skills/` symlinks.
+- Repo-local Codex plugin listings live in `.agents/plugins/marketplace.json`.
+- Each installable Codex plugin lives at `plugins/<name>/.codex-plugin/plugin.json` and points at the shared skill source.
+- Optional Codex app metadata lives in `skills/<name>/agents/openai.yaml`.
+- Run `python3 scripts/sync_codex_packaging.py` after adding, renaming, or re-categorizing skills so the Codex symlinks, marketplace entries, manifests, and metadata stay in sync.
+- Treat `.agents/skills/*`, `.agents/plugins/marketplace.json`, `plugins/*/.codex-plugin/plugin.json`, `skills/*/agents/openai.yaml`, and `skills/*/assets/icon.svg` as generated artifacts owned by the sync script.
 
 Skills follow the [Agent Skills open standard](https://agentskills.io) and work across Claude Code and Codex. Use `${CLAUDE_SKILL_DIR}` in scripts to reference bundled files at runtime instead of hardcoded paths.
 
@@ -77,16 +88,24 @@ Never include credentials, API keys, or secrets in skills. Tokens go in `.env` f
 
 ```
 .claude-plugin/
-  ├── marketplace.json           # Marketplace catalog (one entry per skill)
-  └── plugin.json                # Plugin manifest for the repo itself
+  ├── marketplace.json            # Claude marketplace catalog
+  └── plugin.json                 # Claude repo manifest
+.agents/
+  ├── skills/                     # Codex repo-local skill discovery symlinks
+  └── plugins/marketplace.json    # Codex local marketplace catalog
+plugins/
+  └── <skill-name>/
+      └── .codex-plugin/plugin.json # Codex plugin manifest
+scripts/
+  └── sync_codex_packaging.py      # Regenerates Codex packaging artifacts
 skills/
-  ├── pre-mortem/                # Multi-agent pre-mortem analysis
-  ├── profile-me/                # Build AI profile from digital footprint
-  ├── getting-second-opinions/   # Copilot CLI validation with gpt-5.4-codex
-  ├── handle-pr/                 # Auto-handle PR review comments
-  ├── chezmoi-drift/             # Dotfiles drift + shared-skill install audit
-  ├── trust-audit/               # Product trust surface audit
-  ├── support-inbox-simulation/  # Pre-launch support email simulation
-  ├── first-run-red-team/        # First-run experience red-teaming
-  └── wifi-qr/                   # WiFi QR code generator
+  ├── pre-mortem/                 # Multi-agent pre-mortem analysis
+  ├── profile-me/                 # Build AI profile from digital footprint
+  ├── second-opinions/            # Copilot/Codex validation from another model
+  ├── handle-pr/                  # Auto-handle PR review comments
+  ├── chezmoi-drift/              # Dotfiles drift + shared-skill install audit
+  ├── trust-audit/                # Product trust surface audit
+  ├── support-inbox-simulation/   # Pre-launch support email simulation
+  ├── first-run-red-team/         # First-run experience red-teaming
+  └── wifi-qr/                    # WiFi QR code generator
 ```

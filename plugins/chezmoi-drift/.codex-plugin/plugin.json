@@ -1,0 +1,26 @@
+{
+  "name": "chezmoi-drift",
+  "version": "1.0.0",
+  "description": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Chezmoi Drift",
+    "shortDescription": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
+    "longDescription": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask."
+    ],
+    "brandColor": "#2563EB",
+    "composerIcon": "./skills/chezmoi-drift/assets/icon.svg",
+    "logo": "./skills/chezmoi-drift/assets/icon.svg"
+  }
+}

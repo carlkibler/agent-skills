@@ -1,0 +1,26 @@
+{
+  "name": "handle-pr",
+  "version": "1.1.0",
+  "description": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Handle PR",
+    "shortDescription": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes.",
+    "longDescription": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Handle the PR review comments end-to-end: evaluate each thread, implement the worthwhile changes, run checks, and prepare replies."
+    ],
+    "brandColor": "#7C3AED",
+    "composerIcon": "./skills/handle-pr/assets/icon.svg",
+    "logo": "./skills/handle-pr/assets/icon.svg"
+  }
+}

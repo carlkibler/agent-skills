@@ -1,5 +1,5 @@
 ---
-name: run
+name: handle-pr
 description: Autonomously handle GitHub PR review comments with no hand-holding. Detects the PR, evaluates each comment, implements HIGH/MEDIUM changes, runs tests, does a quality pass with whatever code agent is available, commits, replies to every thread on GitHub, then watches for follow-up comments for 12 minutes. Use when asked to "handle", "address", "respond to", or "work through" PR review comments.
 ---
 

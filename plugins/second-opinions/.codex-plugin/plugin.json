@@ -1,0 +1,26 @@
+{
+  "name": "second-opinions",
+  "version": "1.0.0",
+  "description": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Second Opinions",
+    "shortDescription": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation.",
+    "longDescription": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Development",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
+    ],
+    "brandColor": "#4F46E5",
+    "composerIcon": "./skills/second-opinions/assets/icon.svg",
+    "logo": "./skills/second-opinions/assets/icon.svg"
+  }
+}

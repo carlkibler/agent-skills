@@ -1,0 +1,26 @@
+{
+  "name": "pre-mortem",
+  "version": "1.0.0",
+  "description": "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Pre-Mortem",
+    "shortDescription": "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations.",
+    "longDescription": "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Run a sharp pre-mortem on this project or launch. Surface specific failure modes, then rank them and propose mitigations."
+    ],
+    "brandColor": "#B45309",
+    "composerIcon": "./skills/pre-mortem/assets/icon.svg",
+    "logo": "./skills/pre-mortem/assets/icon.svg"
+  }
+}

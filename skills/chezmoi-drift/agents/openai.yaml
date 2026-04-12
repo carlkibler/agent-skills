@@ -1,0 +1,9 @@
+interface:
+  display_name: "Chezmoi Drift"
+  short_description: "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs. Best in local Codex CLI/app sessions on your own machine."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#2563EB"
+  default_prompt: "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask."
+policy:
+  allow_implicit_invocation: false

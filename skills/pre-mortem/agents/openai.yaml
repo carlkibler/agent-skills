@@ -1,0 +1,9 @@
+interface:
+  display_name: "Pre-Mortem"
+  short_description: "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#B45309"
+  default_prompt: "Run a sharp pre-mortem on this project or launch. Surface specific failure modes, then rank them and propose mitigations."
+policy:
+  allow_implicit_invocation: true

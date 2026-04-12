@@ -1,0 +1,9 @@
+interface:
+  display_name: "Second Opinions"
+  short_description: "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#4F46E5"
+  default_prompt: "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
+policy:
+  allow_implicit_invocation: true

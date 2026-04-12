@@ -1,0 +1,9 @@
+interface:
+  display_name: "Parallel Isolated App Testing"
+  short_description: "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state — maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#0F766E"
+  default_prompt: "Design a safe parallel isolated testing plan for this app, including collision surfaces, lane boundaries, and launcher contracts."
+policy:
+  allow_implicit_invocation: true

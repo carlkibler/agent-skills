@@ -1,5 +1,5 @@
 ---
-name: run
+name: second-opinions
 description: Use when completing complex implementations, making design decisions, or needing validation from a different AI perspective before committing major changes. Detects available code agents and routes to the best one found.
 ---
 

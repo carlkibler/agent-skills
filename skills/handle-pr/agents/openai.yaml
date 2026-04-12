@@ -1,0 +1,9 @@
+interface:
+  display_name: "Handle PR"
+  short_description: "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes. Best in local Codex CLI/app sessions on your own machine."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#7C3AED"
+  default_prompt: "Handle the PR review comments end-to-end: evaluate each thread, implement the worthwhile changes, run checks, and prepare replies."
+policy:
+  allow_implicit_invocation: false
