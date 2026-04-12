@@ -1,0 +1,128 @@
+{
+  "name": "agent-skills",
+  "interface": {
+    "displayName": "Agent Skills"
+  },
+  "plugins": [
+    {
+      "name": "chezmoi-drift",
+      "source": {
+        "source": "local",
+        "path": "./plugins/chezmoi-drift"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "first-run-red-team",
+      "source": {
+        "source": "local",
+        "path": "./plugins/first-run-red-team"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "handle-pr",
+      "source": {
+        "source": "local",
+        "path": "./plugins/handle-pr"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "parallel-isolated-app-testing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/parallel-isolated-app-testing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
+      "name": "pre-mortem",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pre-mortem"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "profile-me",
+      "source": {
+        "source": "local",
+        "path": "./plugins/profile-me"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "second-opinions",
+      "source": {
+        "source": "local",
+        "path": "./plugins/second-opinions"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
+      "name": "support-inbox-simulation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/support-inbox-simulation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "trust-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/trust-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "wifi-qr",
+      "source": {
+        "source": "local",
+        "path": "./plugins/wifi-qr"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

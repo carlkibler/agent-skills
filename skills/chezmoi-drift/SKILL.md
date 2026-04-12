@@ -1,5 +1,5 @@
 ---
-name: run
+name: chezmoi-drift
 description: Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken shared-skill installs. Use when checking whether home-directory config has diverged from chezmoi, cleaning up dotfiles, or debugging agent skill symlinks (Claude Code, Codex, OpenCode, Gemini, Continue, Cursor).
 ---
 

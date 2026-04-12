@@ -1,0 +1,26 @@
+{
+  "name": "trust-audit",
+  "version": "1.0.0",
+  "description": "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users \u2014 across permissions, privacy, billing, file mutation, and silent-failure surfaces.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Trust Audit",
+    "shortDescription": "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users \u2014 across permissions, privacy, billing, file mutation, and silent-failure surfaces.",
+    "longDescription": "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users \u2014 across permissions, privacy, billing, file mutation, and silent-failure surfaces. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Security",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Audit this product or feature for trust risks: permissions, privacy, billing, surprise mutations, and anything that feels creepy or unsafe."
+    ],
+    "brandColor": "#059669",
+    "composerIcon": "./skills/trust-audit/assets/icon.svg",
+    "logo": "./skills/trust-audit/assets/icon.svg"
+  }
+}

@@ -1,0 +1,9 @@
+interface:
+  display_name: "Trust Audit"
+  short_description: "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users — across permissions, privacy, billing, file mutation, and silent-failure surfaces. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#059669"
+  default_prompt: "Audit this product or feature for trust risks: permissions, privacy, billing, surprise mutations, and anything that feels creepy or unsafe."
+policy:
+  allow_implicit_invocation: true

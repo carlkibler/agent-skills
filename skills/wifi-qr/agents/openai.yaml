@@ -1,0 +1,9 @@
+interface:
+  display_name: "WiFi QR"
+  short_description: "Generate a WiFi QR code PNG phones can scan to join a network instantly. Self-contained uv script, no pre-installed packages needed. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#0891B2"
+  default_prompt: "Generate a WiFi QR code PNG from an SSID and password, and save it to a path I specify."
+policy:
+  allow_implicit_invocation: true

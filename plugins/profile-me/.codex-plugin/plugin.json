@@ -1,0 +1,26 @@
+{
+  "name": "profile-me",
+  "version": "1.0.0",
+  "description": "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Profile Me",
+    "shortDescription": "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant.",
+    "longDescription": "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations."
+    ],
+    "brandColor": "#1D4ED8",
+    "composerIcon": "./skills/profile-me/assets/icon.svg",
+    "logo": "./skills/profile-me/assets/icon.svg"
+  }
+}

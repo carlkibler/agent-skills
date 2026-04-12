@@ -1,0 +1,26 @@
+{
+  "name": "parallel-isolated-app-testing",
+  "version": "1.0.0",
+  "description": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state \u2014 maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Parallel Isolated App Testing",
+    "shortDescription": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state \u2014 maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes.",
+    "longDescription": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state \u2014 maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Development",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Design a safe parallel isolated testing plan for this app, including collision surfaces, lane boundaries, and launcher contracts."
+    ],
+    "brandColor": "#0F766E",
+    "composerIcon": "./skills/parallel-isolated-app-testing/assets/icon.svg",
+    "logo": "./skills/parallel-isolated-app-testing/assets/icon.svg"
+  }
+}

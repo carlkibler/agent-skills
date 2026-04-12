@@ -1,5 +1,5 @@
 ---
-name: run
+name: profile-me
 description: "Build a comprehensive, portable AI profile of the user from their digital footprint (conversation history across Claude Code, Aider, OpenCode, Copilot, and other agents; project files; dotfiles; git config; memories). Produces multiple output documents: a personal portrait, a professional portrait, a working-with-me guide, and a compact system prompt ready to paste into any AI assistant. Use when asked to profile me, build my AI profile, create my context document, make a system prompt about me, help another AI get to know me, or similar requests."
 ---
 
