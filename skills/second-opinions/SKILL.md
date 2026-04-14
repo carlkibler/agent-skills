@@ -5,7 +5,7 @@ description: Use when completing complex implementations, making design decision
 
 # Second Opinions
 
-Get validation from a different AI before committing. You and the user share the same blind spots — you're the same model, trained on the same data. A different architecture catches different things.
+Get validation from a different AI before committing. Any single model — regardless of which one is running — has blind spots shaped by its training, context, and the conversation so far. A different architecture, temperature, or framing catches different things.
 
 ## When to Use
 
@@ -19,10 +19,11 @@ Get validation from a different AI before committing. You and the user share the
 
 ## Agent Detection
 
-Use the shared detection script from the `pre-mortem` skill if available, otherwise fall back to manual probing:
+Use the bundled detection script, with an inline fallback if `SKILL_DIR` isn't set:
 
 ```bash
-bash scripts/detect-llms.sh --quiet
+bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
+  for t in ask-gemini ask-copilot ask-cerebras codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
 ```
 
 Use the first one found. If none are available, tell the user and skip this step.

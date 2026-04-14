@@ -95,7 +95,7 @@ probe "ollama" \
 [[ "$QUIET" != "--quiet" ]] && echo "" >&2
 
 if [[ ${#FOUND[@]} -eq 0 ]]; then
-    [[ "$QUIET" != "--quiet" ]] && echo "No external LLM CLIs found. Will use Claude-only mode." >&2
+    [[ "$QUIET" != "--quiet" ]] && echo "No external LLM CLIs found. Will use single-agent mode." >&2
     echo "NONE"
     exit 0
 fi
