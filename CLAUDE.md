@@ -53,7 +53,7 @@ This repo supports both Claude Code and Codex distribution patterns.
 
 ```
 /plugin marketplace add carlkibler/agent-skills
-/plugin install <skill-name>@agent-skills
+/plugin install <skill-name>@carl-tools
 ```
 
 Register Claude marketplace entries in `.claude-plugin/marketplace.json`.

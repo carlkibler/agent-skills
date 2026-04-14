@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "agent-skills",
+  "name": "carl-tools",
   "version": "1.0.0",
-  "description": "Claude Code skills for multi-agent workflows, PR automation, product analysis, and more.",
+  "description": "Skills for multi-agent workflows, PR automation, product analysis, and more.",
   "owner": {
     "name": "carlkibler"
   },
@@ -57,7 +57,7 @@
     },
     {
       "name": "support-inbox-simulation",
-      "description": "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut founder-tax.",
+      "description": "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut maintenance drag.",
       "source": "./",
       "skills": ["./skills/support-inbox-simulation"],
       "category": "productivity",
