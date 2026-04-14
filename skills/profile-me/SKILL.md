@@ -1,28 +1,31 @@
 ---
 name: profile-me
-description: "Build a comprehensive, portable AI profile of the user from their digital footprint (conversation history across Claude Code, Aider, OpenCode, Copilot, and other agents; project files; dotfiles; git config; memories). Produces multiple output documents: a personal portrait, a professional portrait, a working-with-me guide, and a compact system prompt ready to paste into any AI assistant. Use when asked to profile me, build my AI profile, create my context document, make a system prompt about me, help another AI get to know me, or similar requests."
+description: "Build a personal AI profile of the user — who they actually are, not their resume. Draws from conversation history, dotfiles, shell config, notes, git identity, and memory files. Default output is a Personal Portrait and compact System Prompt. Professional Portrait is opt-in only. Use when asked to profile me, build my AI profile, get to know me, make a system prompt about me, or help another AI understand who I am."
 ---
 
 # Profile Me
 
-Build an honest, portable profile of the user — a context document they can hand to any AI
-assistant (Claude, GPT, Gemini, or whatever comes next) to skip the "who are you?" warmup.
+Build an honest portrait of the user as a *person* — not a resume summary, not a list of their
+tech stack. The default goal is personality, not credentials.
 
-The goal is a *useful* artifact, not a biography. Inspired by Orson Scott Card's Speaker for the
-Dead: tell the truth about who someone is — not to flatter, not to judge, but to understand and serve.
+Most developers who run this skill have conversation histories dominated by coding work. That
+data is real but misleading as a personality source — it's what they did at the desk, not who
+they are. The skill must look *through* the work to find the person.
+
+Inspired by Orson Scott Card's Speaker for the Dead: tell the truth about who someone is —
+not to flatter, not to judge, but to understand and serve.
 
 **Core principles:**
 
+- **Person over practitioner.** Unless a professional portrait is explicitly requested, keep
+  work out of it. Technical skills, frameworks, and job history are not the subject.
 - **Truth over comfort, kindness over cruelty.** Report what the evidence shows. Frame it with
   respect. Never sanitize away a real pattern, but never weaponize one either.
-- **Evidence-based.** Every claim should trace to observable data — conversation logs, project
-  structure, code choices, git history, configuration files. If it can't be evidenced, flag it as
-  inference and explain why.
-- **Multidimensional.** People are not their job title. Capture the professional, the personal,
-  the creative, the quirky. What someone builds on weekends tells you as much as what they
-  build at work.
-- **Useful.** The output is not a biography — it's operational context. Every section should help
-  an AI (or human) work with this person more effectively.
+- **Evidence-based.** Every claim should trace to observable data. If it can't be evidenced,
+  flag it as inference and explain why.
+- **Short and true beats long and restated.** A portrait that captures three real things is more
+  useful than one that pads with professional biography. If the evidence is thin on a dimension,
+  say so and move on.
 
 ## When to Use
 
@@ -31,10 +34,11 @@ Trigger on requests like:
 - "profile me", "build my profile", "get to know me"
 - "create my AI profile" or "build my context document"
 - "make a system prompt about me"
-- "help another AI get to know me" (Claude, GPT, Gemini, etc.)
+- "help another AI get to know me"
 - "build a working-with-me guide"
 - "what do you know about me"
-- Requests for resume context, LinkedIn material, or personal brand documents
+
+**Not this skill:** "update my resume", "write my LinkedIn bio", "describe my tech stack" — those are professional documents, use a different prompt or request the Professional Portrait explicitly.
 
 ## Data Collection
 
@@ -87,14 +91,16 @@ ls ~/.continue/ 2>/dev/null && echo "continue"
 ~/.claude/bin/                               # Custom scripts and tools
 ```
 
-**Source 2: Project Ecosystem**
+**Source 2: Personal Expression (prioritize these over work repos)**
 ```
-~/dev/                                       # Work repositories
-~/dev/me/ (or similar personal dir)          # Personal repositories
-*/CLAUDE.md                                  # Per-project instructions
-*/README.md                                  # Project descriptions
-*/.beads/                                    # Task tracking (if present)
+~/dev/me/ (or personal equivalent)          # Personal/side projects — names, themes, what they chose to build
+~/.local/share/chezmoi/ or ~/dotfiles/      # Dotfiles — configuration as aesthetic choice
+~/cloud/ or ~/notes/ or ~/Documents/        # Personal notes, writing, Obsidian vaults
+~/.zshrc or ~/.bashrc                       # Aliases and functions — naming reveals personality
+~/dev/me/*/README.md                        # Personal project READMEs (distinct from work)
 ```
+
+**Skip for personal profile:** Work repositories (`~/dev/` excluding personal dir), work project READMEs, CI configs, deployment files. These describe the job, not the person.
 
 **Source 3: Shell & System Configuration**
 ```
@@ -117,29 +123,45 @@ Harvest user messages from every agent source found in Source 1. Each format req
 
 Combine all sources into a single corpus before analysis. Deduplicate by content where the same text appears across agents. Note which agents were most active — tool diversity is itself a signal.
 
+**Extracting personality from work-heavy histories**
+
+Most developers' conversation histories are 90%+ coding requests. Don't profile the work — look for the person *between* the work. Specifically look for:
+
+- **Off-task moments** — when they stop asking about code and say something else entirely
+- **Named frustrations** — what they express irritation about (process? quality? ambiguity? people?)
+- **Humor** — dry, self-deprecating, absurdist, pedantic? Look at how they frame problems
+- **What they name things** — project names, function names, variable names, alias names reveal aesthetic sense
+- **How they handle being wrong** — defensive, curious, matter-of-fact, amused?
+- **What triggers verbosity** — a terse person who suddenly writes three paragraphs is showing you what matters to them
+- **Correction patterns** — "no, that's not what I meant" style reveals communication expectations
+- **What they tolerate vs. what they push back on** — the line between patience and impatience
+- **Energy signatures** — excitement markers, relief ("perfect"), disappointment ("ugh"), satisfaction ("exactly")
+- **Delegation style** — terse goals? detailed specs? thinking-out-loud as they type?
+
+For the personal portrait, **weight these signals more heavily than project counts or framework choices.** A list of technologies is a LinkedIn section. The texture of how someone talks is a personality.
+
 Extract from the combined corpus:
-- **Project frequency counts** — which projects get the most attention (reveals real priorities)
-- **Message length distribution** — terse vs. verbose communicator
-- **Vocabulary patterns** — technical depth, formality level, humor frequency
+- **Message length distribution** — terse vs. verbose; and *when* each occurs
+- **Vocabulary patterns** — formality level, humor frequency, domain bleed from personal interests
 - **Emotional signals** — caps usage, punctuation patterns, frustration/excitement markers
-- **Typo patterns** — fast typer who doesn't proofread vs. careful writer
-- **Delegation style** — gives detailed specs vs. terse goals vs. step-by-step instructions
-- **Correction patterns** — how they course-correct when you go wrong
+- **Typo patterns** — fast and impulsive vs. careful and deliberate
 - **Agent preference patterns** — what tasks they route to which tool (reveals mental model of AI)
 
 ### Phase 2: Deep Reading
 
 Read all discovered sources. Use subagents to parallelize across categories:
-- Agent 1: All memory files and MEMORY.md indexes
-- Agent 2: All CLAUDE.md files (global + per-project)
-- Agent 3: Shell/git/system configuration
-- Agent 4: Claude Code conversation history sampling
-- Agent 5: Other agent conversation history (Aider, OpenCode, Copilot Chat, Continue, etc.)
-- Agent 6: Project README files and structure
+- Agent 1: Memory files and MEMORY.md indexes (feedback, user-type, and project memories — skip reference-only)
+- Agent 2: Global CLAUDE.md/AGENTS.md only (not per-project — those describe work, not person)
+- Agent 3: Shell/git/system configuration (aliases, functions, git identity, dotfiles aesthetic)
+- Agent 4: Conversation history — **personality pass** (see sampling guidance below)
+- Agent 5: Personal notes, Obsidian vault, personal writing, personal project READMEs
+- Agent 6: Personal side projects — names, themes, what they chose to build unprompted
 
-For conversation history, sample broadly — take messages from the beginning, middle, and recent
-history. Focus on messages between 20-500 characters (too short = "yes"/"ok", too long = pasted
-content). Aim for 50-100 representative samples.
+**Conversation history sampling for personality:**
+Sample broadly in time (beginning, middle, recent), but filter aggressively for personality signals.
+Skip: pure code requests, bug descriptions, "add X to Y", pasted content.
+Keep: opinions, frustrations, humor, naming choices, how they frame problems, off-task remarks, how they respond to errors, what they thank you for, what they push back on.
+Target 40-80 messages that would survive the filter "does this tell me something about who this person is?"
 
 ## Analysis Framework
 
@@ -148,13 +170,15 @@ for the full analytical rubric with questions and evidence patterns for each dim
 
 ### Dimensions
 
-1. **Professional Identity** — Role, seniority, domain expertise, career trajectory
-2. **Technical Profile** — Languages, frameworks, infrastructure, architecture patterns, tool preferences
-3. **Communication Style** — Formality, verbosity, emotional expression, delegation patterns
-4. **Cognitive Style** — How they approach problems, make decisions, handle uncertainty
-5. **Values & Priorities** — What they optimize for, what frustrates them, what impresses them
-6. **Creative & Personal** — Side projects, hobbies, interests, aesthetic preferences
-7. **Working Relationship Patterns** — How they collaborate with AI, what they expect, how they give feedback
+**For personal portrait (default):** use dimensions 3–7 only. Dimensions 1–2 belong in the Professional Portrait.
+
+1. **Professional Identity** *(Professional Portrait only)* — Role, seniority, domain expertise, career trajectory
+2. **Technical Profile** *(Professional Portrait only)* — Languages, frameworks, infrastructure, architecture patterns
+3. **Communication Style** — Formality, verbosity, humor, emotional expression, delegation patterns
+4. **Cognitive Style** — How they approach problems, make decisions, handle uncertainty, what excites vs. bores them
+5. **Values & Priorities** — What they actually optimize for (vs. what they say they do), what frustrates them, what impresses them
+6. **Creative & Personal** — Side projects, hobbies, interests, aesthetic preferences, what they build when nobody's watching
+7. **Relational Patterns** — How they interact with collaborators (human or AI), how they give feedback, what they expect, what they appreciate
 
 ### Bias Guardrails
 
@@ -179,9 +203,11 @@ for the full analytical rubric with questions and evidence patterns for each dim
 
 ## Output Documents
 
-Produce up to four documents, stored in the user's preferred temp/output directory. If the user
-didn't specify, default to **Working-With-Me Guide + System Prompt** (most useful). Offer the
-portraits as optional extras.
+**Default output:** Personal Portrait + System Prompt. Always produce these two unless the user says otherwise.
+
+Offer the Working-With-Me Guide and Professional Portrait as opt-in extras — mention them briefly after presenting the defaults. Do not produce a Professional Portrait unless explicitly requested.
+
+Store outputs in the user's preferred temp/output directory.
 
 ### 1. Personal Portrait (`portrait-personal.md`)
 
@@ -189,11 +215,13 @@ The "Speaker for the Dead" document. Who this person really is — not their res
 
 **Structure:**
 - Opening: 2-3 sentences that capture the essence (the "if you only read this" summary)
-- What they build and why — their projects as self-expression
-- How they think — cognitive patterns, decision-making, what they optimize for
-- What they care about — values evidenced by behavior, not stated values
-- The texture — quirks, humor, aesthetic taste, the small things that make them *them*
+- How they think — cognitive patterns, decision-making style, what energizes vs. drains them
+- What they care about — values evidenced by behavior, not stated values; the gap between the two if it exists
+- The texture — humor, aesthetic taste, naming choices, the small things that make them *them*
+- What they make when nobody's asking — personal projects, creative output, things they chose unprompted
 - Closing: The through-line — what connects all of this into a coherent person
+
+**Do not include:** tech stack, job history, professional credentials, languages/frameworks. Those belong in the Professional Portrait. If a work pattern is genuinely revealing about personality (e.g., obsessive perfectionism about performance), note the personality trait, not the technical fact.
 
 **Critical writing prompts:**
 
@@ -212,7 +240,9 @@ The "Speaker for the Dead" document. Who this person really is — not their res
 **Tone:** Warm but honest. Like a close friend who knows you well enough to be truthful. Never
 sycophantic, never clinical.
 
-### 2. Professional Portrait (`portrait-professional.md`)
+### 2. Professional Portrait (`portrait-professional.md`) *(opt-in only)*
+
+**Do not produce this by default.** Only generate if the user explicitly requests it (resume help, LinkedIn, interview prep, "what's my tech stack", etc.).
 
 The document a hiring manager, recruiter, or professional contact should read.
 
@@ -251,7 +281,7 @@ Direct instructions for an AI assistant or collaborator.
 - What impresses them / what annoys them
 - Domain knowledge expected
 
-**Tone:** Imperative, second-person, like CLAUDE.md instructions. Optimized for AI consumption.
+**Tone:** Imperative, second-person, like agent instruction files (CLAUDE.md/AGENTS.md). Optimized for AI consumption.
 
 ### 4. System Prompt (`system-prompt.md`)
 
@@ -287,9 +317,10 @@ knows themselves better than any analysis — their corrections are data too.
 
 ## Tips for Effective Profiles
 
-- **Let the projects tell the story.** What someone builds on their own time — the names they
-  choose, the problems they solve, the technologies they reach for — reveals more than any
-  self-description.
+- **Personal projects tell the story; work projects describe the job.** What someone builds
+  unprompted — the names they choose, the problems they decide are worth solving, the aesthetic
+  choices they make when there's no deadline — reveals character. A work repo tells you their
+  employer's stack. A personal repo tells you something real.
 - **Patterns over instances.** A single angry message doesn't mean someone is angry. Look for
   patterns across dozens or hundreds of interactions.
 - **The gap between stated and revealed preferences is interesting.** If someone says they value
@@ -301,17 +332,20 @@ knows themselves better than any analysis — their corrections are data too.
   activities into a coherent identity. Finding it is the difference between a list of facts
   and a portrait.
 
-## Model Recommendations
+## Model Tier Recommendations
 
 The personal portrait quality depends heavily on the writing model's ability to synthesize
-narrative from evidence. For best results:
+narrative from evidence. Use the best available model tier for each task:
 
-- **Opus-class models:** Best for the personal portrait and through-line identification.
-  These models produce the narrative cohesion and insight density the portrait demands.
-- **Sonnet-class models:** Good for the professional portrait, working-with-me guide, and
-  system prompt. These are more structured documents where clarity matters more than voice.
-- **Haiku-class models:** Suitable for data collection, discovery scripts, and stats
-  generation. Save the expensive context for synthesis, not scanning.
+- **Flagship / reasoning-tier models** (e.g., Opus, GPT-4o, Gemini Ultra, o3): Best for the
+  personal portrait and through-line identification. These produce the narrative cohesion and
+  insight density the portrait demands.
+- **Mid-tier models** (e.g., Sonnet, GPT-4o-mini, Gemini Flash Pro): Good for the professional
+  portrait, working-with-me guide, and system prompt — structured documents where clarity
+  matters more than voice.
+- **Fast / lightweight models** (e.g., Haiku, Gemini Flash, Cerebras): Suitable for data
+  collection, discovery scripts, and stats generation. Save expensive context for synthesis,
+  not scanning.
 
-When running all four documents, consider using subagents with model overrides: opus for
-the personal portrait, sonnet for the other three.
+When running all four documents, consider dispatching subagents with model overrides: flagship
+tier for the personal portrait, mid-tier for the other three.

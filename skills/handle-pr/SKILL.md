@@ -15,7 +15,9 @@ Verify tools once, upfront. Note availability — it shapes later steps.
 
 ```bash
 which gh && gh auth status          # required — stop if missing or unauthenticated
-bash scripts/detect-llms.sh --quiet # detect available code agents for quality pass
+bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
+  for t in ask-gemini ask-copilot ask-cerebras codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+# detect available code agents for quality pass
 ```
 
 Check for MCP GitHub tools by attempting `mcp__github__list_pull_requests` with a trivial call. Note whether MCP is available — use it where noted, fall back to `gh` otherwise.
@@ -90,7 +92,7 @@ Print a concise plan — informational, not a gate:
 ```
 PR #XXXX — 7 comments
   Implementing (4): nil guard in parser, error msg clarification, missing test case, unused import
-  Skipping (3):     rename Foo→Bar (conflicts CLAUDE.md), extract helper (YAGNI), add logging (out of scope)
+  Skipping (3):     rename Foo→Bar (conflicts project conventions), extract helper (YAGNI), add logging (out of scope)
 Proceeding...
 ```
 
@@ -98,7 +100,7 @@ Proceeding...
 
 **Implementation rules:**
 - Address exactly what each comment asks — no collateral cleanup, no extra features
-- Project CLAUDE.md conventions beat reviewer preferences
+- Project conventions (CLAUDE.md/AGENTS.md/GEMINI.md) beat reviewer preferences
 - One logical commit per thematic group is fine; don't scatter or over-atomize
 
 **Test gate:** Detect and run the repo's test/lint commands before committing:
@@ -165,7 +167,7 @@ If MCP is available, `mcp__github__add_reply_to_pull_request_comment` works too.
 > *[automated review]*
 
 **Skipped (LOW):**
-> Noted — skipping: [specific reason, e.g., "conflicts with kebab-case convention in CLAUDE.md" or "this abstraction would only be used once"].
+> Noted — skipping: [specific reason, e.g., "conflicts with project conventions" or "this abstraction would only be used once"].
 >
 > *[automated review]*
 
@@ -220,5 +222,5 @@ If a new-batch change breaks tests: revert, commit the revert, post a note on th
 - **Tagline is required** on every reply: `*[automated review]*`
 - **Never resolve threads** — the reviewer decides if the response is satisfactory
 - **Never force-push** — always stop and ask if push fails
-- **CLAUDE.md > reviewer** — project conventions take precedence; explain when skipping
+- **Project conventions > reviewer** — CLAUDE.md/AGENTS.md take precedence; explain when skipping
 - **Minimal footprint** — touch only what comments address; don't improve bystander code
