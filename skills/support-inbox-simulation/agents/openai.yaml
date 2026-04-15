@@ -1,6 +1,6 @@
 interface:
   display_name: "Support Inbox Simulation"
-  short_description: "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut founder-tax. Safe for repo-local and cloud/repo-checkout workflows."
+  short_description: "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut maintenance drag. Safe for repo-local and cloud/repo-checkout workflows."
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#DB2777"

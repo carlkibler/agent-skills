@@ -107,5 +107,6 @@ skills/
   ├── trust-audit/                # Product trust surface audit
   ├── support-inbox-simulation/   # Pre-launch support email simulation
   ├── first-run-red-team/         # First-run experience red-teaming
-  └── wifi-qr/                    # WiFi QR code generator
+  ├── wifi-qr/                    # WiFi QR code generator
+  └── empathy-audit/              # Four-lens empathy review (user, machine, developer, support)
 ```

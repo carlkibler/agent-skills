@@ -83,6 +83,7 @@ Tools for the day-to-day of writing and reviewing code.
 | Plugin name | Skill | Description |
 |-------------|-------|-------------|
 | `chezmoi-drift` | `/chezmoi-drift:run` | Audit chezmoi dotfiles for drift and broken skill installs |
+| `empathy-audit` | `/empathy-audit:run` | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses. Finds what makes users uninstall, machines overheat, developers quit, and support people burn out. |
 | `profile-me` | `/profile-me:run` | Build a portable AI profile from your digital footprint |
 | `wifi-qr` | `/wifi-qr:run` | Generate a WiFi QR code PNG |
 
