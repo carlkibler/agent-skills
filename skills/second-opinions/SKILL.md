@@ -28,6 +28,19 @@ bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
 
 Use the first one found. If none are available, tell the user and skip this step.
 
+## Model Selection
+
+Second opinions are about **deep analysis**, not speed. Use the smartest model available:
+
+| Tool | For deep analysis | For quick checks |
+|---|---|---|
+| `ask-gemini` | `ask-gemini --pro` (Gemini 3.1 Pro) | `ask-gemini` (default: Gemini 3 Flash) |
+| `ask-copilot` | `gh copilot -- --model gpt-4.1` | same (only model available) |
+| `ask-cerebras` | default (Qwen 3 235B) | same |
+| `ask-zai` | default (GLM 5.1) | same |
+
+When this skill is invoked for **pre-merge review, design validation, or architecture decisions**, prefer `ask-gemini --pro`. For quick sanity checks or brainstorming, the default models are fine.
+
 ## How to Ask
 
 The prompt is the same regardless of agent — adapt the invocation to whatever's available. The `detect-llms.sh` script outputs `NAME|INVOKE_PATTERN|MODEL_FAMILY|NOTES` — use the `INVOKE_PATTERN` field, substituting `{prompt}` with your actual prompt.

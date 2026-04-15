@@ -1,7 +1,7 @@
 {
-  "name": "carl-tools",
+  "name": "agent-skills",
   "interface": {
-    "displayName": "Carl Tools"
+    "displayName": "Agent Skills"
   },
   "plugins": [
     {
@@ -15,6 +15,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "empathy-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/empathy-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
     },
     {
       "name": "first-run-red-team",

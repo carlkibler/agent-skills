@@ -25,7 +25,7 @@
     },
     {
       "name": "second-opinions",
-      "description": "Validate decisions with gpt-5.4-codex via GitHub Copilot CLI. Use for critical code reviews, design decisions, and pre-merge validation.",
+      "description": "Validate decisions with a different AI model. Detects available LLM CLIs and routes to the best one. Use for critical code reviews, design decisions, and pre-merge validation.",
       "source": "./",
       "skills": ["./skills/second-opinions"],
       "category": "development",
@@ -84,6 +84,14 @@
       "description": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state — maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes.",
       "source": "./",
       "skills": ["./skills/parallel-isolated-app-testing"],
+      "category": "development",
+      "version": "1.0.0"
+    },
+    {
+      "name": "empathy-audit",
+      "description": "Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses. Finds what makes users uninstall, machines overheat, developers quit, and support people burn out.",
+      "source": "./",
+      "skills": ["./skills/empathy-audit"],
       "category": "development",
       "version": "1.0.0"
     }
