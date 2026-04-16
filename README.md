@@ -63,6 +63,7 @@ Find failure modes, trust problems, and support burden before your users do.
 
 | Plugin name | Skill | Description |
 |-------------|-------|-------------|
+| `empathy-audit` | `/empathy-audit:run` | Four-lens empathy review: user, machine, developer, support |
 | `first-run-red-team` | `/first-run-red-team:run` | Red-team onboarding and first-run experience for abandonment traps |
 | `pre-mortem` | `/pre-mortem:run` | Multi-agent project pre-mortem — ranked risks with mitigations |
 | `support-inbox-simulation` | `/support-inbox-simulation:run` | Simulate the support emails and refunds a launch will generate |
@@ -83,7 +84,6 @@ Tools for the day-to-day of writing and reviewing code.
 | Plugin name | Skill | Description |
 |-------------|-------|-------------|
 | `chezmoi-drift` | `/chezmoi-drift:run` | Audit chezmoi dotfiles for drift and broken skill installs |
-| `empathy-audit` | `/empathy-audit:run` | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses. Finds what makes users uninstall, machines overheat, developers quit, and support people burn out. |
 | `profile-me` | `/profile-me:run` | Build a portable AI profile from your digital footprint |
 | `wifi-qr` | `/wifi-qr:run` | Generate a WiFi QR code PNG |
 

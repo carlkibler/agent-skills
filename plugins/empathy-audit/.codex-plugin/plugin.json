@@ -17,9 +17,9 @@
     "category": "Development",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Use the Empathy Audit skill for this task."
+      "Run an empathy audit on this code or feature through user, machine, developer, and support lenses."
     ],
-    "brandColor": "#10A37F",
+    "brandColor": "#7C3AED",
     "composerIcon": "./skills/empathy-audit/assets/icon.svg",
     "logo": "./skills/empathy-audit/assets/icon.svg"
   }
