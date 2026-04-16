@@ -1,7 +1,7 @@
 {
-  "name": "agent-skills",
+  "name": "carl-tools",
   "interface": {
-    "displayName": "Agent Skills"
+    "displayName": "Carl Tools"
   },
   "plugins": [
     {

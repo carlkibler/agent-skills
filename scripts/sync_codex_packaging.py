@@ -108,6 +108,15 @@ SKILL_CONFIG = {
         "usage": "/wifi-qr:run",
         "summary": "Generate a WiFi QR code PNG",
     },
+    "empathy-audit": {
+        "display_name": "Empathy Audit",
+        "brand_color": "#7C3AED",
+        "default_prompt": "Run an empathy audit on this code or feature through user, machine, developer, and support lenses.",
+        "local_only": False,
+        "group": "Better Products",
+        "usage": "/empathy-audit:run",
+        "summary": "Four-lens empathy review: user, machine, developer, support",
+    },
 }
 
 GROUP_ORDER = ["Better Products", "Dev Workflow", "Utilities"]
@@ -213,8 +222,8 @@ def main() -> None:
     claude_plugins = {plugin["name"]: plugin for plugin in marketplace["plugins"]}
 
     codex_marketplace = {
-        "name": "agent-skills",
-        "interface": {"displayName": "Agent Skills"},
+        "name": "carl-tools",
+        "interface": {"displayName": "Carl Tools"},
         "plugins": [],
     }
     readme_rows = {group: [] for group in GROUP_ORDER}
