@@ -99,6 +99,15 @@ SKILL_CONFIG = {
         "usage": "/trust-audit:run",
         "summary": "Audit a product's trust surface: permissions, privacy, billing, and silent failures",
     },
+    "wide-open-brainstorm": {
+        "display_name": "Wide-Open Brainstorm",
+        "brand_color": "#C87941",
+        "default_prompt": "Run a wide-open brainstorming room for this product idea. Move between big-picture strategy, project-level organization, tactical actions, and whimsical metaphors; then distill the strongest differentiated concepts.",
+        "local_only": False,
+        "group": "Better Products",
+        "usage": "/wide-open-brainstorm:run",
+        "summary": "Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation",
+    },
     "wifi-qr": {
         "display_name": "WiFi QR",
         "brand_color": "#0891B2",

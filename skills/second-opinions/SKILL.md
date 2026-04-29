@@ -1,6 +1,6 @@
 ---
 name: second-opinions
-description: Use when completing complex implementations, making design decisions, or needing validation from a different AI perspective before committing major changes. Detects available code agents and routes to the best one found.
+description: Get validation from a different AI model before committing major changes — detects available LLM CLIs and routes to the best one.
 ---
 
 # Second Opinions

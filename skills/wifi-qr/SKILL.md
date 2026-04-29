@@ -1,6 +1,6 @@
 ---
 name: wifi-qr
-description: Generate a WiFi QR code PNG that phones can scan to join a network instantly. Use when the user wants to create a scannable WiFi QR code, generate WiFi credentials as a QR image, or embed a WiFi join code in a web page or document.
+description: Generate a WiFi QR code PNG phones can scan to join a network instantly.
 allowed-tools: Bash(uv run *)
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: profile-me
-description: "Build a personal AI profile of the user — who they actually are, not their resume. Draws from conversation history, dotfiles, shell config, notes, git identity, and memory files. Default output is a Personal Portrait and compact System Prompt. Professional Portrait is opt-in only. Use when asked to profile me, build my AI profile, get to know me, make a system prompt about me, or help another AI understand who I am."
+description: Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant.
 ---
 
 # Profile Me

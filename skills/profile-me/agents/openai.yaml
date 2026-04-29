@@ -1,6 +1,6 @@
 interface:
   display_name: "Profile Me"
-  short_description: "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant. Best in local Codex CLI/app sessions on your own machine."
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#1D4ED8"

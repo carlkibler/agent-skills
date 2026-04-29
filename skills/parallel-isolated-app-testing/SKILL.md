@@ -1,6 +1,6 @@
 ---
 name: parallel-isolated-app-testing
-description: This skill should be used when designing, implementing, or running parallel isolated app testing for desktop apps, menu bar apps, local tools, or other products with shared local state. It is especially useful when multiple app instances might collide on defaults, app support paths, temp files, watched folders, notifications, launch agents, permissions, or other machine-local side effects.
+description: Design parallel isolated test lanes for desktop apps and local tools with shared state — maps collision surfaces and splits non-colliding test lanes.
 ---
 
 # Parallel Isolated App Testing

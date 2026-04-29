@@ -1,7 +1,7 @@
 {
   "name": "chezmoi-drift",
   "version": "1.0.0",
-  "description": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
+  "description": "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses.",
   "author": {
     "name": "carlkibler"
   },
@@ -11,8 +11,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Chezmoi Drift",
-    "shortDescription": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
-    "longDescription": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs. Works best on a local machine with user-specific files and tools available.",
+    "shortDescription": "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses.",
+    "longDescription": "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses. Works best on a local machine with user-specific files and tools available.",
     "developerName": "carlkibler",
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",

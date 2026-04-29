@@ -68,6 +68,7 @@ Find failure modes, trust problems, and support burden before your users do.
 |-------|---|
 | **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **trust-audit** | Audit a product's trust surface: permissions, privacy, billing, and silent failures<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
+| **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
 
 ### Dev Workflow
 
@@ -84,11 +85,10 @@ Tools for the day-to-day of writing and reviewing code.
 | Skill | |
 |-------|---|
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
-| **first-contact** | Red-team a product's onboarding, permissions, activation, and first-success experience to find where new users get confused, think the app is broken, or abandon setup.<br><sub>`/plugin install first-contact@carl-tools`</sub> |
-| **kindness-check** | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses. Finds what makes users uninstall, machines overheat, developers quit, and support people burn out.<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
+| **first-contact** | Red-team a product's onboarding and first-run experience to find where new users get confused, think it's broken, or abandon setup.<br><sub>`/plugin install first-contact@carl-tools`</sub> |
+| **kindness-check** | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
-| **support-storm** | Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut maintenance drag.<br><sub>`/plugin install support-storm@carl-tools`</sub> |
-| **wide-open-brainstorm** | Run a serious, whimsical, multi-round product brainstorming room that moves between big-picture strategy, project-level organization, tactical actions, and delightful metaphors.<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
+| **support-storm** | Simulate the support emails, reviews, and complaints a launch will generate, then identify product fixes that cut maintenance drag.<br><sub>`/plugin install support-storm@carl-tools`</sub> |
 | **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
 
 ## Managing plugins

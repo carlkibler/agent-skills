@@ -1,6 +1,6 @@
 ---
 name: first-contact
-description: This skill should be used when red-teaming a product’s onboarding, installation, activation, first-run, and first-success experience. It is especially useful for launch readiness, utilities, menu bar apps, permission-heavy software, AI products, and any workflow where one confusing first impression can cause immediate abandonment.
+description: Red-team a product’s onboarding and first-run experience to find where new users get confused, think it’s broken, or abandon setup.
 ---
 
 # First-Run Red Team
