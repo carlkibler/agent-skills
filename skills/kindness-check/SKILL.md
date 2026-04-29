@@ -1,6 +1,6 @@
 ---
 name: kindness-check
-description: Review code, products, or features through four empathy lenses (user, machine, developer, support) to surface quality issues that pure technical review misses. Use when preparing for launch, after major features, or when something "works but feels wrong." Produces both positive and negative findings — celebrates what's kind and flags what's cruel.
+description: Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.
 ---
 
 # Empathy Audit

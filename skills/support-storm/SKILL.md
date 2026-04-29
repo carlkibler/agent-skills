@@ -1,6 +1,6 @@
 ---
 name: support-storm
-description: This skill should be used when predicting what support emails, refund requests, app reviews, bug reports, and confused user complaints a product launch or feature change will generate. It is especially useful for launch readiness, onboarding review, diagnosing support burden, and finding the gaps between what builders think is obvious and what users will actually report.
+description: Simulate the support emails, reviews, and complaints a launch will generate, then identify product fixes that cut maintenance drag.
 ---
 
 # Support Inbox Simulation

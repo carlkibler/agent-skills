@@ -1,6 +1,6 @@
 ---
 name: wide-open-brainstorm
-description: Run a broad, multi-round, multi-model brainstorming room for product strategy, feature invention, command-center concepts, or experience design. Use when the user wants serious plus whimsical ideation that moves fluidly between big-picture strategy, project-level organization, and tactical next actions.
+description: Multi-model brainstorming room for product strategy and experience design — serious plus whimsical, multi-altitude, multi-round ideation.
 ---
 
 # Wide-Open Brainstorm

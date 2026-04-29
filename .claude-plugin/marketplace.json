@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "pre-mortem",
-      "description": "Multi-agent project pre-mortem (Gary Klein technique). Spawns parallel agents with different failure-finding mandates, synthesizes into ranked risks with mitigations.",
+      "description": "Multi-agent project pre-mortem — parallel agents with different failure-finding mandates, synthesized into ranked risks with mitigations.",
       "source": "./",
       "skills": [
         "./skills/pre-mortem"
@@ -19,7 +19,7 @@
     },
     {
       "name": "profile-me",
-      "description": "Build a portable AI profile from your digital footprint. Produces personal/professional portraits, a working-with-me guide, and a compact system prompt for any AI assistant.",
+      "description": "Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant.",
       "source": "./",
       "skills": [
         "./skills/profile-me"
@@ -29,7 +29,7 @@
     },
     {
       "name": "second-opinions",
-      "description": "Validate decisions with a different AI model. Detects available LLM CLIs and routes to the best one. Use for critical code reviews, design decisions, and pre-merge validation.",
+      "description": "Get validation from a different AI model before committing major changes — detects available LLM CLIs and routes to the best one.",
       "source": "./",
       "skills": [
         "./skills/second-opinions"
@@ -39,7 +39,7 @@
     },
     {
       "name": "handle-pr",
-      "description": "Autonomously handle GitHub PR review comments: evaluate each thread, implement HIGH/MEDIUM changes, run tests, Copilot quality pass, commit, reply to every thread, then watch for follow-up comments for 12 minutes.",
+      "description": "Autonomously handle GitHub PR review comments — evaluate, implement HIGH/MEDIUM changes, run tests, commit, reply to all threads.",
       "source": "./",
       "skills": [
         "./skills/handle-pr"
@@ -49,7 +49,7 @@
     },
     {
       "name": "chezmoi-drift",
-      "description": "Audit chezmoi-managed dotfiles for drift, unmanaged files worth tracking, and broken Claude/Codex shared-skill installs.",
+      "description": "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses.",
       "source": "./",
       "skills": [
         "./skills/chezmoi-drift"
@@ -59,7 +59,7 @@
     },
     {
       "name": "trust-audit",
-      "description": "Audit whether a product will feel trustworthy, creepy, deceptive, or unsafe to users \u2014 across permissions, privacy, billing, file mutation, and silent-failure surfaces.",
+      "description": "Audit whether a product feels trustworthy or unsafe — covering permissions, privacy, billing, file mutation, and silent-failure surfaces.",
       "source": "./",
       "skills": [
         "./skills/trust-audit"
@@ -69,7 +69,7 @@
     },
     {
       "name": "support-storm",
-      "description": "Simulate support emails, reviews, refunds, and confused complaints a launch or feature change will generate, then identify the product fixes that cut maintenance drag.",
+      "description": "Simulate the support emails, reviews, and complaints a launch will generate, then identify product fixes that cut maintenance drag.",
       "source": "./",
       "skills": [
         "./skills/support-storm"
@@ -79,7 +79,7 @@
     },
     {
       "name": "first-contact",
-      "description": "Red-team a product's onboarding, permissions, activation, and first-success experience to find where new users get confused, think the app is broken, or abandon setup.",
+      "description": "Red-team a product's onboarding and first-run experience to find where new users get confused, think it's broken, or abandon setup.",
       "source": "./",
       "skills": [
         "./skills/first-contact"
@@ -89,7 +89,7 @@
     },
     {
       "name": "wifi-qr",
-      "description": "Generate a WiFi QR code PNG phones can scan to join a network instantly. Self-contained uv script, no pre-installed packages needed.",
+      "description": "Generate a WiFi QR code PNG phones can scan to join a network instantly.",
       "source": "./",
       "skills": [
         "./skills/wifi-qr"
@@ -99,7 +99,7 @@
     },
     {
       "name": "parallel-isolated-app-testing",
-      "description": "Design and run parallel isolated testing for desktop apps, menu bar apps, and local tools with shared state \u2014 maps collision surfaces, defines isolated launch contracts, creates fixture profiles, and splits non-colliding test lanes.",
+      "description": "Design parallel isolated test lanes for desktop apps and local tools with shared state — maps collision surfaces and splits non-colliding test lanes.",
       "source": "./",
       "skills": [
         "./skills/parallel-isolated-app-testing"
@@ -109,7 +109,7 @@
     },
     {
       "name": "kindness-check",
-      "description": "Review code through four empathy lenses \u2014 user, machine, developer, support \u2014 to surface quality issues that pure technical review misses. Finds what makes users uninstall, machines overheat, developers quit, and support people burn out.",
+      "description": "Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.",
       "source": "./",
       "skills": [
         "./skills/kindness-check"
@@ -119,7 +119,7 @@
     },
     {
       "name": "wide-open-brainstorm",
-      "description": "Run a serious, whimsical, multi-round product brainstorming room that moves between big-picture strategy, project-level organization, tactical actions, and delightful metaphors.",
+      "description": "Multi-model brainstorming room for product strategy and experience design — serious plus whimsical, multi-altitude, multi-round ideation.",
       "source": "./",
       "skills": [
         "./skills/wide-open-brainstorm"

@@ -1,6 +1,6 @@
 ---
 name: trust-audit
-description: This skill should be used when evaluating whether a product, feature, onboarding flow, permission request, billing model, privacy posture, or file/data mutation behavior will feel trustworthy, creepy, deceptive, risky, or surprisingly unsafe to users. It is especially useful for AI products, utilities, menu bar apps, billing changes, and launch readiness reviews.
+description: Audit whether a product feels trustworthy or unsafe — covering permissions, privacy, billing, file mutation, and silent-failure surfaces.
 ---
 
 # Trust Audit
