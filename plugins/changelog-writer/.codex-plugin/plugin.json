@@ -1,0 +1,26 @@
+{
+  "name": "changelog-writer",
+  "version": "1.0.0",
+  "description": "Generate user-facing changelog entries from git history \u2014 plain language, audience-segmented, with optional CHANGELOG.md update.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Changelog Writer",
+    "shortDescription": "Generate user-facing changelog entries from git history \u2014 plain language, audience-segmented, with optional CHANGELOG.md update.",
+    "longDescription": "Generate user-facing changelog entries from git history \u2014 plain language, audience-segmented, with optional CHANGELOG.md update. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Development",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Use the Changelog Writer skill for this task."
+    ],
+    "brandColor": "#10A37F",
+    "composerIcon": "./skills/changelog-writer/assets/icon.svg",
+    "logo": "./skills/changelog-writer/assets/icon.svg"
+  }
+}
