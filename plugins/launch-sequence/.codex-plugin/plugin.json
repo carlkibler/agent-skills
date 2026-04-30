@@ -17,9 +17,9 @@
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Use the Launch Sequence skill for this task."
+      "Run the full pre-launch sequence on this product or feature. Surface every risk across first-run experience, support load, trust surface, and catastrophic failure modes."
     ],
-    "brandColor": "#10A37F",
+    "brandColor": "#0D9488",
     "composerIcon": "./skills/launch-sequence/assets/icon.svg",
     "logo": "./skills/launch-sequence/assets/icon.svg"
   }
