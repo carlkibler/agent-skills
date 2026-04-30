@@ -117,48 +117,98 @@ Each agent returns a structured evaluation:
 
 ---
 
-## Step 4: Plan and Group
+## Step 4: Pattern Analysis
 
-Print a concise plan:
+**Run one synthesis agent across all evaluations before touching any code.**
 
+The synthesis agent receives every evaluation from Step 3 — the full set. Its job is to find cross-cutting patterns: the same root issue appearing in multiple threads, possibly across multiple files.
+
+The agent returns:
+
+```json
+{
+  "patterns": [
+    {
+      "id": "P1",
+      "name": "Missing null guard on entity IDs",
+      "description": "Three threads flag code that passes user_id/order_id/product_id without None-checks. Downstream callers assume these are always set.",
+      "canonical_fix": "Add `if value is None: raise ValueError(f'{name} must not be None')` at each call site. Use the same guard style throughout — don't mix assert vs raise.",
+      "threads": ["thread_1", "thread_3", "thread_7"]
+    },
+    {
+      "id": "P2",
+      "name": "Inconsistent error message format",
+      "description": "Two threads note that some errors start with 'Error:' and others don't.",
+      "canonical_fix": "All error messages should start with 'Error: ' — no exceptions.",
+      "threads": ["thread_2", "thread_4"]
+    }
+  ],
+  "standalone": ["thread_5", "thread_6"]
+}
 ```
-PR #XXXX — 7 threads evaluated in parallel
-  Implementing (4): nil guard in parser [HIGH], error msg [MEDIUM], missing test [MEDIUM], unused import [LOW]
-  Skipping (3):     rename Foo→Bar (conflicts conventions), extract helper (YAGNI), add logging (out of scope)
 
-File groups for parallel implementation:
-  Group A — src/parser.py: threads 1, 3
-  Group B — tests/test_parser.py: thread 5
-  Group C — src/utils.py: thread 7
+**Standalone threads** have no cross-cutting pattern — handle them as individual fixes.
 
-Proceeding with 3 parallel implementation agents...
-```
-
-**Grouping rule:** All threads referencing the same file go to the same group. One group = one file = one agent. Threads in different files are independent.
-
-**If all threads are LOW/SKIP:** skip to Step 8 (still reply, still watch).
+**If all HIGH/MEDIUM threads are standalone** (no patterns found), skip directly to Step 5 — the synthesis agent found nothing to unify.
 
 ---
 
-## Step 5: Parallel Implementation
+## Step 5: Plan and Group
+
+Print a concise plan that shows both patterns and file assignments:
+
+```
+PR #XXXX — 7 threads evaluated in parallel
+
+Patterns identified:
+  P1 "Missing null guard on entity IDs" — threads 1, 3, 7 — canonical fix: raise ValueError at each call site
+  P2 "Inconsistent error message format" — threads 2, 4 — canonical fix: all messages start with 'Error: '
+
+Implementing (5): [P1] nil guard parser.py [HIGH], [P1] nil guard auth.py [HIGH], [P1] nil guard order.py [MEDIUM],
+                  [P2] error format utils.py [MEDIUM], [standalone] unused import helpers.py [LOW]
+Skipping (2):     rename Foo→Bar (conflicts conventions), extract helper (YAGNI)
+
+Implementation groups:
+  Group A — src/parser.py:  thread 1 [P1]
+  Group B — src/auth.py:    thread 3 [P1]
+  Group C — src/order.py:   thread 7 [P1]
+  Group D — src/utils.py:   threads 2, 4 [P2]
+  Group E — src/helpers.py: thread 5 [standalone]
+
+Proceeding with 5 parallel implementation agents...
+```
+
+**Grouping rule:** One file = one agent. Threads in different files stay in separate groups — the pattern context travels with them, not the grouping.
+
+**If all threads are LOW/SKIP:** skip to Step 9 (still reply, still watch).
+
+---
+
+## Step 6: Parallel Implementation
 
 **Fan out one subagent per file group. All implementation agents run simultaneously.**
 
 Each agent receives:
 - The file path it owns
 - The full current file contents
-- The list of HIGH/MEDIUM threads for its file, with exact `implementation` descriptions from Step 3
+- The list of HIGH/MEDIUM threads for its file with exact `implementation` descriptions from Step 3
+- **For pattern threads:** the full pattern description and canonical fix from Step 4 — so all agents solving the same pattern use the same approach
 - Project conventions (contents of CLAUDE.md/AGENTS.md/GEMINI.md if present)
+
+Example brief for a pattern thread:
+
+> You are implementing thread_1 in src/parser.py. This thread is part of pattern P1 "Missing null guard on entity IDs" — the same issue exists in auth.py and order.py and is being fixed by parallel agents. The canonical fix for this pattern is: `if value is None: raise ValueError(f'{name} must not be None')`. Apply exactly this guard style — do not use `assert`, do not raise a different exception type.
 
 Each agent:
 1. Makes all changes for its assigned threads
-2. Returns the complete modified file contents
+2. For pattern threads, applies the canonical fix style exactly as specified
+3. Returns the complete modified file contents
 
-**Agent mandate:** Address exactly what each thread asks — no collateral cleanup, no extra features. Project conventions beat reviewer preferences.
+**Agent mandate:** Address exactly what each thread asks — no collateral cleanup, no extra features. Project conventions beat reviewer preferences. Pattern canonical fix beats per-thread instinct.
 
 **Orchestrator writes results:** For each agent response, write the returned file to disk, replacing the current version.
 
-**Conflict fallback:** If two agents somehow modify the same file (shouldn't happen with correct grouping from Step 4), log a warning and implement those threads sequentially instead.
+**Conflict fallback:** If two agents somehow modify the same file (shouldn't happen with correct grouping), log a warning and implement those threads sequentially instead.
 
 ---
 
@@ -216,7 +266,7 @@ If push is rejected: report the error and stop. Never force-push without explici
 
 ## Step 9: Reply to Every Thread (in parallel)
 
-Post all replies simultaneously. Use the `reply_text` from each evaluation agent in Step 3, adjusted for the actual outcome.
+Post all replies simultaneously. Use the `reply_text` from each evaluation agent in Step 3, adjusted for actual outcome. For pattern threads, mention the pattern in the reply so the reviewer knows related instances were fixed consistently.
 
 ```bash
 gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/replies \
@@ -273,7 +323,7 @@ done
 
 At each poll:
 - Compare comment IDs against the recorded set from Step 2
-- **New unresolved comments:** go to Step 3, execute Steps 4–9 for this batch, **reset the watch**
+- **New unresolved comments:** go to Step 3, execute Steps 4–9 for this batch, **reset the watch** (restart 3 polls from now)
 - **No new comments:** continue
 - **After poll 3 with no new:** print "No new comments after 12 minutes — done." and stop
 
@@ -289,3 +339,4 @@ At each poll:
 - **Project conventions > reviewer** — CLAUDE.md/AGENTS.md take precedence; explain when skipping
 - **Minimal footprint** — touch only what comments address; don't improve bystander code
 - **Parallel by default** — evaluation agents all fire at once; implementation agents all fire at once; replies all post at once
+- **Pattern canonical fix > per-thread instinct** — when a cross-cutting pattern is found, all instances get the same fix style; inconsistency across a PR is worse than any individual choice
