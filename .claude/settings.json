@@ -1,0 +1,77 @@
+{
+  "hooks": {
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "command": "{ cozempic post-compact 2\u003e/dev/null || python3 -m cozempic post-compact 2\u003e/dev/null; } || true; { cozempic digest inject 2\u003e/dev/null || python3 -m cozempic digest inject 2\u003e/dev/null; } || true; echo 'Cozempic: context recovered' # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "{ cozempic checkpoint 2\u003e/dev/null || python3 -m cozempic checkpoint 2\u003e/dev/null; } || true # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": "Task"
+      },
+      {
+        "hooks": [
+          {
+            "command": "{ cozempic checkpoint 2\u003e/dev/null || python3 -m cozempic checkpoint 2\u003e/dev/null; } || true # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": "TaskCreate|TaskUpdate"
+      },
+      {
+        "hooks": [
+          {
+            "command": "{ cozempic remind 2\u003e/dev/null || python3 -m cozempic remind 2\u003e/dev/null; } || true # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "command": "TRANSCRIPT=$(cat | PYTHONIOENCODING=utf-8 python3 -c \"import sys,json; print(json.load(sys.stdin).get('transcript_path',''))\" 2\u003e/dev/null); { cozempic checkpoint 2\u003e/dev/null || python3 -m cozempic checkpoint 2\u003e/dev/null; } || true; { cozempic digest flush ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic digest flush ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; } || true; echo 'Cozempic: context checkpointed' # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "HOOK_DATA=$(cat); SESSION_ID=$(echo \"$HOOK_DATA\" | PYTHONIOENCODING=utf-8 python3 -c \"import sys,json,re; s=json.load(sys.stdin).get('session_id',''); print(re.sub(r'[^A-Za-z0-9_-]','_',s))\" 2\u003e/dev/null); TRANSCRIPT=$(echo \"$HOOK_DATA\" | PYTHONIOENCODING=utf-8 python3 -c \"import sys,json; print(json.load(sys.stdin).get('transcript_path',''))\" 2\u003e/dev/null); { cozempic guard --daemon ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic guard --daemon ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; } || true; { cozempic digest inject ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic digest inject ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; } || true; [ -n \"$SESSION_ID\" ] \u0026\u0026 (export COZEMPIC_NO_GLOBAL_INIT=1; if command -v flock \u003e/dev/null 2\u003e\u00261; then flock -n 9 || exit 0; fi; PRE=$(cozempic --version 2\u003e/dev/null | awk '/^cozempic /{print $2; exit}'); { uv pip install --upgrade cozempic --quiet 2\u003e/dev/null || pip install --upgrade cozempic --quiet --disable-pip-version-check 2\u003e/dev/null || python3 -m pip install --upgrade cozempic --quiet --disable-pip-version-check 2\u003e/dev/null; } \u0026\u0026 POST=$(cozempic --version 2\u003e/dev/null | awk '/^cozempic /{print $2; exit}') \u0026\u0026 [ -n \"$POST\" ] \u0026\u0026 [ \"$PRE\" != \"$POST\" ] \u0026\u0026 { cozempic guard --reload-self ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic guard --reload-self ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; }; { cozempic guard --daemon ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic guard --daemon ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; } || true; ) 9\u003e\"/tmp/cozempic_hook_${SESSION_ID:0:12}.lock\" \u003e/dev/null 2\u003e\u00261 \u0026 echo 'Cozempic: guard active' # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "TRANSCRIPT=$(cat | PYTHONIOENCODING=utf-8 python3 -c \"import sys,json; print(json.load(sys.stdin).get('transcript_path',''))\" 2\u003e/dev/null); { cozempic checkpoint 2\u003e/dev/null || python3 -m cozempic checkpoint 2\u003e/dev/null; } || true; { cozempic digest flush ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null || python3 -m cozempic digest flush ${TRANSCRIPT:+--session \"$TRANSCRIPT\"} 2\u003e/dev/null; } || true # cozempic-hook-schema=v5",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ]
+  }
+}
