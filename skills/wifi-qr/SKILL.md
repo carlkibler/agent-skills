@@ -2,6 +2,13 @@
 name: wifi-qr
 description: Generate a WiFi QR code PNG phones can scan to join a network instantly.
 allowed-tools: Bash(uv run *)
+display_name: "WiFi QR"
+brand_color: "#0891B2"
+local_only: false
+group: "Utilities"
+usage: "/wifi-qr:run"
+summary: "Generate a WiFi QR code PNG"
+default_prompt: "Generate a WiFi QR code PNG from an SSID and password, and save it to a path I specify."
 ---
 
 # wifi-qr

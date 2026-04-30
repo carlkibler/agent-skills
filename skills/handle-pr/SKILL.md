@@ -1,6 +1,13 @@
 ---
 name: handle-pr
 description: Autonomously handle GitHub PR review comments — evaluate, implement HIGH/MEDIUM changes, run tests, commit, reply to all threads, and watch for follow-ups.
+display_name: "Handle PR"
+brand_color: "#7C3AED"
+local_only: true
+group: "Dev Workflow"
+usage: "/handle-pr:run"
+summary: "Autonomously address PR review comments end-to-end"
+default_prompt: "Handle the PR review comments end-to-end: evaluate each thread, implement the worthwhile changes, run checks, and prepare replies."
 ---
 
 # Handle PR Comments

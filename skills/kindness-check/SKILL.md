@@ -1,6 +1,13 @@
 ---
 name: kindness-check
 description: Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.
+display_name: "Kindness Check"
+brand_color: "#7C3AED"
+local_only: false
+group: "Dev Workflow"
+usage: "/kindness-check:run"
+summary: "Four-lens empathy review: user, machine, developer, support"
+default_prompt: "Run an empathy audit on this code or feature through user, machine, developer, and support lenses."
 ---
 
 # Empathy Audit

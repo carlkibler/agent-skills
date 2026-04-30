@@ -1,6 +1,13 @@
 ---
 name: chezmoi-drift
 description: Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses.
+display_name: "Chezmoi Drift"
+brand_color: "#2563EB"
+local_only: true
+group: "Utilities"
+usage: "/chezmoi-drift:run"
+summary: "Audit chezmoi dotfiles for drift and broken skill installs"
+default_prompt: "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask."
 ---
 
 # Chezmoi Drift

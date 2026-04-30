@@ -17,9 +17,9 @@
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Use the Support Storm skill for this task."
+      "Simulate the support emails, bug reports, reviews, and refund requests this launch or feature change is likely to generate."
     ],
-    "brandColor": "#10A37F",
+    "brandColor": "#DB2777",
     "composerIcon": "./skills/support-storm/assets/icon.svg",
     "logo": "./skills/support-storm/assets/icon.svg"
   }

@@ -17,9 +17,9 @@
     "category": "Security",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Use the First Contact skill for this task."
+      "Red-team the first-run experience for this product. Find where a new user gets confused, abandons setup, or thinks the app is broken."
     ],
-    "brandColor": "#10A37F",
+    "brandColor": "#DC2626",
     "composerIcon": "./skills/first-contact/assets/icon.svg",
     "logo": "./skills/first-contact/assets/icon.svg"
   }
