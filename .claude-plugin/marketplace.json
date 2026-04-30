@@ -166,6 +166,16 @@
       ],
       "category": "productivity",
       "version": "1.0.0"
+    },
+    {
+      "name": "changelog-writer",
+      "description": "Generate user-facing changelog entries from git history \u2014 plain language, audience-segmented, with optional CHANGELOG.md update.",
+      "source": "./",
+      "skills": [
+        "./skills/changelog-writer"
+      ],
+      "category": "development",
+      "version": "1.0.0"
     }
   ]
 }
