@@ -126,6 +126,16 @@
       ],
       "category": "productivity",
       "version": "1.0.0"
+    },
+    {
+      "name": "post-mortem",
+      "description": "Analyze a real failure — reconstruct what happened, find root cause, extract learnings, and feed them back into the skill collection to prevent recurrence.",
+      "source": "./",
+      "skills": [
+        "./skills/post-mortem"
+      ],
+      "category": "productivity",
+      "version": "1.0.0"
     }
   ]
 }

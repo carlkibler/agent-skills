@@ -66,6 +66,7 @@ Find failure modes, trust problems, and support burden before your users do.
 
 | Skill | |
 |-------|---|
+| **post-mortem** | Blameless post-mortem that feeds learnings back into your skill collection<br><sub>`/plugin install post-mortem@carl-tools`</sub> |
 | **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **trust-audit** | Audit a product's trust surface: permissions, privacy, billing, and silent failures<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
 | **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
