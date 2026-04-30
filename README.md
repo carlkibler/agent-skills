@@ -84,6 +84,7 @@ Tools for the day-to-day of writing and reviewing code.
 
 | Skill | |
 |-------|---|
+| **changelog-writer** | Generate user-facing changelog entries from git history — plain language, audience-segmented, with optional CHANGELOG.md update.<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
 | **first-contact** | Red-team a product's onboarding and first-run experience to find where new users get confused, think it's broken, or abandon setup.<br><sub>`/plugin install first-contact@carl-tools`</sub> |
 | **kindness-check** | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
