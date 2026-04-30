@@ -17,117 +17,6 @@ PLUGINS_DIR = REPO / "plugins"
 CLAUDE_MARKETPLACE = REPO / ".claude-plugin" / "marketplace.json"
 README = REPO / "README.md"
 
-SKILL_CONFIG = {
-    "chezmoi-drift": {
-        "display_name": "Chezmoi Drift",
-        "brand_color": "#2563EB",
-        "default_prompt": "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask.",
-        "local_only": True,
-        "group": "Utilities",
-        "usage": "/chezmoi-drift:run",
-        "summary": "Audit chezmoi dotfiles for drift and broken skill installs",
-    },
-    "first-run-red-team": {
-        "display_name": "First-Run Red Team",
-        "brand_color": "#DC2626",
-        "default_prompt": "Red-team the first-run experience for this product. Find where a new user gets confused, abandons setup, or thinks the app is broken.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/first-run-red-team:run",
-        "summary": "Red-team onboarding and first-run experience for abandonment traps",
-    },
-    "handle-pr": {
-        "display_name": "Handle PR",
-        "brand_color": "#7C3AED",
-        "default_prompt": "Handle the PR review comments end-to-end: evaluate each thread, implement the worthwhile changes, run checks, and prepare replies.",
-        "local_only": True,
-        "group": "Dev Workflow",
-        "usage": "/handle-pr:run",
-        "summary": "Autonomously address PR review comments end-to-end",
-    },
-    "parallel-isolated-app-testing": {
-        "display_name": "Parallel Isolated App Testing",
-        "brand_color": "#0F766E",
-        "default_prompt": "Design a safe parallel isolated testing plan for this app, including collision surfaces, lane boundaries, and launcher contracts.",
-        "local_only": False,
-        "group": "Dev Workflow",
-        "usage": "/parallel-isolated-app-testing:run",
-        "summary": "Design parallel isolated test lanes for apps with shared local state",
-    },
-    "pre-mortem": {
-        "display_name": "Pre-Mortem",
-        "brand_color": "#B45309",
-        "default_prompt": "Run a sharp pre-mortem on this project or launch. Surface specific failure modes, then rank them and propose mitigations.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/pre-mortem:run",
-        "summary": "Multi-agent project pre-mortem — ranked risks with mitigations",
-    },
-    "profile-me": {
-        "display_name": "Profile Me",
-        "brand_color": "#1D4ED8",
-        "default_prompt": "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations.",
-        "local_only": True,
-        "group": "Utilities",
-        "usage": "/profile-me:run",
-        "summary": "Build a portable AI profile from your digital footprint",
-    },
-    "second-opinions": {
-        "display_name": "Second Opinions",
-        "brand_color": "#4F46E5",
-        "default_prompt": "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback.",
-        "local_only": False,
-        "group": "Dev Workflow",
-        "usage": "/second-opinions:run",
-        "summary": "Get a second opinion from a different AI on complex changes",
-    },
-    "support-inbox-simulation": {
-        "display_name": "Support Inbox Simulation",
-        "brand_color": "#DB2777",
-        "default_prompt": "Simulate the support emails, bug reports, reviews, and refund requests this launch or feature change is likely to generate.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/support-inbox-simulation:run",
-        "summary": "Simulate the support emails and refunds a launch will generate",
-    },
-    "trust-audit": {
-        "display_name": "Trust Audit",
-        "brand_color": "#059669",
-        "default_prompt": "Audit this product or feature for trust risks: permissions, privacy, billing, surprise mutations, and anything that feels creepy or unsafe.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/trust-audit:run",
-        "summary": "Audit a product's trust surface: permissions, privacy, billing, and silent failures",
-    },
-    "wide-open-brainstorm": {
-        "display_name": "Wide-Open Brainstorm",
-        "brand_color": "#C87941",
-        "default_prompt": "Run a wide-open brainstorming room for this product idea. Move between big-picture strategy, project-level organization, tactical actions, and whimsical metaphors; then distill the strongest differentiated concepts.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/wide-open-brainstorm:run",
-        "summary": "Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation",
-    },
-    "wifi-qr": {
-        "display_name": "WiFi QR",
-        "brand_color": "#0891B2",
-        "default_prompt": "Generate a WiFi QR code PNG from an SSID and password, and save it to a path I specify.",
-        "local_only": False,
-        "group": "Utilities",
-        "usage": "/wifi-qr:run",
-        "summary": "Generate a WiFi QR code PNG",
-    },
-    "empathy-audit": {
-        "display_name": "Empathy Audit",
-        "brand_color": "#7C3AED",
-        "default_prompt": "Run an empathy audit on this code or feature through user, machine, developer, and support lenses.",
-        "local_only": False,
-        "group": "Better Products",
-        "usage": "/empathy-audit:run",
-        "summary": "Four-lens empathy review: user, machine, developer, support",
-    },
-}
-
 GROUP_ORDER = ["Better Products", "Dev Workflow", "Utilities"]
 
 
@@ -243,17 +132,25 @@ def main() -> None:
         skill_text = (skill_path / "SKILL.md").read_text()
         frontmatter = parse_skill_frontmatter(skill_text)
         plugin_meta = claude_plugins.get(skill_name, {})
-        config = SKILL_CONFIG.get(skill_name, {})
-        display_name = config.get("display_name", skill_name.replace("-", " ").title())
+        config_fields = {
+            "display_name": frontmatter.get("display_name", skill_name.replace("-", " ").title()),
+            "brand_color": frontmatter.get("brand_color", "#10A37F"),
+            "default_prompt": frontmatter.get("default_prompt", f"Use the {skill_name} skill."),
+            "local_only": frontmatter.get("local_only", "false").lower() == "true",
+            "group": frontmatter.get("group", "Utilities"),
+            "usage": frontmatter.get("usage", f"/{skill_name}:run"),
+            "summary": frontmatter.get("summary", frontmatter.get("description", skill_name)),
+        }
+        display_name = config_fields["display_name"]
         description = plugin_meta.get("description") or frontmatter.get("description", display_name)
         version = plugin_meta.get("version", "1.0.0")
         category = plugin_meta.get("category", "productivity").title()
-        brand_color = config.get("brand_color", "#10A37F")
-        default_prompt = config.get("default_prompt", f"Use the {display_name} skill for this task.")
-        local_only = bool(config.get("local_only", False))
-        group = config.get("group", "Utilities")
-        usage = config.get("usage", f"/{skill_name}:run")
-        summary = config.get("summary", description)
+        brand_color = config_fields["brand_color"]
+        default_prompt = config_fields["default_prompt"]
+        local_only = config_fields["local_only"]
+        group = config_fields["group"]
+        usage = config_fields["usage"]
+        summary = config_fields["summary"]
 
         ensure_symlink(AGENT_SKILLS_DIR / skill_name, Path("..") / ".." / "skills" / skill_name)
 

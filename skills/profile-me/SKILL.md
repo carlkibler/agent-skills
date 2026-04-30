@@ -1,6 +1,13 @@
 ---
 name: profile-me
 description: Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant.
+display_name: "Profile Me"
+brand_color: "#1D4ED8"
+local_only: true
+group: "Utilities"
+usage: "/profile-me:run"
+summary: "Build a portable AI profile from your digital footprint"
+default_prompt: "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations."
 ---
 
 # Profile Me

@@ -72,6 +72,17 @@ def check_skill(skill_path: Path, claude_names: set[str]) -> None:
     elif len(desc) > MAX_DESCRIPTION_LEN:
         warn(f"{name}/SKILL.md: description is {len(desc)} chars (limit {MAX_DESCRIPTION_LEN})")
 
+    if not fm.get("display_name"):
+        warn(f"{name}/SKILL.md: missing 'display_name' in frontmatter")
+    if not fm.get("brand_color"):
+        warn(f"{name}/SKILL.md: missing 'brand_color' in frontmatter")
+    valid_groups = {"Better Products", "Dev Workflow", "Utilities"}
+    group = fm.get("group", "")
+    if not group:
+        warn(f"{name}/SKILL.md: missing 'group' in frontmatter")
+    elif group not in valid_groups:
+        warn(f"{name}/SKILL.md: 'group' is '{group}', expected one of {sorted(valid_groups)}")
+
     symlink = AGENT_SKILLS_DIR / name
     if not symlink.exists():
         err(f"{name}: missing .agents/skills/{name} symlink")
