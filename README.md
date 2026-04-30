@@ -85,6 +85,7 @@ Tools for the day-to-day of writing and reviewing code.
 | Skill | |
 |-------|---|
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
+| **decision-log** | Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context.<br><sub>`/plugin install decision-log@carl-tools`</sub> |
 | **first-contact** | Red-team a product's onboarding and first-run experience to find where new users get confused, think it's broken, or abandon setup.<br><sub>`/plugin install first-contact@carl-tools`</sub> |
 | **kindness-check** | Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
