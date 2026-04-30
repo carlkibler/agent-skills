@@ -1,0 +1,9 @@
+interface:
+  display_name: "Decision Log"
+  short_description: "Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#10A37F"
+  default_prompt: "Use the Decision Log skill for this task."
+policy:
+  allow_implicit_invocation: true
