@@ -3,7 +3,7 @@ interface:
   short_description: "Run the full pre-launch gauntlet (first-contact → support-storm → trust-audit → pre-mortem) and get a single GO/CAUTION/NO-GO verdict. Safe for repo-local and cloud/repo-checkout workflows."
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
-  brand_color: "#10A37F"
-  default_prompt: "Use the Launch Sequence skill for this task."
+  brand_color: "#0D9488"
+  default_prompt: "Run the full pre-launch sequence on this product or feature. Surface every risk across first-run experience, support load, trust surface, and catastrophic failure modes."
 policy:
   allow_implicit_invocation: true

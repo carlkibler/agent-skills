@@ -17,6 +17,18 @@
       "category": "Productivity"
     },
     {
+      "name": "decision-log",
+      "source": {
+        "source": "local",
+        "path": "./plugins/decision-log"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
       "name": "first-contact",
       "source": {
         "source": "local",

@@ -136,6 +136,16 @@
       ],
       "category": "productivity",
       "version": "1.0.0"
+    },
+    {
+      "name": "decision-log",
+      "description": "Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context.",
+      "source": "./",
+      "skills": [
+        "./skills/decision-log"
+      ],
+      "category": "development",
+      "version": "1.0.0"
     }
   ]
 }
