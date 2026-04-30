@@ -5,6 +5,18 @@
   },
   "plugins": [
     {
+      "name": "changelog-writer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/changelog-writer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
       "name": "chezmoi-drift",
       "source": {
         "source": "local",
