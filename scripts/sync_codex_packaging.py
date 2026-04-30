@@ -126,6 +126,15 @@ SKILL_CONFIG = {
         "usage": "/empathy-audit:run",
         "summary": "Four-lens empathy review: user, machine, developer, support",
     },
+    "post-mortem": {
+        "display_name": "Post-Mortem",
+        "brand_color": "#DC2626",
+        "default_prompt": "Run a blameless post-mortem on what just broke. Reconstruct the timeline, find root cause, extract learnings, and tell me what to add to my pre-mortem or support-storm skills.",
+        "local_only": False,
+        "group": "Better Products",
+        "usage": "/post-mortem:run",
+        "summary": "Blameless post-mortem that feeds learnings back into your skill collection",
+    },
 }
 
 GROUP_ORDER = ["Better Products", "Dev Workflow", "Utilities"]
