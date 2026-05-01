@@ -83,6 +83,7 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 | **Archivist** | Memory, synthesis, knowledge capture, long-term coherence, recovery flows | External LLM |
 | **Trickster** | Whimsical metaphors, silly-but-useful delight, strange UI lenses, absurdist reframes | External LLM (most creative divergence happens with no anchoring context) |
 | **Skeptic** | What becomes noise, what users ignore, what shouldn't ship, local maxima | Any model — assign to `ask-copilot` or `ask-cerebras` if available for blunt output |
+| **Executioner** | The strongest honest case for never building this at all — wrong timing, wrong audience, wrong founder, already solved, fundamental flaw in premise | Any model with a blunt mandate — always included, never optional |
 
 #### Perspective-expanding roles (add at least 2)
 
@@ -93,9 +94,11 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 | **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | External LLM |
 | **Devil's Advocate** | The honest thing nobody wants to say; core assumption challenges | Any model with a blunt mandate |
 
-**Default panel for full-diversity mode:** all 6 core + Future Self + Outsider.
+**Default panel for full-diversity mode:** all 6 core + Executioner + Future Self + Outsider.
 
-**Default panel for single-agent mode:** Strategist, Operator, Trickster, Skeptic, Future Self — as subagents with strongly differentiated tones.
+**Default panel for single-agent mode:** Strategist, Operator, Trickster, Skeptic, Executioner, Future Self — as subagents with strongly differentiated tones.
+
+**The Executioner is always included.** A brainstorm without a kill test is a yes-machine.
 
 ### 4. Fan-out — launch all roles in parallel
 
@@ -151,6 +154,7 @@ FORMAT: Flowing prose or numbered list, your choice. No hedging. No meta-comment
 | **Outsider** | Approach this product as someone who doesn't share any of the builder's assumptions. What is confusing about the framing? What assumption is being treated as obvious that isn't? |
 | **Customer Whisperer** | Map the user's emotional arc: what do they feel when they discover this, when it first works, when it fails, when it becomes a habit? Where does delight live? Where does trust get built or broken? |
 | **Devil's Advocate** | Make the strongest honest case against the core premise. What if the fundamental assumption is wrong? What would make this irrelevant? |
+| **Executioner** | Your job is not to find flaws — it is to argue that this idea should be abandoned entirely. Find the single strongest reason it should never be built: wrong timing, already exists and is better, fundamental audience mismatch, wrong founder for this problem, market that won't pay, regulatory trap, or premise that sounds good but collapses on first contact with reality. You are not here to balance — you are here to kill the idea if it deserves killing. If you cannot find a compelling reason to kill it, say so explicitly: "This idea survived the kill test. Here's why." That verdict is a green light. |
 
 #### Preferred model assignment when multiple LLMs are available
 
@@ -166,6 +170,7 @@ FORMAT: Flowing prose or numbered list, your choice. No hedging. No meta-comment
 | Outsider | `ask-zai` or `ask-copilot` |
 | Customer Whisperer | Any external LLM |
 | Devil's Advocate | Any — give the bluntest model |
+| Executioner | Bluntest available — `ask-cerebras` or `ask-copilot` preferred; subagent with explicit "argue for abandonment" mandate otherwise |
 
 ### 5. Force altitude switching (apply during synthesis)
 
@@ -225,6 +230,21 @@ Note where multiple roles **independently converged** on the same idea — that 
 
 Name the strongest concepts. Good names make ideas reusable and spreadable.
 
+### 7.5. The Kill Test — process the Executioner's verdict
+
+Treat the Executioner's output separately from the other roles.
+
+**If the Executioner could not find a compelling reason to kill the idea:**
+- Note this explicitly in the synthesis: "The idea survived the kill test."
+- This is a genuine positive signal — the Executioner tried and couldn't make the case.
+- Mention what the Executioner probed and why it didn't hold.
+
+**If the Executioner found a compelling reason to kill the idea:**
+- Do not bury it. Surface it prominently in the final artifact.
+- State whether the other roles' outputs change in light of this finding.
+- Give the user a clear "build or don't build" frame: if this kill argument is correct, what would have to be true to proceed anyway?
+- This is not a reason to suppress the brainstorm output — the ideas still have value even if the premise needs rethinking. But the kill argument gets its own named section.
+
 ### 8. Produce the final artifact
 
 Use this structure unless the user requested another format:
@@ -242,7 +262,8 @@ Use this structure unless the user requested another format:
 11. Leapfrog ideas: what gets to THE FUTURE sooner
 12. What to build first vs. what to dream about
 13. Where roles converged (highest-signal ideas)
-14. Reformulated reusable prompt
+14. **Kill test verdict** — did the idea survive? If not, what's the strongest argument against, and what would have to be true to proceed anyway?
+15. Reformulated reusable prompt
 
 Keep the final answer crisp enough to read, but rich enough to preserve the spark.
 

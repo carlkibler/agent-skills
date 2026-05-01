@@ -179,6 +179,8 @@ Each agent should be told to produce **5-8 concrete failure reasons** and, for e
 7. **Trust damage** — high/medium/low
 8. **Recoverability** — easy/moderate/hard
 9. **Earliest signal** — what would have shown up first
+10. **Confidence:** High / Medium / Low — how confident are you that this specific risk will actually materialize for this specific product? (Not how bad it would be — how likely you are to be right.)
+11. **Verify by:** [the single fastest empirical check that would confirm or refute this risk before launch — e.g., "test with 5 users who fit the audience profile", "check competitor 1-star reviews for this pattern", "look up the API's rate limit docs", "run a 48h beta with real network conditions"]
 
 And end with:
 > The failure nobody wants to talk about: [one brutally honest prediction]
@@ -210,6 +212,8 @@ INSTRUCTIONS:
    - Trust damage
    - Recoverability
    - Earliest signal / tripwire
+   - Confidence: High / Medium / Low — how confident are you that this risk will actually materialize for this specific product? Be honest. Medium means "I think this is real but I could be wrong."
+   - Verify by: the single fastest check that would tell you before launch whether this risk is real — a test, a competitor review scan, a user interview question, a technical spike
 4. Prefer subtle risks over obvious boilerplate.
 5. Focus on failures that damage product success, not just code correctness.
 6. Hold nothing back.
@@ -299,6 +303,17 @@ Use these rules of thumb:
 - A technically severe issue may be downgraded if users never feel it and recovery is trivial.
 - If you would be ashamed to explain the failure to an angry user, take it seriously.
 
+### Confidence calibration
+
+After ranking, apply a confidence pass across the risk list:
+
+- **High confidence + high severity** → treat as certain; mitigate now.
+- **Low confidence + high severity** → still critical, but mark it as a hypothesis; prioritize the verification step over the mitigation. Don't spend two weeks on a fix for a risk you're 30% sure is real — spend two hours verifying it's real first.
+- **High confidence + low severity** → watch list; don't over-invest.
+- **Low confidence + low severity** → cut from the report. Speculative low-severity risks are noise.
+
+Flag when multiple roles flagged the same risk with **different confidence levels** — that disagreement is itself a signal worth surfacing. A risk where the Saboteur is certain and the Historian is skeptical deserves explicit examination of why they diverged.
+
 ### Explicitly look for these subtle patterns
 
 - silent degradation that looks like "the app is dead"
@@ -344,6 +359,8 @@ _"It is [future date]. [Project] launched, and the launch went badly. Here's wha
 **Impact:** Catastrophic/Major/Minor  
 **Trust damage:** High/Medium/Low  
 **Recoverability:** Easy/Moderate/Hard
+**Confidence:** High/Medium/Low — [one sentence: what makes you more or less sure this will actually happen]
+**Verify by:** [the single fastest check before launch — test, user interview, competitor review scan, technical spike]
 **Why this threatens product success:** [retention/reviews/support/revenue/founder sanity]
 **Sources:** [roles that independently surfaced it]
 **Dissent:** [any role that pushed back on this risk — and why]
@@ -516,6 +533,8 @@ Pre-mortem is complete when:
 - [ ] at least one genuinely uncomfortable truth surfaced
 - [ ] at least one finding came from an outsider/emotional role that technical roles missed
 - [ ] the user can immediately decide what to fix first
+- [ ] every critical/significant risk has a confidence level and a specific verify-by check
+- [ ] low-confidence risks are clearly marked as hypotheses, not findings
 - [ ] a process log was produced showing who said what and where perspectives clashed
 
 </success_criteria>
