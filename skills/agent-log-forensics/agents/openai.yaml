@@ -1,0 +1,9 @@
+interface:
+  display_name: "Agent Log Forensics"
+  short_description: "Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools. Best in local Codex CLI/app sessions on your own machine."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#6D28D9"
+  default_prompt: "Scan recent Claude and Codex session logs on this machine and any named remote hosts. Report Toolsmith adoption, lost opportunities, recurring frustrations, and concrete new skills/scripts to add. Keep examples privacy-light."
+policy:
+  allow_implicit_invocation: false

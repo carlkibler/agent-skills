@@ -1,0 +1,26 @@
+{
+  "name": "status-copy-trust-audit",
+  "version": "1.0.0",
+  "description": "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Status Copy Trust Audit",
+    "shortDescription": "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients.",
+    "longDescription": "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Audit this CLI/status output. Make the states consistent, idempotent, and plain-language. Verify repeated runs and update tests/docs so the output stays trustworthy."
+    ],
+    "brandColor": "#B45309",
+    "composerIcon": "./skills/status-copy-trust-audit/assets/icon.svg",
+    "logo": "./skills/status-copy-trust-audit/assets/icon.svg"
+  }
+}

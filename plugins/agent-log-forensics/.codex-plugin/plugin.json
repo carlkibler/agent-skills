@@ -1,0 +1,26 @@
+{
+  "name": "agent-log-forensics",
+  "version": "1.0.0",
+  "description": "Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Log Forensics",
+    "shortDescription": "Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools.",
+    "longDescription": "Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Scan recent Claude and Codex session logs on this machine and any named remote hosts. Report Toolsmith adoption, lost opportunities, recurring frustrations, and concrete new skills/scripts to add. Keep examples privacy-light."
+    ],
+    "brandColor": "#6D28D9",
+    "composerIcon": "./skills/agent-log-forensics/assets/icon.svg",
+    "logo": "./skills/agent-log-forensics/assets/icon.svg"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "visual-qa-loop",
+  "version": "1.0.0",
+  "description": "Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Visual QA Loop",
+    "shortDescription": "Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings.",
+    "longDescription": "Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
+    ],
+    "brandColor": "#DB2777",
+    "composerIcon": "./skills/visual-qa-loop/assets/icon.svg",
+    "logo": "./skills/visual-qa-loop/assets/icon.svg"
+  }
+}

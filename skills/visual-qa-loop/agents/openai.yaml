@@ -1,0 +1,9 @@
+interface:
+  display_name: "Visual QA Loop"
+  short_description: "Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings. Best in local Codex CLI/app sessions on your own machine."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#DB2777"
+  default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
+policy:
+  allow_implicit_invocation: false

@@ -71,8 +71,10 @@ Find failure modes, trust problems, and support burden before your users do.
 | **post-mortem** | Blameless post-mortem that feeds learnings back into your skill collection<br><sub>`/plugin install post-mortem@carl-tools`</sub> |
 | **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **scope-hammer** | Compress brainstorm output into MVP scope with DELETE/MOCK/ALREADY EXISTS/SHIP classification<br><sub>`/plugin install scope-hammer@carl-tools`</sub> |
+| **status-copy-trust-audit** | Make status/update/doctor output explain exactly what changed and why<br><sub>`/plugin install status-copy-trust-audit@carl-tools`</sub> |
 | **support-storm** | Simulate the support emails and refunds a launch will generate<br><sub>`/plugin install support-storm@carl-tools`</sub> |
 | **trust-audit** | Audit a product's trust surface: permissions, privacy, billing, and silent failures<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
+| **visual-qa-loop** | Repeatable visual screenshots and review notes for UI changes<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
 | **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
 
 ### Dev Workflow
@@ -81,11 +83,14 @@ Tools for the day-to-day of writing and reviewing code.
 
 | Skill | |
 |-------|---|
+| **agent-log-forensics** | Turn local and remote agent session logs into workflow improvements<br><sub>`/plugin install agent-log-forensics@carl-tools`</sub> |
 | **changelog-writer** | Transform git commits into user-facing changelog entries segmented by audience<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
 | **decision-log** | Record decisions with rationale and rejected alternatives for future agent context<br><sub>`/plugin install decision-log@carl-tools`</sub> |
 | **handle-pr** | Autonomously address PR review comments end-to-end<br><sub>`/plugin install handle-pr@carl-tools`</sub> |
 | **kindness-check** | Four-lens empathy review: user, machine, developer, support<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
 | **parallel-isolated-app-testing** | Design parallel isolated test lanes for apps with shared local state<br><sub>`/plugin install parallel-isolated-app-testing@carl-tools`</sub> |
+| **release-operator** | End-to-end release execution with post-release install verification<br><sub>`/plugin install release-operator@carl-tools`</sub> |
+| **remote-host-verifier** | Compare local and remote host behavior before declaring a tool fixed<br><sub>`/plugin install remote-host-verifier@carl-tools`</sub> |
 | **second-opinions** | Get a second opinion from a different AI on complex changes<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
 
 ### Utilities

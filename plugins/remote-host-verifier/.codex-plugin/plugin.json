@@ -1,0 +1,26 @@
+{
+  "name": "remote-host-verifier",
+  "version": "1.0.0",
+  "description": "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Remote Host Verifier",
+    "shortDescription": "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence.",
+    "longDescription": "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Development",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Verify this command locally and on the named remote host(s). Capture versions, paths, output differences, and a final pass/fail verdict with exact commands."
+    ],
+    "brandColor": "#0369A1",
+    "composerIcon": "./skills/remote-host-verifier/assets/icon.svg",
+    "logo": "./skills/remote-host-verifier/assets/icon.svg"
+  }
+}
