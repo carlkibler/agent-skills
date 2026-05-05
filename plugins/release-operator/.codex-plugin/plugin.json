@@ -1,0 +1,26 @@
+{
+  "name": "release-operator",
+  "version": "1.0.0",
+  "description": "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Release Operator",
+    "shortDescription": "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs.",
+    "longDescription": "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Development",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Run the release end-to-end. Verify tests and package contents, update changelog/version, commit/tag/push, publish, then verify install/update locally and on any named remote hosts."
+    ],
+    "brandColor": "#059669",
+    "composerIcon": "./skills/release-operator/assets/icon.svg",
+    "logo": "./skills/release-operator/assets/icon.svg"
+  }
+}
