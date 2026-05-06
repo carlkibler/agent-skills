@@ -5,6 +5,7 @@
 #
 # Each detected tool gets a line: NAME|INVOKE_PATTERN|MODEL_FAMILY|NOTES
 # Families are deduplicated so we prefer model diversity.
+# ask-ai (OpenRouter) is preferred — if present, it covers all model families.
 
 set -uo pipefail
 
@@ -40,6 +41,14 @@ probe() {
 
 [[ "$QUIET" != "--quiet" ]] && echo "Detecting available LLM CLIs..." >&2
 
+# ask-ai (OpenRouter) is the preferred tool — covers all model families via flags:
+#   default: gemini-2.5-flash  --fast: llama-4-scout  --smart: gemini-2.5-pro  --frontier: claude-opus-4-5
+probe "ask-ai" \
+    "command -v ask-ai && has_secret OPENROUTER_API_KEY" \
+    'ask-ai "{prompt}"' \
+    "openrouter" \
+    "OpenRouter multi-model wrapper (use --fast/--smart/--frontier flags)"
+
 probe "llm" \
     "command -v llm" \
     'llm -m {model} "{prompt}"' \
@@ -57,34 +66,11 @@ probe "gemini" \
     "gemini" \
     "Gemini CLI with key present"
 
-probe "gh-copilot" \
-    "gh copilot --version" \
-    'gh copilot --prompt "{prompt}"' \
-    "openai" \
-    "GitHub Copilot via gh CLI" || \
-probe "ask-copilot" \
-    "command -v ask-copilot" \
-    'ask-copilot "{prompt}"' \
-    "openai" \
-    "GitHub Copilot wrapper"
-
 probe "codex" \
     "command -v codex" \
     'echo "{prompt}" | codex exec -' \
     "openai" \
     "OpenAI Codex CLI"
-
-probe "ask-cerebras" \
-    "command -v ask-cerebras && has_secret CEREBRAS_API_KEY" \
-    'ask-cerebras "{prompt}"' \
-    "llama" \
-    "Cerebras wrapper with key present"
-
-probe "ask-zai" \
-    "command -v ask-zai && has_secret ZAI_API_KEY" \
-    'ask-zai "{prompt}"' \
-    "glm" \
-    "Z.ai wrapper with key present"
 
 probe "ollama" \
     "ollama list 2>/dev/null | grep -q ." \
