@@ -9,37 +9,39 @@ set -euo pipefail
 source ~/.secrets 2>/dev/null || true
 
 # --- Model Tiers (curate to your taste) ----------------
+# Prices are per million tokens (input/output). Updated 2026-05.
+# Browse: https://openrouter.ai/models?output_modalities=text
+# ~ prefix = auto-updating "latest" alias — always tracks newest version.
 #
-# Default — fast, cheap, surprisingly capable
-MODEL_DEFAULT="google/gemini-2.5-flash"
+# Default — fast workhorse for daily use
+MODEL_DEFAULT="~google/gemini-flash-latest"  # $0.50/$3.00 · 1M ctx · always fresh
 # Alternatives for default:
-#   google/gemini-2.5-flash-preview-05-20
-#   meta-llama/llama-4-scout           (free tier available)
-#   qwen/qwen3-30b-a3b                 (fast MoE, free tier)
+#   deepseek/deepseek-v4-flash        # $0.14/$0.28 · 1M ctx · cheapest capable option
+#   qwen/qwen3.6-flash                # $0.25/$1.50 · 1M ctx · newest Qwen flash
+#   ~openai/gpt-mini-latest           # $0.75/$4.50 · 400k ctx · always fresh GPT mini
 
 # --fast — ultra-low latency, blunt, good for skeptic/trickster roles
-MODEL_FAST="meta-llama/llama-4-scout"
+MODEL_FAST="deepseek/deepseek-v4-flash"      # $0.14/$0.28 · 1M ctx · exceptional value
 # Alternatives for --fast:
-#   qwen/qwen3-30b-a3b
-#   google/gemini-2.5-flash
-#   mistral/ministral-8b
-#   mistral/mistral-nemo
+#   qwen/qwen3.6-flash                # $0.25/$1.50 · 1M ctx
+#   meta-llama/llama-4-scout          # $0.08/$0.30 · 327k ctx
+#   inclusionai/ling-2.6-flash        # $0.08/$0.24 · 262k ctx
 
 # --smart — strong reasoning, code review, architecture
-MODEL_SMART="google/gemini-2.5-pro"
+MODEL_SMART="deepseek/deepseek-v4-pro"       # $0.43/$0.87 · 1M ctx · astonishing value
 # Alternatives for --smart:
-#   qwen/qwen3-235b-a22b               (excellent open-source, free tier)
-#   meta-llama/llama-4-maverick
-#   anthropic/claude-sonnet-4-5
-#   deepseek/deepseek-r1               (strong reasoning)
+#   ~google/gemini-pro-latest         # $2.00/$12.00 · 1M ctx · always fresh
+#   ~moonshotai/kimi-latest           # $0.75/$3.50  · 262k ctx · always fresh Kimi
+#   qwen/qwen3.6-plus                 # $0.33/$1.95  · 1M ctx
+#   mistralai/mistral-medium-3-5      # $1.50/$7.50  · 262k ctx
 
 # --frontier — best available, cost no object
-MODEL_FRONTIER="anthropic/claude-opus-4-5"
+MODEL_FRONTIER="x-ai/grok-4.3"              # $1.25/$2.50 · 1M ctx · newest Grok
 # Alternatives for --frontier:
-#   openai/gpt-4.1
-#   google/gemini-2.5-pro
-#   x-ai/grok-3
-#   deepseek/deepseek-r1-0528
+#   ~anthropic/claude-opus-latest     # $5.00/$25.00 · 1M ctx · always fresh Claude Opus
+#   openai/gpt-5.5                    # $5.00/$30.00 · 1M ctx
+#   openai/gpt-5.5-pro                # $30.00/$180.00 · 1M ctx · nuclear option
+#   ~openai/gpt-latest                # $5.00/$30.00 · 1M ctx · always fresh GPT
 
 # --------------------------------------------------------
 
@@ -59,7 +61,7 @@ Options:
   --model ID   Explicit OpenRouter model ID
   -h, --help   Show this help
 
-Default model: ${MODEL_DEFAULT}
+Default model: ${MODEL_DEFAULT} (auto-tracks latest Gemini Flash)
 
 Examples:
   agent "What is the time complexity of quicksort?"
