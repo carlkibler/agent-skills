@@ -99,7 +99,7 @@ Tools for the day-to-day of writing and reviewing code.
 |-------|---|
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
-| **vesta-harbormaster** | This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks.<br><sub>`/plugin install vesta-harbormaster@carl-tools`</sub> |
+| **vesta-penates** | This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks.<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
 | **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
 
 ## Managing plugins

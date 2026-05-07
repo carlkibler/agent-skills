@@ -233,10 +233,10 @@
       "category": "Security"
     },
     {
-      "name": "vesta-harbormaster",
+      "name": "vesta-penates",
       "source": {
         "source": "local",
-        "path": "./plugins/vesta-harbormaster"
+        "path": "./plugins/vesta-penates"
       },
       "policy": {
         "installation": "AVAILABLE",

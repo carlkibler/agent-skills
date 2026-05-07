@@ -1,11 +1,11 @@
 ---
-name: vesta-harbormaster
+name: vesta-penates
 description: "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks."
 ---
 
-# vesta-harbormaster
+# vesta-penates
 
-Operate vesta through deterministic Harbormaster scripts first, then adapt manually only when the scripted path cannot cover the observed failure.
+Operate vesta through deterministic Penates scripts first, then adapt manually only when the scripted path cannot cover the observed failure.
 
 ## Trigger situations
 
@@ -22,22 +22,22 @@ Use this skill for requests involving:
 Run the local ops project from Carl's Mac:
 
 ```bash
-cd /Users/carl/dev/me/harbormaster
-bin/harbormaster vesta health --host vesta
+cd /Users/carl/dev/me/penates
+bin/penates vesta health --host vesta
 ```
 
 For the known nginx/Tailscale/Cloudflare concierge failure, dry-run first unless the user already asked to fix it:
 
 ```bash
-bin/harbormaster vesta fix-concierge --host vesta
-bin/harbormaster vesta fix-concierge --host vesta --live
+bin/penates vesta fix-concierge --host vesta
+bin/penates vesta fix-concierge --host vesta --live
 ```
 
 For durable backup/runbook capture:
 
 ```bash
-bin/harbormaster vesta backup-concierge --host vesta
-bin/harbormaster vesta backup-concierge --host vesta --live
+bin/penates vesta backup-concierge --host vesta
+bin/penates vesta backup-concierge --host vesta --live
 ```
 
 Use `--live` only for intentional mutation. Health checks are read-only.
@@ -63,7 +63,7 @@ If deterministic commands fail:
 3. Check nginx bind collision before touching app code: `ss -ltnp | grep ':443'`.
 4. Check compose labels before recreating containers: `docker inspect -f '{{.Name}} {{index .Config.Labels "com.docker.compose.project.config_files"}} {{.HostConfig.RestartPolicy.Name}} {{.State.Status}}' <container>`.
 5. Prefer reconciling containers back to canonical compose files over one-off `docker run` repairs.
-6. After any repair, run `bin/harbormaster vesta health --host vesta` and capture a fresh `backup-concierge --live` when configs changed.
+6. After any repair, run `bin/penates vesta health --host vesta` and capture a fresh `backup-concierge --live` when configs changed.
 
 ## Secret handling
 
