@@ -1,0 +1,9 @@
+interface:
+  display_name: "Vesta Harbormaster"
+  short_description: "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks. Safe for repo-local and cloud/repo-checkout workflows."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#10A37F"
+  default_prompt: "Use the vesta-harbormaster skill."
+policy:
+  allow_implicit_invocation: true

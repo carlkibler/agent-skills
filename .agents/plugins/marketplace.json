@@ -233,6 +233,18 @@
       "category": "Security"
     },
     {
+      "name": "vesta-harbormaster",
+      "source": {
+        "source": "local",
+        "path": "./plugins/vesta-harbormaster"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "visual-qa-loop",
       "source": {
         "source": "local",
