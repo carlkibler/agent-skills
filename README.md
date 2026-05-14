@@ -187,3 +187,9 @@ Test locally without installing from GitHub:
 ```bash
 claude --plugin-dir ./skills/pre-mortem
 ```
+
+Run helper contract tests after editing `bin/agent`:
+
+```bash
+tests/test_agent.sh
+```
