@@ -10,7 +10,7 @@
     {
       "name": "pre-mortem",
       "description": "Multi-agent project pre-mortem — parallel agents with different failure-finding mandates, synthesized into ranked risks with mitigations.",
-      "source": "./",
+      "source": "./plugins/pre-mortem",
       "skills": [
         "./skills/pre-mortem"
       ],
@@ -20,7 +20,7 @@
     {
       "name": "profile-me",
       "description": "Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant.",
-      "source": "./",
+      "source": "./plugins/profile-me",
       "skills": [
         "./skills/profile-me"
       ],
@@ -30,7 +30,7 @@
     {
       "name": "second-opinions",
       "description": "Get validation from a different AI model before committing major changes — detects available LLM CLIs and routes to the best one.",
-      "source": "./",
+      "source": "./plugins/second-opinions",
       "skills": [
         "./skills/second-opinions"
       ],
@@ -40,7 +40,7 @@
     {
       "name": "django-smoke-alarm",
       "description": "Run and triage Django/DRF security smoke checks into real risks, hygiene, and false positives using clean-scan discipline.",
-      "source": "./",
+      "source": "./plugins/django-smoke-alarm",
       "skills": [
         "./skills/django-smoke-alarm"
       ],
@@ -50,7 +50,7 @@
     {
       "name": "handle-pr",
       "description": "Autonomously handle GitHub PR review comments — evaluate, implement HIGH/MEDIUM changes, run tests, commit, reply to all threads.",
-      "source": "./",
+      "source": "./plugins/handle-pr",
       "skills": [
         "./skills/handle-pr"
       ],
@@ -60,7 +60,7 @@
     {
       "name": "chezmoi-drift",
       "description": "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses.",
-      "source": "./",
+      "source": "./plugins/chezmoi-drift",
       "skills": [
         "./skills/chezmoi-drift"
       ],
@@ -70,7 +70,7 @@
     {
       "name": "trust-audit",
       "description": "Audit whether a product feels trustworthy or unsafe — covering permissions, privacy, billing, file mutation, and silent-failure surfaces.",
-      "source": "./",
+      "source": "./plugins/trust-audit",
       "skills": [
         "./skills/trust-audit"
       ],
@@ -80,7 +80,7 @@
     {
       "name": "support-storm",
       "description": "Simulate the support emails, reviews, and complaints a launch will generate, then identify product fixes that cut maintenance drag.",
-      "source": "./",
+      "source": "./plugins/support-storm",
       "skills": [
         "./skills/support-storm"
       ],
@@ -90,7 +90,7 @@
     {
       "name": "first-contact",
       "description": "Red-team a product's onboarding and first-run experience to find where new users get confused, think it's broken, or abandon setup.",
-      "source": "./",
+      "source": "./plugins/first-contact",
       "skills": [
         "./skills/first-contact"
       ],
@@ -100,7 +100,7 @@
     {
       "name": "wifi-qr",
       "description": "Generate a WiFi QR code PNG phones can scan to join a network instantly.",
-      "source": "./",
+      "source": "./plugins/wifi-qr",
       "skills": [
         "./skills/wifi-qr"
       ],
@@ -110,7 +110,7 @@
     {
       "name": "parallel-isolated-app-testing",
       "description": "Design parallel isolated test lanes for desktop apps and local tools with shared state — maps collision surfaces and splits non-colliding test lanes.",
-      "source": "./",
+      "source": "./plugins/parallel-isolated-app-testing",
       "skills": [
         "./skills/parallel-isolated-app-testing"
       ],
@@ -120,7 +120,7 @@
     {
       "name": "kindness-check",
       "description": "Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.",
-      "source": "./",
+      "source": "./plugins/kindness-check",
       "skills": [
         "./skills/kindness-check"
       ],
@@ -130,7 +130,7 @@
     {
       "name": "wide-open-brainstorm",
       "description": "Multi-model brainstorming room for product strategy and experience design — serious plus whimsical, multi-altitude, multi-round ideation.",
-      "source": "./",
+      "source": "./plugins/wide-open-brainstorm",
       "skills": [
         "./skills/wide-open-brainstorm"
       ],
@@ -140,7 +140,7 @@
     {
       "name": "launch-sequence",
       "description": "Run the full pre-launch gauntlet (first-contact → support-storm → trust-audit → pre-mortem) and get a single GO/CAUTION/NO-GO verdict.",
-      "source": "./",
+      "source": "./plugins/launch-sequence",
       "skills": [
         "./skills/launch-sequence"
       ],
@@ -150,7 +150,7 @@
     {
       "name": "decision-log",
       "description": "Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context.",
-      "source": "./",
+      "source": "./plugins/decision-log",
       "skills": [
         "./skills/decision-log"
       ],
@@ -160,7 +160,7 @@
     {
       "name": "post-mortem",
       "description": "Analyze a real failure — reconstruct what happened, find root cause, extract learnings, and feed them back into the skill collection to prevent recurrence.",
-      "source": "./",
+      "source": "./plugins/post-mortem",
       "skills": [
         "./skills/post-mortem"
       ],
@@ -170,7 +170,7 @@
     {
       "name": "scope-hammer",
       "description": "Ruthlessly compress brainstorm output into a shippable MVP — classify ideas as DELETE / MOCK / ALREADY EXISTS / SHIP and surface the shortest path to launch.",
-      "source": "./",
+      "source": "./plugins/scope-hammer",
       "skills": [
         "./skills/scope-hammer"
       ],
@@ -180,7 +180,7 @@
     {
       "name": "changelog-writer",
       "description": "Generate user-facing changelog entries from git history — plain language, audience-segmented, with optional CHANGELOG.md update.",
-      "source": "./",
+      "source": "./plugins/changelog-writer",
       "skills": [
         "./skills/changelog-writer"
       ],
@@ -190,7 +190,7 @@
     {
       "name": "agent-log-forensics",
       "description": "Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools.",
-      "source": "./",
+      "source": "./plugins/agent-log-forensics",
       "skills": [
         "./skills/agent-log-forensics"
       ],
@@ -200,7 +200,7 @@
     {
       "name": "remote-host-verifier",
       "description": "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence.",
-      "source": "./",
+      "source": "./plugins/remote-host-verifier",
       "skills": [
         "./skills/remote-host-verifier"
       ],
@@ -210,7 +210,7 @@
     {
       "name": "release-operator",
       "description": "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs.",
-      "source": "./",
+      "source": "./plugins/release-operator",
       "skills": [
         "./skills/release-operator"
       ],
@@ -220,7 +220,7 @@
     {
       "name": "status-copy-trust-audit",
       "description": "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients.",
-      "source": "./",
+      "source": "./plugins/status-copy-trust-audit",
       "skills": [
         "./skills/status-copy-trust-audit"
       ],
@@ -230,7 +230,7 @@
     {
       "name": "visual-qa-loop",
       "description": "Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings.",
-      "source": "./",
+      "source": "./plugins/visual-qa-loop",
       "skills": [
         "./skills/visual-qa-loop"
       ],
@@ -240,7 +240,7 @@
     {
       "name": "ralph-loop",
       "description": "Repeatable multi-LLM codebase hardening sweeps: map under-reviewed surfaces, patch fixes, document learnings, and loop.",
-      "source": "./",
+      "source": "./plugins/ralph-loop",
       "skills": [
         "./skills/ralph-loop"
       ],
