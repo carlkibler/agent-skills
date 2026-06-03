@@ -1,6 +1,6 @@
 ---
 name: dependency-pinning
-description: Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), and Terraform. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on "dependency pinning", "pin deps", "supply chain", "cooldown", "are my deps safe".
+description: Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), Rust (Cargo), Go, Java (Maven/Gradle), Ruby (Bundler), Terraform — and any other ecosystem encountered. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on "dependency pinning", "pin deps", "supply chain", "cooldown", "are my deps safe".
 display_name: "Dependency Pinning"
 brand_color: "#15803D"
 group: "Dev Workflow"
@@ -39,6 +39,9 @@ ROOT="${1:-.}"
     -o -name 'package.json' -o -name 'deno.json*' \
     -o -name 'pyproject.toml' -o -name 'requirements*.txt' \
     -o -name '*.csproj' -o -name 'packages.config' -o -name 'Directory.Packages.props' \
+    -o -name 'Cargo.toml' -o -name 'go.mod' \
+    -o -name 'pom.xml' -o -name 'build.gradle' -o -name 'build.gradle.kts' \
+    -o -name 'Gemfile' -o -name '*.gemspec' \
     -o -name '*.tf' \
   \) -print 2>/dev/null
 # Also catch images pulled from scripts/CI, not just Dockerfiles/compose:
@@ -103,6 +106,32 @@ files are bundled libraries, not your declared dependencies.
 - **Fix:** pin exact versions; enable + commit `packages.lock.json`; pin the feed in
   `nuget.config`.
 - **Cooldown:** no native NuGet cooldown — use **Renovate `minimumReleaseAge`** (NuGet supported).
+
+### Rust — Cargo  ·  Go  ·  Java (Maven/Gradle)  ·  Ruby (Bundler)
+Terser, but the same two questions apply (immutable pin? cooldown?):
+- **Rust/Cargo:** commit `Cargo.lock` (carries crates.io sha256 checksums); `cargo --locked`.
+  No native cooldown → Renovate `minimumReleaseAge` (cargo datasource). `cargo audit`/`cargo vet` adjacent.
+- **Go modules:** `go.mod` + `go.sum` (cryptographic hashes, verified vs the checksum DB);
+  `go mod verify`, build with `-mod=readonly`. No native cooldown → Renovate (gomod).
+- **Java/Maven:** pin exact versions in `pom.xml` — **ban `LATEST`/`RELEASE`/version ranges**
+  (enforce with `maven-enforcer` requireReleaseDeps / ban-dynamic-versions). No lockfile natively.
+- **Java/Gradle:** enable **dependency locking** (`gradle.lockfile`) + **verification metadata**
+  (`gradle --write-verification-metadata sha256` → `verification-metadata.xml` with checksums/signatures).
+- **Ruby/Bundler:** commit `Gemfile.lock`; `bundle config set frozen true`; add checksums with
+  `bundle lock --add-checksums` (Bundler 2.5+). No native cooldown → Renovate (bundler).
+- Cooldown across all of the above is best delivered by **Renovate `minimumReleaseAge`** /
+  Dependabot cooldown, which support these datasources.
+
+### Any other ecosystem you encounter (general rule)
+Don't stop at the languages listed here. For **any** package manager in the target:
+1. Identify the **manifest** + its **lockfile**; confirm the lockfile carries **integrity
+   hashes** and is **committed**, and that CI installs **frozen/locked**.
+2. Flag floating/range/`latest` version specifiers in the manifest.
+3. **Research whether that manager supports a cooldown** — native settings first
+   (names vary: `minimumReleaseAge`, `exclude-newer`, `--as-of`, min-age, quarantine),
+   then a meta-tool (**Renovate `minimumReleaseAge`** / Dependabot cooldown) for that
+   datasource. If unsure, check the tool's current docs rather than guessing.
+4. Report findings the same way and propose the concrete setting to add.
 
 ### Terraform  (pinning: lock + version constraints)
 - **Good:** `.terraform.lock.hcl` **committed** with **multi-platform** hashes
