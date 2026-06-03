@@ -1,0 +1,26 @@
+{
+  "name": "dependency-pinning",
+  "version": "1.0.0",
+  "description": "Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), and Terraform. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on \"dependency pinning\", \"pin deps\", \"supply chain\", \"cooldown\", \"are my deps safe\".",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dependency Pinning",
+    "shortDescription": "Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), and Terraform. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on \"dependency pinning\", \"pin deps\", \"supply chain\", \"cooldown\", \"are my deps safe\".",
+    "longDescription": "Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), and Terraform. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on \"dependency pinning\", \"pin deps\", \"supply chain\", \"cooldown\", \"are my deps safe\". Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Scan this project (or the repos I point you at) for dependency pinning and release-cooldown hygiene across Docker, CI, JS, Python, and Terraform. Report first; propose exact fixes and ask before changing anything."
+    ],
+    "brandColor": "#15803D",
+    "composerIcon": "./skills/dependency-pinning/assets/icon.svg",
+    "logo": "./skills/dependency-pinning/assets/icon.svg"
+  }
+}
