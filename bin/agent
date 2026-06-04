@@ -1,89 +1,153 @@
-#!/bin/bash
-# OpenRouter multi-model CLI for agents and skills.
-# Canonical source lives in carl-tools/bin/agent (agent-skills repo).
-# ~/.claude/bin/agent is a thin wrapper that calls this.
+#!/usr/bin/env bash
+# Multi-provider model CLI for agents and skills.
+# Canonical source lives in the agent-skills repo (bin/agent). Synced to
+# ~/.local/bin/agent by scripts/install_bin.sh; that copy wins on PATH and
+# owes nothing to ~/.claude. env bash picks up a modern bash; the array
+# guards below also keep it safe under macOS stock /bin/bash 3.2.
 #
-# Browse models: https://openrouter.ai/models
+# Routing philosophy (cheap-first):
+#   - Default to cheap, fast, increasingly-capable models for daily work.
+#   - Route to a provider's DIRECT API when its key exists (cheaper than
+#     the same model resold through OpenRouter), falling back to OpenRouter.
+#   - Prefer a locally-authenticated subscription CLI (claude/codex) for
+#     premium models — no per-token cost — before paying OpenRouter for them.
+#   - Reserve expensive frontier models (Opus, GPT-5.5) for explicit --frontier.
+#   - A credential that exists but is REJECTED (e.g. a stale Gemini key) is
+#     detected and skipped, not silently trusted — the next route takes over.
+#
+# Browse OpenRouter models: https://openrouter.ai/models
 set -euo pipefail
 
 source ~/.secrets 2>/dev/null || true
 
-# --- Model Tiers (curate to your taste) ----------------
-# Prices are per million tokens (input/output). Updated 2026-05.
-# Browse: https://openrouter.ai/models?output_modalities=text
-# Refresh the list: source ~/.secrets && curl -s https://openrouter.ai/api/v1/models \
-#   -H "Authorization: Bearer ${OPENROUTER_API_KEY}" | python3 -c "
-#   import json,sys,datetime; d=json.load(sys.stdin)['data']
-#   d=[m for m in d if 'text' in m.get('architecture',{}).get('output_modalities',[])]
-#   d.sort(key=lambda m:m.get('created',0),reverse=True)
-#   [print(datetime.datetime.fromtimestamp(m['created']).strftime('%Y-%m-%d'),
-#     m['id'], m.get('context_length',0)//1000,'k',
-#     '\$%.2f/\$%.2f'%(float(m.get('pricing',{}).get('prompt',0))*1e6,
-#                      float(m.get('pricing',{}).get('completion',0))*1e6))
-#    for m in d[:60]]"
-# ~ prefix = auto-updating "latest" alias — always tracks newest version.
-#
-# Default — fast workhorse for daily use
-MODEL_DEFAULT="~google/gemini-flash-latest"  # $0.50/$3.00 · 1M ctx · always fresh
-# Alternatives for default:
-#   deepseek/deepseek-v4-flash        # $0.14/$0.28 · 1M ctx · cheapest capable option
-#   qwen/qwen3.6-flash                # $0.25/$1.50 · 1M ctx · newest Qwen flash
-#   ~openai/gpt-mini-latest           # $0.75/$4.50 · 400k ctx · always fresh GPT mini
-
-# --fast — ultra-low latency, blunt, good for skeptic/trickster roles
-MODEL_FAST="deepseek/deepseek-v4-flash"      # $0.14/$0.28 · 1M ctx · exceptional value
-# Alternatives for --fast:
-#   qwen/qwen3.6-flash                # $0.25/$1.50 · 1M ctx
-#   meta-llama/llama-4-scout          # $0.08/$0.30 · 327k ctx
-#   inclusionai/ling-2.6-flash        # $0.08/$0.24 · 262k ctx
-
-# --smart — strong reasoning, code review, architecture
-MODEL_SMART="deepseek/deepseek-v4-pro"       # $0.43/$0.87 · 1M ctx · astonishing value
-# Alternatives for --smart:
-#   ~google/gemini-pro-latest         # $2.00/$12.00 · 1M ctx · always fresh
-#   ~moonshotai/kimi-latest           # $0.75/$3.50  · 262k ctx · always fresh Kimi
-#   moonshotai/kimi-k2.6:latest-preview # preview route for current Kimi 2.6 build
-#   qwen/qwen3.6-plus                 # $0.33/$1.95  · 1M ctx
-#   mistralai/mistral-medium-3-5      # $1.50/$7.50  · 262k ctx
-
-# --frontier — best available, cost no object
-MODEL_FRONTIER="x-ai/grok-4.3"              # $1.25/$2.50 · 1M ctx · newest Grok
-# Alternatives for --frontier:
-#   ~anthropic/claude-opus-latest     # $5.00/$25.00 · 1M ctx · always fresh Claude Opus
-#   openai/gpt-5.5                    # $5.00/$30.00 · 1M ctx
-#   openai/gpt-5.5-pro                # $30.00/$180.00 · 1M ctx · nuclear option
-#   ~openai/gpt-latest                # $5.00/$30.00 · 1M ctx · always fresh GPT
-
-# --- Shorthands — first positional arg selects model by name --------
-# Usage: agent grok "question"  or  agent deepseek "question"  etc.
-resolve_shorthand() {
+# ============================================================================
+# PROVIDERS — direct OpenAI-compatible /chat/completions endpoints + key env.
+# Add a provider here and reference it in the routing table below.
+# ============================================================================
+provider_base_url() {
     case "$1" in
-        grok)                         echo "x-ai/grok-4.3" ;;
-        deepseek|ds)                  echo "deepseek/deepseek-v4-pro" ;;
-        deepseek-flash|ds-flash|dsf)  echo "deepseek/deepseek-v4-flash" ;;
-        kimi|kimi-latest)             echo "~moonshotai/kimi-latest" ;;
-        kimi26|kimi-26|kimi-2.6)       echo "moonshotai/kimi-k2.6" ;;
-        kimi-preview|kimi-latest-preview) echo "moonshotai/kimi-k2.6:latest-preview" ;;
-        gemini)                       echo "~google/gemini-pro-latest" ;;
-        flash)                        echo "~google/gemini-flash-latest" ;;
-        gpt)                          echo "~openai/gpt-latest" ;;
-        gpt-mini|mini)                echo "~openai/gpt-mini-latest" ;;
-        claude|opus)                  echo "~anthropic/claude-opus-latest" ;;
-        sonnet)                       echo "~anthropic/claude-sonnet-latest" ;;
-        haiku)                        echo "~anthropic/claude-haiku-latest" ;;
-        qwen)                         echo "qwen/qwen3.6-plus" ;;
-        mistral)                      echo "mistralai/mistral-medium-3-5" ;;
-        *)                            echo "" ;;
+        deepseek)   echo "https://api.deepseek.com/chat/completions" ;;
+        zai)        echo "https://api.z.ai/api/paas/v4/chat/completions" ;;
+        openrouter) echo "https://openrouter.ai/api/v1/chat/completions" ;;
+        *)          echo "" ;;
     esac
 }
-# --------------------------------------------------------------------
+provider_key_env() {
+    case "$1" in
+        deepseek)   echo "DEEPSEEK_API_KEY" ;;
+        zai)        echo "ZAI_API_KEY" ;;
+        openrouter) echo "OPENROUTER_API_KEY" ;;
+        *)          echo "" ;;
+    esac
+}
+# Transport: "http" providers POST an OpenAI-compatible endpoint; "cli"
+# providers shell out to a locally-authenticated tool (Claude/ChatGPT
+# subscription) so premium models cost nothing per token.
+provider_transport() {
+    case "$1" in
+        claude_cli|codex_cli) echo "cli" ;;
+        *)                    echo "http" ;;
+    esac
+}
 
+# ============================================================================
+# PRICING — per MILLION tokens, "INPUT OUTPUT", for the cost readout.
+# Best-effort and editable. Unknown -> readout shows tokens only, no $.
+# Keyed by "provider|model". Update as prices move.
+# ============================================================================
+price_for() {
+    case "$1" in
+        deepseek\|deepseek-v4-flash)              echo "0.14 0.28" ;;
+        deepseek\|deepseek-v4-pro)                echo "0.43 0.87" ;;
+        openrouter\|deepseek/deepseek-v4-flash)   echo "0.20 0.40" ;;
+        openrouter\|deepseek/deepseek-v4-pro)     echo "0.55 1.10" ;;
+        zai\|glm-5.1|zai\|glm-4.7|zai\|glm-4.6)   echo "0.60 2.00" ;;
+        openrouter\|~anthropic/claude-opus-latest) echo "5.00 25.00" ;;
+        openrouter\|~anthropic/claude-sonnet-latest) echo "3.00 15.00" ;;
+        openrouter\|x-ai/grok-4.3)                echo "1.25 2.50" ;;
+        openrouter\|~openai/gpt-latest)           echo "5.00 30.00" ;;
+        *)                                        echo "" ;;
+    esac
+}
+
+# ============================================================================
+# ROUTING — a selector resolves to an ORDERED list of "provider|model"
+# candidates. The engine tries them in order: skips routes whose key is
+# unset, retries transient failures with backoff, and falls through to the
+# next candidate on hard failure (bad/rejected key, model unavailable).
+# First candidate = preferred (cheapest capable + direct provider when possible).
+# ============================================================================
+resolve_routes() {
+    case "$1" in
+        # --- capability tiers ---
+        tier:default)   # daily workhorse: cheap, fast, very capable
+            echo "deepseek|deepseek-v4-flash"
+            echo "openrouter|deepseek/deepseek-v4-flash"
+            ;;
+        tier:fast)      # fast + cheap workhorse (same pick as default)
+            echo "deepseek|deepseek-v4-flash"
+            echo "openrouter|deepseek/deepseek-v4-flash"
+            ;;
+        tier:smart)     # strong reasoning, still cheap
+            echo "zai|glm-5.1"
+            echo "deepseek|deepseek-v4-pro"
+            echo "openrouter|deepseek/deepseek-v4-pro"
+            ;;
+        tier:frontier)  # best available — prefer local subscription CLI, then OpenRouter
+            echo "claude_cli|opus"
+            echo "openrouter|~anthropic/claude-opus-latest"
+            ;;
+        # --- shorthands (first positional arg) ---
+        short:flash|short:dsf|short:deepseek-flash)
+            echo "deepseek|deepseek-v4-flash"; echo "openrouter|deepseek/deepseek-v4-flash" ;;
+        short:deepseek|short:ds)
+            echo "deepseek|deepseek-v4-pro"; echo "openrouter|deepseek/deepseek-v4-pro" ;;
+        short:glm)
+            echo "zai|glm-5.1"; echo "openrouter|z-ai/glm-4.6" ;;
+        short:glm-turbo)
+            echo "zai|glm-5-turbo" ;;
+        short:grok)        echo "openrouter|x-ai/grok-4.3" ;;
+        short:gemini)      echo "openrouter|~google/gemini-pro-latest" ;;  # via OR: direct key is stale
+        short:gemini-flash) echo "openrouter|~google/gemini-flash-latest" ;;
+        short:gpt|short:codex)  # ChatGPT subscription via codex CLI, then OpenRouter
+            echo "codex_cli|"; echo "openrouter|~openai/gpt-latest" ;;
+        short:mini|short:gpt-mini) echo "openrouter|~openai/gpt-mini-latest" ;;
+        short:claude|short:opus)   # Claude subscription via claude CLI, then OpenRouter
+            echo "claude_cli|opus"; echo "openrouter|~anthropic/claude-opus-latest" ;;
+        short:sonnet)      echo "claude_cli|sonnet"; echo "openrouter|~anthropic/claude-sonnet-latest" ;;
+        short:haiku)       echo "claude_cli|haiku"; echo "openrouter|~anthropic/claude-haiku-latest" ;;
+        short:qwen)        echo "openrouter|qwen/qwen3.6-plus" ;;
+        short:mistral)     echo "openrouter|mistralai/mistral-medium-3-5" ;;
+        # --- explicit --model VALUE ---
+        explicit:*)
+            spec="${1#explicit:}"
+            if [[ "$spec" == *:* && "$spec" != *://* ]]; then
+                # provider:model form, e.g. deepseek:deepseek-v4-pro
+                echo "${spec%%:*}|${spec#*:}"
+            else
+                # bare id -> OpenRouter
+                echo "openrouter|$spec"
+            fi
+            ;;
+        *) echo "" ;;
+    esac
+}
+
+is_shorthand() {
+    # Returns 0 if the token is a known shorthand selector.
+    [ -n "$(resolve_routes "short:$1")" ]
+}
+
+# ----------------------------------------------------------------------------
 SYSTEM_DEFAULT="Be concise. No preamble, no closing remarks. Answer directly. Prefer working code over explanation. Give the simplest solution that works."
 SYSTEM="$SYSTEM_DEFAULT"
-MODEL="$MODEL_DEFAULT"
+SELECTOR="tier:default"
 TEMPERATURE="0.7"
 MAX_TOKENS="8000"
 REQUEST_TIMEOUT="${AGENT_TIMEOUT:-180}"
+MAX_RETRIES="${AGENT_RETRIES:-2}"
+NO_FALLBACK=0
+SHOW_USAGE=1
 PROMPT_ARGS=()
 INPUT_FILES=()
 READ_STDIN="auto"
@@ -96,56 +160,63 @@ Usage: agent [OPTIONS] [SHORTHAND] "your question"
        agent [OPTIONS] --file packet.md "review this packet"
        git diff | agent [OPTIONS] "review this diff"
 
+Routing: each tier/shorthand resolves to an ordered list of provider routes.
+The cheapest available route is tried first; transient errors retry with
+backoff; rejected keys and unavailable models fall through to the next route.
+
 Input behavior:
   Positional text becomes the main prompt.
   Piped stdin is appended automatically, even when a prompt is present.
   --file/-f PATH may be repeated; each file is appended with a filename header.
 
 Options:
-  --fast              Ultra-fast inference
-  --smart             Strong reasoning
-  --frontier          Best available
-  --model ID          Explicit OpenRouter model ID
-  --file, -f PATH     Append file contents to the prompt (aliases: --input, --context, --prompt-file; use - for stdin)
+  --fast              Fast + cheap tier (deepseek-v4-flash)
+  --smart             Strong-reasoning tier (GLM / DeepSeek pro)
+  --frontier          Best available (Opus) — reserve for when truly needed
+  --model ID          Explicit model. Bare id -> OpenRouter; or provider:model
+                      (e.g. deepseek:deepseek-v4-pro, zai:glm-5-turbo)
+  --no-fallback       Try only the first resolved route; do not fall through
+  --retries N         Max retries per route on transient errors (default 2)
+  --no-usage          Suppress the token/cost readout on stderr
+  --file, -f PATH     Append file contents (aliases: --input, --context, --prompt-file; - for stdin)
   --stdin             Require and append stdin, even with prompt/files
   --no-stdin          Ignore piped stdin
   --system TEXT       Override system prompt
   --temperature N     Sampling temperature (default 0.7)
   --max-tokens N      Max completion tokens (default 8000)
   --timeout N         HTTP request timeout seconds (default 180; env AGENT_TIMEOUT)
-  --verbose           Print model/input summary to stderr before calling
-  --dry-run           Print model/input summary and final prompt; do not call API
+  --verbose           Print routing/input summary to stderr before calling
+  --dry-run           Print routing summary and final prompt; do not call any API
   -h, --help          Show this help
 
+Premium models route to your local SUBSCRIPTION CLI first (no per-token
+cost), then fall back to OpenRouter if the CLI is missing or not logged in:
+  opus/sonnet/haiku -> `claude` CLI      gpt/codex -> `codex` CLI
+
+Tiers (cheap-first):
+  (default)     deepseek-v4-flash direct -> OpenRouter
+  --fast        deepseek-v4-flash direct -> OpenRouter (fast + cheap)
+  --smart       Z.AI glm-5.1 -> deepseek-v4-pro
+  --frontier    Claude Opus via `claude` CLI -> OpenRouter
+
 Model shorthands (first positional arg):
-  grok          x-ai/grok-4.3
-  deepseek, ds  deepseek/deepseek-v4-pro
-  dsf           deepseek/deepseek-v4-flash
-  kimi          ~moonshotai/kimi-latest
-  kimi-2.6      moonshotai/kimi-k2.6
-  kimi-preview  moonshotai/kimi-k2.6:latest-preview
-  gemini        ~google/gemini-pro-latest
-  flash         ~google/gemini-flash-latest
-  gpt           ~openai/gpt-latest
-  mini          ~openai/gpt-mini-latest
-  claude, opus  ~anthropic/claude-opus-latest
-  sonnet        ~anthropic/claude-sonnet-latest
-  haiku         ~anthropic/claude-haiku-latest
-  qwen          qwen/qwen3.6-plus
-  mistral       mistralai/mistral-medium-3-5
+  flash, dsf    deepseek-v4-flash (direct)
+  deepseek, ds  deepseek-v4-pro (direct)
+  glm           Z.AI glm-5.1            glm-turbo  Z.AI glm-5-turbo
+  grok          x-ai/grok-4.3           gemini     gemini-pro (via OpenRouter)
+  gpt, codex    ChatGPT via codex CLI   mini       gpt-mini (OpenRouter)
+  claude, opus  Claude Opus via CLI     sonnet / haiku  via claude CLI
+  qwen          qwen3.6-plus            mistral    mistral-medium-3-5
 
 Examples:
   agent "What is the time complexity of quicksort?"
-  agent grok "Explain the CAP theorem"
-  agent --model openai/gpt-5.5 "Design a distributed rate limiter"
+  agent --fast "blunt take on this idea"
+  agent glm "Explain the CAP theorem"
+  agent --model deepseek:deepseek-v4-pro "Design a rate limiter"
   agent --file review-packet.md --smart "Find concrete bugs"
-  agent @review-packet.md grok "Find concrete bugs"
-  git diff | agent kimi "Review these changes"
-  agent --stdin --frontier "Review the attached packet" < packet.md
+  git diff | agent deepseek "Review these changes"
+  agent --frontier --no-fallback "Hard architecture call, best model only"
 USAGE
-    echo
-    echo "Default model: ${MODEL_DEFAULT} (auto-tracks latest Gemini Flash)"
-    echo "Tier models: fast=${MODEL_FAST}; smart=${MODEL_SMART}; frontier=${MODEL_FRONTIER}"
 }
 
 need_value() {
@@ -158,11 +229,15 @@ need_value() {
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --fast)        MODEL="$MODEL_FAST"; shift ;;
-        --smart)       MODEL="$MODEL_SMART"; shift ;;
-        --frontier)    MODEL="$MODEL_FRONTIER"; shift ;;
-        --model)       need_value "$1" "${2:-}"; MODEL="$2"; shift 2 ;;
-        --model=*)     MODEL="${1#*=}"; shift ;;
+        --fast)        SELECTOR="tier:fast"; shift ;;
+        --smart)       SELECTOR="tier:smart"; shift ;;
+        --frontier)    SELECTOR="tier:frontier"; shift ;;
+        --model)       need_value "$1" "${2:-}"; SELECTOR="explicit:$2"; shift 2 ;;
+        --model=*)     SELECTOR="explicit:${1#*=}"; shift ;;
+        --no-fallback) NO_FALLBACK=1; shift ;;
+        --retries)     need_value "$1" "${2:-}"; MAX_RETRIES="$2"; shift 2 ;;
+        --retries=*)   MAX_RETRIES="${1#*=}"; shift ;;
+        --no-usage)    SHOW_USAGE=0; shift ;;
         -f|--file|--input|--context|--prompt-file) need_value "$1" "${2:-}"; INPUT_FILES+=("$2"); shift 2 ;;
         --file=*|--input=*|--context=*|--prompt-file=*) INPUT_FILES+=("${1#*=}"); shift ;;
         --stdin)       READ_STDIN="yes"; shift ;;
@@ -183,34 +258,27 @@ while [[ $# -gt 0 ]]; do
         @*)
             file="${1#@}"
             if [ -r "$file" ]; then
-                INPUT_FILES+=("$file")
-                shift
+                INPUT_FILES+=("$file"); shift
             else
-                echo "Error: @file not readable: $file" >&2
-                exit 2
+                echo "Error: @file not readable: $file" >&2; exit 2
             fi
             ;;
         *)             PROMPT_ARGS+=("$1"); shift ;;
     esac
 done
 
-# Resolve shorthand from first positional arg, if present.
-if [ ${#PROMPT_ARGS[@]} -gt 0 ]; then
-    shorthand=$(resolve_shorthand "${PROMPT_ARGS[0]}")
-    if [ -n "$shorthand" ]; then
-        MODEL="$shorthand"
+# Resolve a leading shorthand from the first positional arg (only if a tier
+# wasn't explicitly chosen via --fast/--smart/--frontier/--model).
+if [ ${#PROMPT_ARGS[@]} -gt 0 ] && [ "$SELECTOR" = "tier:default" ]; then
+    if is_shorthand "${PROMPT_ARGS[0]}"; then
+        SELECTOR="short:${PROMPT_ARGS[0]}"
         PROMPT_ARGS=("${PROMPT_ARGS[@]:1}")
     fi
 fi
 
 append_section() {
-    local current="$1"
-    local title="$2"
-    local body="$3"
-    if [ -z "$body" ]; then
-        printf '%s' "$current"
-        return
-    fi
+    local current="$1" title="$2" body="$3"
+    if [ -z "$body" ]; then printf '%s' "$current"; return; fi
     if [ -n "$current" ]; then
         printf '%s\n\n--- %s ---\n%s' "$current" "$title" "$body"
     else
@@ -223,18 +291,16 @@ if [ ${#PROMPT_ARGS[@]} -gt 0 ]; then
     QUESTION="${PROMPT_ARGS[*]}"
 fi
 
-for file in "${INPUT_FILES[@]}"; do
+for file in "${INPUT_FILES[@]+"${INPUT_FILES[@]}"}"; do
     if [ "$file" = "-" ]; then
         if [ -t 0 ]; then
-            echo "Error: --file - requested stdin, but stdin is a TTY" >&2
-            exit 2
+            echo "Error: --file - requested stdin, but stdin is a TTY" >&2; exit 2
         fi
         content=$(cat)
         QUESTION=$(append_section "$QUESTION" "stdin" "$content")
         READ_STDIN="no"
     elif [ ! -r "$file" ]; then
-        echo "Error: cannot read file: $file" >&2
-        exit 2
+        echo "Error: cannot read file: $file" >&2; exit 2
     else
         content=$(cat "$file")
         QUESTION=$(append_section "$QUESTION" "file: $file" "$content")
@@ -247,41 +313,34 @@ if [ "$READ_STDIN" != "no" ]; then
         if [ -n "$stdin_content" ]; then
             QUESTION=$(append_section "$QUESTION" "stdin" "$stdin_content")
         elif [ "$READ_STDIN" = "yes" ]; then
-            echo "Error: --stdin requested, but stdin was empty" >&2
-            exit 2
+            echo "Error: --stdin requested, but stdin was empty" >&2; exit 2
         fi
     elif [ "$READ_STDIN" = "yes" ]; then
-        echo "Error: --stdin requested, but stdin is a TTY" >&2
-        exit 2
+        echo "Error: --stdin requested, but stdin is a TTY" >&2; exit 2
     fi
 fi
 
 if [ -z "$QUESTION" ]; then
-    show_usage >&2
-    exit 1
+    show_usage >&2; exit 1
 fi
 
 case "$MAX_TOKENS" in
     ''|*[!0-9]*) echo "Error: --max-tokens must be a positive integer" >&2; exit 2 ;;
 esac
-if [ "$MAX_TOKENS" -le 0 ]; then
-    echo "Error: --max-tokens must be a positive integer" >&2
-    exit 2
-fi
+[ "$MAX_TOKENS" -le 0 ] && { echo "Error: --max-tokens must be a positive integer" >&2; exit 2; }
+case "$MAX_RETRIES" in
+    ''|*[!0-9]*) echo "Error: --retries must be a non-negative integer" >&2; exit 2 ;;
+esac
 
 set +e
 python3 - "$TEMPERATURE" "$REQUEST_TIMEOUT" <<'PY' >/dev/null
-import math
-import sys
+import math, sys
 try:
-    temperature = float(sys.argv[1])
-    timeout = float(sys.argv[2])
+    temperature = float(sys.argv[1]); timeout = float(sys.argv[2])
 except ValueError:
     sys.exit(2)
-if not math.isfinite(temperature) or temperature < 0:
-    sys.exit(3)
-if not math.isfinite(timeout) or timeout <= 0:
-    sys.exit(4)
+if not math.isfinite(temperature) or temperature < 0: sys.exit(3)
+if not math.isfinite(timeout) or timeout <= 0: sys.exit(4)
 PY
 validation_rc=$?
 set -e
@@ -293,12 +352,22 @@ case "$validation_rc" in
     *) echo "Error: option validation failed" >&2; exit 2 ;;
 esac
 
+# Resolve routes, honoring --no-fallback.
+ROUTES="$(resolve_routes "$SELECTOR")"
+if [ -z "$ROUTES" ]; then
+    echo "Error: could not resolve any route for selector '$SELECTOR'" >&2; exit 2
+fi
+if [ "$NO_FALLBACK" -eq 1 ]; then
+    ROUTES="$(printf '%s\n' "$ROUTES" | head -1)"
+fi
+
 question_chars=$(printf '%s' "$QUESTION" | wc -c | tr -d ' ')
 if [ "$VERBOSE" -eq 1 ] || [ "$DRY_RUN" -eq 1 ]; then
     {
-        echo "agent: model=${MODEL}"
+        echo "agent: selector=${SELECTOR}"
+        echo "agent: routes=$(printf '%s' "$ROUTES" | tr '\n' ',' | sed 's/,$//')"
         echo "agent: prompt_bytes=${question_chars} files=${#INPUT_FILES[@]} stdin_mode=${READ_STDIN}"
-        echo "agent: max_tokens=${MAX_TOKENS} temperature=${TEMPERATURE} timeout=${REQUEST_TIMEOUT}"
+        echo "agent: max_tokens=${MAX_TOKENS} temperature=${TEMPERATURE} timeout=${REQUEST_TIMEOUT} retries=${MAX_RETRIES}"
     } >&2
 fi
 
@@ -307,25 +376,20 @@ if [ "$DRY_RUN" -eq 1 ]; then
     exit 0
 fi
 
-if [ -z "${OPENROUTER_API_KEY:-}" ]; then
-    echo "Error: OPENROUTER_API_KEY not set in ~/.secrets" >&2
-    exit 1
-fi
-
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 printf '%s' "$QUESTION" > "$tmpdir/question.txt"
 printf '%s' "$SYSTEM" > "$tmpdir/system.txt"
 
-python3 - "$MODEL" "$TEMPERATURE" "$MAX_TOKENS" "$tmpdir/system.txt" "$tmpdir/question.txt" > "$tmpdir/payload.json" <<'PY'
-import json
-import sys
+# Optional wall-clock guard for CLI providers (agentic CLIs can hang).
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
 
+build_payload() {  # $1=model -> writes $tmpdir/payload.json
+    python3 - "$1" "$TEMPERATURE" "$MAX_TOKENS" "$tmpdir/system.txt" "$tmpdir/question.txt" > "$tmpdir/payload.json" <<'PY'
+import json, sys
 model, temperature, max_tokens, system_path, question_path = sys.argv[1:]
-with open(system_path, encoding="utf-8") as f:
-    system = f.read()
-with open(question_path, encoding="utf-8") as f:
-    question = f.read()
+with open(system_path, encoding="utf-8") as f: system = f.read()
+with open(question_path, encoding="utf-8") as f: question = f.read()
 print(json.dumps({
     "model": model,
     "messages": [
@@ -336,55 +400,194 @@ print(json.dumps({
     "max_tokens": int(max_tokens),
 }))
 PY
+}
 
-http_code=$(curl -sS -o "$tmpdir/response.json" -w '%{http_code}' https://openrouter.ai/api/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
-  -H "HTTP-Referer: https://claude.ai" \
-  -H "X-Title: Claude Code" \
-  --connect-timeout 10 \
-  --max-time "$REQUEST_TIMEOUT" \
-  --data-binary "@$tmpdir/payload.json")
-
-python3 - "$http_code" "$MODEL" "$tmpdir/response.json" <<'PY'
-import json
-import sys
-
-http_code, model, response_path = sys.argv[1:]
+# Parse a successful response: content -> stdout, usage/cost -> stderr.
+# Exit 0 on usable content, 5 on empty/malformed (caller treats as route failure).
+parse_success() {  # $1=label $2=response_path $3=price_in $4=price_out $5=show_usage
+    python3 - "$@" <<'PY'
+import json, sys
+label, response_path, price_in, price_out, show_usage = sys.argv[1:]
 try:
     with open(response_path, encoding="utf-8") as f:
         data = json.load(f)
-except Exception as exc:
-    print(f"Error: OpenRouter returned non-JSON response (HTTP {http_code}) for {model}: {exc}", file=sys.stderr)
-    with open(response_path, encoding="utf-8", errors="replace") as f:
-        preview = f.read(1000).strip()
-    if preview:
-        print(preview, file=sys.stderr)
-    sys.exit(1)
-
-try:
-    code = int(http_code)
-except ValueError:
-    code = 0
-if code < 200 or code >= 300 or "error" in data:
-    err = data.get("error", data)
-    if isinstance(err, dict):
-        msg = err.get("message") or err.get("code") or json.dumps(err)
-    else:
-        msg = str(err)
-    print(f"Error: OpenRouter HTTP {http_code} for {model}: {msg}", file=sys.stderr)
-    sys.exit(1)
-
-try:
-    content = data["choices"][0]["message"]["content"]
+    content = data["choices"][0]["message"]["content"] or ""
 except Exception:
-    print(f"Error: OpenRouter response missing choices for {model}: {json.dumps(data)[:1000]}", file=sys.stderr)
-    sys.exit(1)
-
-if content is None:
-    content = ""
-if content == "":
-    print(f"Error: OpenRouter returned empty content for {model}", file=sys.stderr)
-    sys.exit(1)
+    sys.exit(5)
+if not content.strip():
+    sys.exit(5)
 print(content)
+if show_usage == "1":
+    u = data.get("usage", {}) or {}
+    pin = u.get("prompt_tokens"); pout = u.get("completion_tokens")
+    parts = [f"agent ✓ {label}"]
+    if pin is not None or pout is not None:
+        parts.append(f"in={pin or 0} out={pout or 0}")
+    try:
+        if price_in and price_out and (pin is not None) and (pout is not None):
+            cost = pin/1e6*float(price_in) + pout/1e6*float(price_out)
+            parts.append(f"~${cost:.4f}")
+    except Exception:
+        pass
+    print(" · ".join(parts), file=sys.stderr)
 PY
+}
+
+# Try a single route with retries+backoff.
+# Returns: 0 success, 1 rejected-credential, 2 transient-exhausted, 3 route-error.
+try_route() {
+    local provider="$1" model="$2"
+    local base_url key_env key attempt http_code curl_rc backoff
+    base_url="$(provider_base_url "$provider")"
+    key_env="$(provider_key_env "$provider")"
+    if [ -z "$base_url" ] || [ -z "$key_env" ]; then
+        echo "agent: unknown provider '$provider' — skipping" >&2; return 3
+    fi
+    key="${!key_env:-}"
+    if [ -z "$key" ]; then
+        [ "$VERBOSE" -eq 1 ] && echo "agent: skip ${provider} (${key_env} unset)" >&2
+        return 3
+    fi
+    build_payload "$model"
+
+    attempt=0
+    while :; do
+        http_code=$(curl -sS -o "$tmpdir/response.json" -w '%{http_code}' "$base_url" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${key}" \
+            -H "HTTP-Referer: https://claude.ai" \
+            -H "X-Title: Claude Code" \
+            --connect-timeout 10 \
+            --max-time "$REQUEST_TIMEOUT" \
+            --data-binary "@$tmpdir/payload.json" 2>/dev/null)
+        curl_rc=$?
+
+        # Network/timeout failure from curl itself -> transient.
+        if [ "$curl_rc" -ne 0 ]; then
+            if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+                backoff=$((1 << attempt)); attempt=$((attempt + 1))
+                [ "$VERBOSE" -eq 1 ] && echo "agent: ${provider}/${model} network error (curl $curl_rc), retry ${attempt}/${MAX_RETRIES} in ${backoff}s" >&2
+                sleep "$backoff"; continue
+            fi
+            echo "agent: ${provider}/${model} unreachable (curl exit $curl_rc)" >&2
+            return 2
+        fi
+
+        case "$http_code" in
+            2??)
+                local pin pout price label
+                price="$(price_for "${provider}|${model}")"
+                pin="${price%% *}"; pout="${price##* }"
+                [ "$price" = "" ] && { pin=""; pout=""; }
+                label="${provider}/${model}"
+                if parse_success "$label" "$tmpdir/response.json" "$pin" "$pout" "$SHOW_USAGE"; then
+                    return 0
+                fi
+                echo "agent: ${label} returned empty/malformed content" >&2
+                return 3
+                ;;
+            401|403)
+                echo "agent: ${provider} credential rejected (HTTP ${http_code}, ${key_env} present but invalid) — skipping provider" >&2
+                return 1
+                ;;
+            429|5??)
+                if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+                    backoff=$((1 << attempt)); attempt=$((attempt + 1))
+                    [ "$VERBOSE" -eq 1 ] && echo "agent: ${provider}/${model} HTTP ${http_code}, retry ${attempt}/${MAX_RETRIES} in ${backoff}s" >&2
+                    sleep "$backoff"; continue
+                fi
+                echo "agent: ${provider}/${model} HTTP ${http_code} after ${MAX_RETRIES} retries" >&2
+                return 2
+                ;;
+            *)
+                local msg
+                msg=$(python3 -c 'import json,sys
+try:
+    d=json.load(open(sys.argv[1]))
+    e=d.get("error",d); print(e.get("message") if isinstance(e,dict) else str(e))
+except Exception: print("")' "$tmpdir/response.json" 2>/dev/null)
+                echo "agent: ${provider}/${model} HTTP ${http_code}: ${msg:-unexpected response}" >&2
+                return 3
+                ;;
+        esac
+    done
+}
+
+# Run a CLI-transport route via a locally-authenticated subscription tool.
+# No per-token cost, so the readout shows "subscription" instead of $.
+# Returns: 0 success, 2 failed (not installed / not logged in / timed out).
+run_cli_route() {
+    local provider="$1" model="$2" bin out rc label errmsg
+    case "$provider" in
+        claude_cli) bin="claude" ;;
+        codex_cli)  bin="codex" ;;
+        *) return 3 ;;
+    esac
+    if ! command -v "$bin" >/dev/null 2>&1; then
+        [ "$VERBOSE" -eq 1 ] && echo "agent: skip ${provider} (${bin} not installed)" >&2
+        return 3
+    fi
+    label="${provider%_cli}${model:+/$model}"
+
+    # Caller wraps this in `set +e`; do not toggle errexit here (it would leak).
+    case "$provider" in
+        claude_cli)
+            # Question on stdin; replace the default coding-agent system prompt.
+            if [ -n "$TIMEOUT_BIN" ]; then
+                out=$("$TIMEOUT_BIN" "$REQUEST_TIMEOUT" claude -p --model "$model" \
+                        --system-prompt "$SYSTEM" < "$tmpdir/question.txt" 2>"$tmpdir/cli.err")
+            else
+                out=$(claude -p --model "$model" --system-prompt "$SYSTEM" \
+                        < "$tmpdir/question.txt" 2>"$tmpdir/cli.err")
+            fi
+            rc=$?
+            ;;
+        codex_cli)
+            # codex exec has no system flag; prepend system to the prompt.
+            { cat "$tmpdir/system.txt"; printf '\n\n'; cat "$tmpdir/question.txt"; } > "$tmpdir/cli.in"
+            if [ -n "$TIMEOUT_BIN" ]; then
+                "$TIMEOUT_BIN" "$REQUEST_TIMEOUT" codex exec - -o "$tmpdir/cli.out" --color never \
+                    ${model:+-m "$model"} < "$tmpdir/cli.in" >/dev/null 2>"$tmpdir/cli.err"
+            else
+                codex exec - -o "$tmpdir/cli.out" --color never \
+                    ${model:+-m "$model"} < "$tmpdir/cli.in" >/dev/null 2>"$tmpdir/cli.err"
+            fi
+            rc=$?
+            out=$(cat "$tmpdir/cli.out" 2>/dev/null)
+            ;;
+    esac
+
+    if [ "$rc" -ne 0 ] || [ -z "$out" ]; then
+        errmsg=$(tail -1 "$tmpdir/cli.err" 2>/dev/null)
+        echo "agent: ${label} via ${bin} CLI failed (exit ${rc})${errmsg:+: ${errmsg}}" >&2
+        return 2
+    fi
+    printf '%s\n' "$out"
+    [ "$SHOW_USAGE" -eq 1 ] && echo "agent ✓ ${label} · subscription (${bin} CLI)" >&2
+    return 0
+}
+
+# Walk the route list; first success wins. Herestring keeps this in-shell
+# (no subshell) so state survives the loop.
+attempted=0
+while IFS= read -r route; do
+    [ -z "$route" ] && continue
+    provider="${route%%|*}"; model="${route#*|}"
+    attempted=$((attempted + 1))
+    set +e
+    if [ "$(provider_transport "$provider")" = "cli" ]; then
+        run_cli_route "$provider" "$model"
+    else
+        try_route "$provider" "$model"
+    fi
+    rc=$?
+    set -e
+    if [ "$rc" -eq 0 ]; then
+        exit 0
+    fi
+    # rc 1/2/3 -> fall through to the next candidate.
+done <<< "$ROUTES"
+
+echo "Error: all ${attempted} route(s) failed for selector '${SELECTOR}'." >&2
+echo "       Check ~/.secrets keys, model availability, or run with --verbose." >&2
+exit 1
