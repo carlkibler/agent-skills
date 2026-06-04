@@ -86,6 +86,7 @@ Tools for the day-to-day of writing and reviewing code.
 | **agent-log-forensics** | Turn local and remote agent session logs into workflow improvements<br><sub>`/plugin install agent-log-forensics@carl-tools`</sub> |
 | **changelog-writer** | Transform git commits into user-facing changelog entries segmented by audience<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
 | **decision-log** | Record decisions with rationale and rejected alternatives for future agent context<br><sub>`/plugin install decision-log@carl-tools`</sub> |
+| **dependency-pinning** | Audit projects for SHA-pinning + release cooldowns; fix on approval<br><sub>`/plugin install dependency-pinning@carl-tools`</sub> |
 | **django-smoke-alarm** | Triage Django security smoke checks into real risks, hygiene, and false positives<br><sub>`/plugin install django-smoke-alarm@carl-tools`</sub> |
 | **handle-pr** | Autonomously address PR review comments end-to-end<br><sub>`/plugin install handle-pr@carl-tools`</sub> |
 | **kindness-check** | Four-lens empathy review: user, machine, developer, support<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
