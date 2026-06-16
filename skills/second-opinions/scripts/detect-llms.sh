@@ -49,8 +49,7 @@ probe() {
 
 [[ "$QUIET" != "--quiet" ]] && echo "Detecting available LLM CLIs..." >&2
 
-# `agent` covers all tiers: default (gemini-2.5-flash), --fast (llama-4-scout),
-# --smart (gemini-2.5-pro), --frontier (claude-opus-4-5)
+# `agent` covers tiers: --fast (llama-4-scout), --frontier (claude-opus-4-5)
 probe "agent" \
     "command -v agent && has_secret OPENROUTER_API_KEY" \
     'agent "{prompt}"' \
@@ -63,22 +62,11 @@ probe "llm" \
     "multi" \
     "Simon Willison's llm CLI"
 
-probe "ask-gemini" \
-    "command -v ask-gemini && has_secret GEMINI_API_KEY" \
-    'ask-gemini "{prompt}"' \
-    "gemini" \
-    "Gemini wrapper with key present" || \
-probe "gemini" \
-    "command -v gemini && has_secret GEMINI_API_KEY" \
-    'gemini -p "{prompt}"' \
-    "gemini" \
-    "Gemini CLI with key present"
-
 probe "codex" \
     "command -v codex" \
-    'echo "{prompt}" | codex exec -' \
+    'echo "{prompt}" | codex exec --ignore-user-config -m gpt-5.5 -c model_reasoning_effort="high" -s read-only --skip-git-repo-check -' \
     "openai" \
-    "OpenAI Codex CLI"
+    "OpenAI Codex CLI (--ignore-user-config avoids CLAUDE.md contamination)"
 
 probe "ollama" \
     "ollama list 2>/dev/null | grep -q ." \
