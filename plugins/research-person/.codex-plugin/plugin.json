@@ -1,0 +1,26 @@
+{
+  "name": "research-person",
+  "version": "1.0.0",
+  "description": "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Research Person",
+    "shortDescription": "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier.",
+    "longDescription": "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Research the named person(s) from public sources and create or update their People note in my Obsidian vault, with confidence markers, cross-links, and a raw-research dump in agent-notes."
+    ],
+    "brandColor": "#0EA5E9",
+    "composerIcon": "./skills/research-person/assets/icon.svg",
+    "logo": "./skills/research-person/assets/icon.svg"
+  }
+}

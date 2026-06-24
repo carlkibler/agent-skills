@@ -209,6 +209,18 @@
       "category": "Development"
     },
     {
+      "name": "research-person",
+      "source": {
+        "source": "local",
+        "path": "./plugins/research-person"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "scope-hammer",
       "source": {
         "source": "local",
