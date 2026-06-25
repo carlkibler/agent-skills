@@ -8,6 +8,16 @@
   },
   "plugins": [
     {
+      "name": "research-person",
+      "description": "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier.",
+      "source": "./plugins/research-person",
+      "skills": [
+        "./skills/research-person"
+      ],
+      "category": "productivity",
+      "version": "1.0.0"
+    },
+    {
       "name": "pre-mortem",
       "description": "Multi-agent project pre-mortem — parallel agents with different failure-finding mandates, synthesized into ranked risks with mitigations.",
       "source": "./plugins/pre-mortem",
