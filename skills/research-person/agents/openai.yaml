@@ -1,0 +1,9 @@
+interface:
+  display_name: "Research Person"
+  short_description: "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier. Best in local Codex CLI/app sessions on your own machine."
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#0EA5E9"
+  default_prompt: "Research the named person(s) from public sources and create or update their People note in my Obsidian vault, with confidence markers, cross-links, and a raw-research dump in agent-notes."
+policy:
+  allow_implicit_invocation: false
