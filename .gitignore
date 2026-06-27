@@ -12,3 +12,6 @@ __pycache__/
 # beads-compound: persist knowledge across machines
 !.beads/memory/
 !.beads/memory/**
+
+# beads retired 2026-06-26
+.beads/
