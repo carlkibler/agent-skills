@@ -1,7 +1,7 @@
 {
   "name": "vesta-penates",
   "version": "1.0.0",
-  "description": "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks.",
+  "description": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.",
   "author": {
     "name": "carlkibler"
   },
@@ -11,8 +11,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Vesta Penates",
-    "shortDescription": "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks.",
-    "longDescription": "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "shortDescription": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.",
+    "longDescription": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
     "developerName": "carlkibler",
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",

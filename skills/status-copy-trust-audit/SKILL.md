@@ -101,7 +101,7 @@ Add tests for:
 
 - Use `release-operator` before shipping changed status text.
 - Use `remote-host-verifier` to confirm the same status semantics on remote hosts.
-- Use `kindness-check` when error copy may blame the user for system drift or tool limitations.
+- Use `empathy-audit` when error copy may blame the user for system drift or tool limitations.
 - Use `release-operator` when status text changes must be verified from the published artifact, not just the checkout.
 
 </interlocks>

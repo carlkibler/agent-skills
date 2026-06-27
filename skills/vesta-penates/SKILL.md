@@ -1,6 +1,6 @@
 ---
 name: vesta-penates
-description: "This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks."
+description: "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks."
 ---
 
 # vesta-penates

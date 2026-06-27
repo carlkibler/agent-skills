@@ -1,6 +1,6 @@
 interface:
   display_name: "Remote Host Verifier"
-  short_description: "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#0369A1"

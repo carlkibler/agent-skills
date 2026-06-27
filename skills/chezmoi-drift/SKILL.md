@@ -102,7 +102,23 @@ Call out:
 - copied directories where a symlink should exist
 - stale links (broken or pointing to a moved/deleted source)
 
-### 5. Report
+### 5. Detect double-installed skills (symlink + plugin)
+
+A skill must load through **one** mechanism only. The expensive failure mode is a skill present **both** as a symlink in `~/.claude/skills/<name>` **and** as an installed plugin (`<name>@<marketplace>`). It then appears twice in every agent's skill list — wasted context and confusing UX. This has bitten this setup before (the `carl-tools` marketplace overlapping the live repo symlinks); keep it dead.
+
+```bash
+comm -12 \
+  <(ls -1 ~/.claude/skills 2>/dev/null | sort -u) \
+  <(claude plugin list 2>/dev/null | sed -E 's/.*[❯> ]+//; s/@.*//' | grep . | sort -u)
+```
+
+Any name printed is double-installed. The fix is to keep **one** mechanism:
+- On a machine where the `agent-skills` repo is checked out and edited (any of Carl's boxes — gauss/euler/vesta), **symlinks are canonical** (live edits show instantly). Remove the plugin: `claude plugin uninstall <name>@<marketplace>`.
+- On a machine without the repo, plugin install is canonical. Remove the stray symlink instead.
+
+Never install a `carl-tools` (or any agent-skills-derived) plugin on a box that already symlinks the live repo.
+
+### 6. Report
 
 Use this format:
 
@@ -114,6 +130,7 @@ Unmanaged files worth tracking: ...
 Scripts not in chezmoi: ...
 Config dirs not in chezmoi: ...
 Shared skill install issues: ...
+Double-installed skills (symlink + plugin): ...
 ```
 
 Then propose exact commands for anything worth fixing.

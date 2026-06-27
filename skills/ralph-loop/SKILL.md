@@ -169,4 +169,4 @@ When stopping, name the next higher-leverage move: test suite expansion, archite
 - Use `second-opinions` inside RALPH for reviewer fan-out and classification discipline.
 - Use `wide-open-brainstorm` only when reviewer output reveals product/UX direction rather than concrete code hardening.
 - Use `trust-audit` when findings cluster around privacy, permissions, auth, or destructive actions.
-- Use `kindness-check` when findings cluster around confusing UX, support burden, machine load, or developer maintainability.
+- Use `empathy-audit` when findings cluster around confusing UX, support burden, machine load, or developer maintainability.

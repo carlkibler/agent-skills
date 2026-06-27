@@ -134,6 +134,8 @@ def cmd_rename(old: str, new: str, live: bool) -> int:
         if plugin.get("name") == old:
             plugin["name"] = new
             plugin["skills"] = [f"./skills/{new}"]
+            if "source" in plugin:
+                plugin["source"] = f"./plugins/{new}"
             updated_marketplace = True
             break
     if updated_marketplace:
@@ -160,6 +162,24 @@ def cmd_rename(old: str, new: str, live: bool) -> int:
             print(f"  ~/.claude/settings.json: '{old_key}' not in enabledPlugins (skipped)")
     else:
         print("  ~/.claude/settings.json not found (skipped)")
+
+    # 4b. Nudge: display_name often still carries the old name (sync won't fix it)
+    fm_text = (new_path if not dry_run else old_path).joinpath("SKILL.md").read_text()
+    fm, _ = parse_frontmatter(fm_text)
+    if old in fm.get("display_name", "").lower().replace(" ", "-"):
+        print(f"  NOTE: display_name is still '{fm.get('display_name')}' — update it by hand if needed")
+
+    # 4c. Remove stale generated artifacts for the old name.
+    # sync_codex_packaging.py only adds; it never prunes, so a rename leaves
+    # plugins/<old>/ and .agents/skills/<old> behind and lint then errors.
+    for stale in (REPO / "plugins" / old, REPO / ".agents" / "skills" / old):
+        if stale.is_symlink() or stale.exists():
+            print(f"  remove stale generated artifact: {stale.relative_to(REPO)}")
+            if not dry_run:
+                if stale.is_symlink() or stale.is_file():
+                    stale.unlink()
+                else:
+                    shutil.rmtree(stale)
 
     # 5. Run sync + lint
     print(f"\n  running sync_codex_packaging.py")

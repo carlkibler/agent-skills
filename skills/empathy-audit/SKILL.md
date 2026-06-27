@@ -1,11 +1,11 @@
 ---
-name: kindness-check
+name: empathy-audit
 description: Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.
-display_name: "Kindness Check"
+display_name: "Empathy Audit"
 brand_color: "#7C3AED"
 local_only: false
 group: "Dev Workflow"
-usage: "/kindness-check:run"
+usage: "/empathy-audit:run"
 summary: "Four-lens empathy review: user, machine, developer, support"
 default_prompt: "Run an empathy audit on this code or feature through user, machine, developer, and support lenses."
 ---
@@ -14,7 +14,9 @@ default_prompt: "Run an empathy audit on this code or feature through user, mach
 
 A structured review that asks: *who does this code serve, and how does it treat them?*
 
-Technical reviews catch bugs. Empathy audits catch the things that make users uninstall, machines overheat, developers quit, and support people burn out. They also catch the things worth celebrating — the thoughtful defaults, the generous error messages, the code that's a pleasure to read.
+Empathy is not the soft part of review — it's a different search strategy. Asking "who suffers when this code actually runs?" routinely surfaces hard defects a correctness pass slides right past: the dictionary that grows unbounded and leaks memory for months, the silent `continue` that drops a user's data with no log line, the 401 handler that retries forever and cooks the battery, the O(n²) loop nobody noticed because the test fixture had three rows. In practice these lenses have turned up real performance wins and logic errors hiding behind green tests and clean diffs — the kind of findings that materially improve the software, not just its manners.
+
+Technical reviews catch bugs in isolation. Empathy audits catch the things that make users uninstall, machines overheat, developers quit, and support people burn out — and the things worth celebrating: the thoughtful defaults, the generous error messages, the code that's a pleasure to read.
 
 ## When to Use
 
@@ -87,9 +89,9 @@ Notice:
 - The evidence points to the exact code
 - The action is specific enough to implement without further questions
 
-## The Four Lenses
+## Phase 2: The Four Lenses
 
-Each lens has a distinct perspective and examines different code. They are designed to find different things — resist the urge to merge them.
+Each lens has a distinct perspective and examines different code. They are designed to find different things — resist the urge to merge them. Each lens prompt below is what you hand to an agent in Phase 3.
 
 ### Lens 1: User Empathy
 

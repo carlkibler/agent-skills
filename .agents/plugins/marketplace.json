@@ -77,6 +77,18 @@
       "category": "Development"
     },
     {
+      "name": "empathy-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/empathy-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development"
+    },
+    {
       "name": "first-contact",
       "source": {
         "source": "local",
@@ -89,6 +101,18 @@
       "category": "Security"
     },
     {
+      "name": "fleet-mesh",
+      "source": {
+        "source": "local",
+        "path": "./plugins/fleet-mesh"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "handle-pr",
       "source": {
         "source": "local",
@@ -99,18 +123,6 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
-    },
-    {
-      "name": "kindness-check",
-      "source": {
-        "source": "local",
-        "path": "./plugins/kindness-check"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Development"
     },
     {
       "name": "launch-sequence",

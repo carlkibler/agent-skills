@@ -7,6 +7,7 @@
 import json
 import os
 import re
+from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -59,7 +60,8 @@ def skill_icon_svg(display_name: str, color: str) -> str:
 
 
 def build_openai_yaml(display_name: str, short_description: str, default_prompt: str, brand_color: str, local_only: bool) -> str:
-    scope_note = " Best in local Codex CLI/app sessions on your own machine." if local_only else " Safe for repo-local and cloud/repo-checkout workflows."
+    # Terse scope tag only when it carries signal; the default (cloud-safe) needs none.
+    scope_note = " (local-only)" if local_only else ""
     short_description = (short_description + scope_note).replace('"', "'")
     default_prompt = default_prompt.replace('"', "'")
     return (
@@ -91,9 +93,13 @@ def build_skills_section(rows: dict[str, list[dict[str, str]]]) -> str:
         "Dev Workflow": "Tools for the day-to-day of writing and reviewing code.",
         "Utilities": "",
     }
-    for group in GROUP_ORDER:
+    # Known groups keep their curated order; any unknown group appends alphabetically
+    # so a new skill declaring a fresh group never crashes the sync.
+    ordered = [g for g in GROUP_ORDER if rows.get(g)]
+    extras = sorted(g for g in rows if g not in GROUP_ORDER and rows.get(g))
+    for group in ordered + extras:
         parts.append(f"### {group}\n")
-        intro = intros[group]
+        intro = intros.get(group, "")
         if intro:
             parts.append(f"{intro}\n")
         parts.append("| Skill | |")
@@ -125,7 +131,7 @@ def main() -> None:
         "interface": {"displayName": "Carl Tools"},
         "plugins": [],
     }
-    readme_rows = {group: [] for group in GROUP_ORDER}
+    readme_rows = defaultdict(list)
 
     for skill_path in sorted(p for p in SKILLS_DIR.iterdir() if p.is_dir()):
         skill_name = skill_path.name
