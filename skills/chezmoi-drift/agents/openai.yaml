@@ -1,6 +1,6 @@
 interface:
   display_name: "Chezmoi Drift"
-  short_description: "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Audit chezmoi dotfiles for drift, unmanaged files, and broken agent skill symlinks across Claude Code, Codex, Gemini, and other harnesses. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#2563EB"

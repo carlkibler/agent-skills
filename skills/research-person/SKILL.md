@@ -1,6 +1,6 @@
 ---
 name: research-person
-description: Deep public-source research on a named person (friend or colleague), written into a People dossier in Carl's Obsidian vault — confidence-marked, cross-linked, sources preserved. Use when given one or more real people's names to "fill out", "research", "build a profile/dossier on", or "write a People note for".
+description: Research a named person from public sources into a confidence-marked People dossier in Carl's Obsidian vault. Use to research or build a dossier on someone.
 display_name: "Research Person"
 brand_color: "#0EA5E9"
 local_only: true

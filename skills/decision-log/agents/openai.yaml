@@ -1,6 +1,6 @@
 interface:
   display_name: "Decision Log"
-  short_description: "Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context. Safe for repo-local and cloud/repo-checkout workflows."
+  short_description: "Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context."
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#6366F1"
