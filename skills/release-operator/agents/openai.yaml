@@ -1,6 +1,6 @@
 interface:
   display_name: "Release Operator"
-  short_description: "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Run a CLI/app release end-to-end: verify state, update changelog/version, test packaging, commit, tag, push, publish, and verify installs. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#059669"

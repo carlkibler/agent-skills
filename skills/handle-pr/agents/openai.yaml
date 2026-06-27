@@ -1,6 +1,6 @@
 interface:
   display_name: "Handle PR"
-  short_description: "Autonomously handle GitHub PR review comments — evaluate, implement HIGH/MEDIUM changes, run tests, commit, reply to all threads. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Autonomously handle GitHub PR review comments — evaluate, implement HIGH/MEDIUM changes, run tests, commit, reply to all threads. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#7C3AED"

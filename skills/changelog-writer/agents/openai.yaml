@@ -1,6 +1,6 @@
 interface:
   display_name: "Changelog Writer"
-  short_description: "Generate user-facing changelog entries from git history — plain language, audience-segmented, with optional CHANGELOG.md update. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Generate user-facing changelog entries from git history — plain language, audience-segmented, with optional CHANGELOG.md update. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#8B5CF6"

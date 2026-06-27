@@ -17,12 +17,12 @@ Add this repo as a Claude Code marketplace:
 
 ```
 /plugin install pre-mortem@carl-tools
-/plugin install kindness-check@carl-tools
+/plugin install empathy-audit@carl-tools
 ```
 
 **`/pre-mortem:run`** — Point it at any project or idea. Parallel agents attack it from different failure angles and return a ranked, concrete list of what will actually kill the launch.
 
-**`/kindness-check:run`** — Run it on any feature after you think it's done. Reviews through four lenses (user, machine, developer, support) and surfaces what "works" but shouldn't ship.
+**`/empathy-audit:run`** — Run it on any feature after you think it's done. Reviews through four lenses (user, machine, developer, support) and surfaces real defects — leaks, silent data loss, perf cliffs — plus the UX that "works" but shouldn't ship.
 
 Or install anything from the full list below, or browse via `/plugin` → **Discover** tab.
 
@@ -53,7 +53,7 @@ Skills are namespaced by plugin name. Invoke directly or let Claude trigger them
 
 ```
 /pre-mortem:run
-/kindness-check:run
+/empathy-audit:run
 ```
 
 Or just ask naturally — Claude will invoke the right skill based on context.
@@ -88,8 +88,8 @@ Tools for the day-to-day of writing and reviewing code.
 | **decision-log** | Record decisions with rationale and rejected alternatives for future agent context<br><sub>`/plugin install decision-log@carl-tools`</sub> |
 | **dependency-pinning** | Audit projects for SHA-pinning + release cooldowns; fix on approval<br><sub>`/plugin install dependency-pinning@carl-tools`</sub> |
 | **django-smoke-alarm** | Triage Django security smoke checks into real risks, hygiene, and false positives<br><sub>`/plugin install django-smoke-alarm@carl-tools`</sub> |
+| **empathy-audit** | Four-lens empathy review: user, machine, developer, support<br><sub>`/plugin install empathy-audit@carl-tools`</sub> |
 | **handle-pr** | Autonomously address PR review comments end-to-end<br><sub>`/plugin install handle-pr@carl-tools`</sub> |
-| **kindness-check** | Four-lens empathy review: user, machine, developer, support<br><sub>`/plugin install kindness-check@carl-tools`</sub> |
 | **parallel-isolated-app-testing** | Design parallel isolated test lanes for apps with shared local state<br><sub>`/plugin install parallel-isolated-app-testing@carl-tools`</sub> |
 | **ralph-loop** | Repeatable multi-LLM hardening sweeps for codebases<br><sub>`/plugin install ralph-loop@carl-tools`</sub> |
 | **release-operator** | End-to-end release execution with post-release install verification<br><sub>`/plugin install release-operator@carl-tools`</sub> |
@@ -103,8 +103,14 @@ Tools for the day-to-day of writing and reviewing code.
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
 | **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
-| **vesta-penates** | This skill should be used when operating Carl's vesta host, especially Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521 failures, media-stack containers, secure config backups, or AI-agent restore runbooks.<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
+| **vesta-penates** | Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
 | **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
+
+### Infra
+
+| Skill | |
+|-------|---|
+| **fleet-mesh** | Verify every host can ssh/et every other host, and catch the hygiene problems that quietly break it<br><sub>`/plugin install fleet-mesh@carl-tools`</sub> |
 
 ## Managing plugins
 

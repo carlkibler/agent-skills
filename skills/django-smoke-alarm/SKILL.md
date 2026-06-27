@@ -1,6 +1,6 @@
 ---
 name: django-smoke-alarm
-description: Run and triage Django/DRF security smoke checks for settings hardening, throttling, safe HTML, ORM race/idempotency patterns, and model integrity; especially useful before shipping or when evaluating djangoSecurityHunter-style findings.
+description: Run/triage Django/DRF security smoke checks — settings, throttling, safe HTML, ORM races, model integrity — before shipping or on scanner findings.
 display_name: "Django Smoke Alarm"
 brand_color: "#DC2626"
 local_only: true
@@ -150,7 +150,7 @@ Useful flags:
 <interlocks>
 
 - Use `trust-audit` for user-facing permission, privacy, billing, and unsafe-feeling AI/data flows found during the scan.
-- Use `kindness-check` after fixes to catch developer/support burden from noisy scanner-driven changes.
+- Use `empathy-audit` after fixes to catch developer/support burden from noisy scanner-driven changes.
 - Use `release-operator` if this creates a CI/release gate.
 - Use `decision-log` if choosing to accept a scanner false positive or defer a real risk.
 

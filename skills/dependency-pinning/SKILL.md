@@ -1,6 +1,6 @@
 ---
 name: dependency-pinning
-description: Dependency safety scan. Audit one or many projects/repos for SHA/digest pinning and release cooldowns across Docker, GitHub Actions, npm/pnpm/yarn/bun/deno, Python (uv/pdm/poetry/pip), .NET (NuGet), Rust (Cargo), Go, Java (Maven/Gradle), Ruby (Bundler), Terraform — and any other ecosystem encountered. Report violations, then apply fixes and add cooldowns only with the user's OK. Triggers on "dependency pinning", "pin deps", "supply chain", "cooldown", "are my deps safe".
+description: Audit repos for SHA/digest dependency pinning and release cooldowns across Docker, CI, and major language ecosystems; report violations, fix with approval.
 display_name: "Dependency Pinning"
 brand_color: "#15803D"
 group: "Dev Workflow"

@@ -1,6 +1,6 @@
 interface:
   display_name: "Status Copy Trust Audit"
-  short_description: "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients. Best in local Codex CLI/app sessions on your own machine."
+  short_description: "Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#B45309"
