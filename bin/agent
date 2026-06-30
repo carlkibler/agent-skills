@@ -11,7 +11,8 @@
 #     the same model resold through OpenRouter), falling back to OpenRouter.
 #   - Prefer a locally-authenticated subscription CLI (claude/codex) for
 #     premium models — no per-token cost — before paying OpenRouter for them.
-#   - Reserve expensive frontier models (Opus, GPT-5.5) for explicit --frontier.
+#   - Default + --frontier use the on-device codex subscription (free); Opus is
+#     explicit-only (--model opus) since it's the expensive OpenRouter path.
 #   - A credential that exists but is REJECTED (e.g. a stale Gemini key) is
 #     detected and skipped, not silently trusted — the next route takes over.
 #
@@ -61,8 +62,10 @@ price_for() {
         deepseek\|deepseek-v4-pro)                echo "0.43 0.87" ;;
         openrouter\|deepseek/deepseek-v4-flash)   echo "0.20 0.40" ;;
         openrouter\|deepseek/deepseek-v4-pro)     echo "0.55 1.10" ;;
+        zai\|glm-5.2|openrouter\|z-ai/glm-5.2)    echo "0.94 3.00" ;;
         zai\|glm-5.1|zai\|glm-4.7|zai\|glm-4.6)   echo "0.60 2.00" ;;
-        openrouter\|~anthropic/claude-opus-latest) echo "5.00 25.00" ;;
+        codex_cli\|*|claude_cli\|*)               echo "0 0" ;;  # subscription, no per-token cost
+        openrouter\|anthropic/claude-opus-4.8|openrouter\|~anthropic/claude-opus-latest) echo "5.00 25.00" ;;
         openrouter\|~anthropic/claude-sonnet-latest) echo "3.00 15.00" ;;
         openrouter\|x-ai/grok-4.3)                echo "1.25 2.50" ;;
         openrouter\|~openai/gpt-latest)           echo "5.00 30.00" ;;
@@ -80,22 +83,23 @@ price_for() {
 resolve_routes() {
     case "$1" in
         # --- capability tiers ---
-        tier:default)   # daily workhorse: cheap, fast, very capable
-            echo "deepseek|deepseek-v4-flash"
-            echo "openrouter|deepseek/deepseek-v4-flash"
+        tier:default)   # on-device codex subscription (free), GLM-5.2 fallback
+            echo "codex_cli|"
+            echo "openrouter|z-ai/glm-5.2"
             ;;
-        tier:fast)      # fast + cheap workhorse (same pick as default)
+        tier:fast)      # literally fast + cheap for bulk/high-volume (codex exec is slow)
             echo "deepseek|deepseek-v4-flash"
             echo "openrouter|deepseek/deepseek-v4-flash"
             ;;
         tier:smart)     # strong reasoning, still cheap
-            echo "zai|glm-5.1"
+            echo "zai|glm-5.2"
             echo "deepseek|deepseek-v4-pro"
             echo "openrouter|deepseek/deepseek-v4-pro"
             ;;
-        tier:frontier)  # best available — prefer local subscription CLI, then OpenRouter
-            echo "claude_cli|opus"
-            echo "openrouter|~anthropic/claude-opus-latest"
+        tier:frontier)  # codex (gpt-5.5, subscription) is frontier-class + free; GLM-5.2 fallback.
+            # NOT OpenRouter Opus — that was the expensive default. Opus is explicit-only (--model opus).
+            echo "codex_cli|"
+            echo "openrouter|z-ai/glm-5.2"
             ;;
         # --- shorthands (first positional arg) ---
         short:flash|short:dsf|short:deepseek-flash)
@@ -103,7 +107,7 @@ resolve_routes() {
         short:deepseek|short:ds)
             echo "deepseek|deepseek-v4-pro"; echo "openrouter|deepseek/deepseek-v4-pro" ;;
         short:glm)
-            echo "zai|glm-5.1"; echo "openrouter|z-ai/glm-4.6" ;;
+            echo "zai|glm-5.2"; echo "openrouter|z-ai/glm-5.2" ;;
         short:glm-turbo)
             echo "zai|glm-5-turbo" ;;
         short:grok)        echo "openrouter|x-ai/grok-4.3" ;;
@@ -112,8 +116,8 @@ resolve_routes() {
         short:gpt|short:codex)  # ChatGPT subscription via codex CLI, then OpenRouter
             echo "codex_cli|"; echo "openrouter|~openai/gpt-latest" ;;
         short:mini|short:gpt-mini) echo "openrouter|~openai/gpt-mini-latest" ;;
-        short:claude|short:opus)   # Claude subscription via claude CLI, then OpenRouter
-            echo "claude_cli|opus"; echo "openrouter|~anthropic/claude-opus-latest" ;;
+        short:claude|short:opus)   # Claude subscription via claude CLI, then OpenRouter Opus 4.8 (pinned)
+            echo "claude_cli|opus"; echo "openrouter|anthropic/claude-opus-4.8" ;;
         short:sonnet)      echo "claude_cli|sonnet"; echo "openrouter|~anthropic/claude-sonnet-latest" ;;
         short:haiku)       echo "claude_cli|haiku"; echo "openrouter|~anthropic/claude-haiku-latest" ;;
         short:qwen)        echo "openrouter|qwen/qwen3.6-plus" ;;
@@ -172,7 +176,7 @@ Input behavior:
 Options:
   --fast              Fast + cheap tier (deepseek-v4-flash)
   --smart             Strong-reasoning tier (GLM / DeepSeek pro)
-  --frontier          Best available (Opus) — reserve for when truly needed
+  --frontier          codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
   --model ID          Explicit model. Bare id -> OpenRouter; or provider:model
                       (e.g. deepseek:deepseek-v4-pro, zai:glm-5-turbo)
   --no-fallback       Try only the first resolved route; do not fall through
@@ -194,10 +198,11 @@ cost), then fall back to OpenRouter if the CLI is missing or not logged in:
   opus/sonnet/haiku -> `claude` CLI      gpt/codex -> `codex` CLI
 
 Tiers (cheap-first):
-  (default)     deepseek-v4-flash direct -> OpenRouter
-  --fast        deepseek-v4-flash direct -> OpenRouter (fast + cheap)
-  --smart       Z.AI glm-5.1 -> deepseek-v4-pro
-  --frontier    Claude Opus via `claude` CLI -> OpenRouter
+  (default)     codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
+  --fast        deepseek-v4-flash direct -> OpenRouter (fast + cheap, for bulk)
+  --smart       Z.AI glm-5.2 -> deepseek-v4-pro
+  --frontier    codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
+                (Opus is explicit-only: --model opus / `agent opus ...`)
 
 Model shorthands (first positional arg):
   flash, dsf    deepseek-v4-flash (direct)
