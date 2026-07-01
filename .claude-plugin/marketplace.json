@@ -8,6 +8,16 @@
   },
   "plugins": [
     {
+      "name": "contacts-unify",
+      "description": "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name.",
+      "source": "./plugins/contacts-unify",
+      "skills": [
+        "./skills/contacts-unify"
+      ],
+      "category": "productivity",
+      "version": "1.0.0"
+    },
+    {
       "name": "research-person",
       "description": "Research a real person (friend or colleague) from public sources into a confidence-marked, cross-linked Obsidian People dossier.",
       "source": "./plugins/research-person",

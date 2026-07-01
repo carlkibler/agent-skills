@@ -1,0 +1,26 @@
+{
+  "name": "contacts-unify",
+  "version": "1.0.0",
+  "description": "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name.",
+  "author": {
+    "name": "carlkibler"
+  },
+  "homepage": "https://github.com/carlkibler/agent-skills",
+  "repository": "https://github.com/carlkibler/agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Contacts Unify",
+    "shortDescription": "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name.",
+    "longDescription": "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name. Works best on a local machine with user-specific files and tools available.",
+    "developerName": "carlkibler",
+    "category": "Productivity",
+    "websiteURL": "https://github.com/carlkibler/agent-skills",
+    "defaultPrompt": [
+      "Consolidate and dedupe my contacts across all sources into one address book, giving me a simple review UI that shows competing values with provenance and edit dates so I choose the winners. Back up first, dry-run before any change."
+    ],
+    "brandColor": "#22C55E",
+    "composerIcon": "./skills/contacts-unify/assets/icon.svg",
+    "logo": "./skills/contacts-unify/assets/icon.svg"
+  }
+}
