@@ -1,0 +1,9 @@
+interface:
+  display_name: "Contacts Unify"
+  short_description: "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name. (local-only)"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#22C55E"
+  default_prompt: "Consolidate and dedupe my contacts across all sources into one address book, giving me a simple review UI that shows competing values with provenance and edit dates so I choose the winners. Back up first, dry-run before any change."
+policy:
+  allow_implicit_invocation: false

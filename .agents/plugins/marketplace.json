@@ -41,6 +41,18 @@
       "category": "Productivity"
     },
     {
+      "name": "contacts-unify",
+      "source": {
+        "source": "local",
+        "path": "./plugins/contacts-unify"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "decision-log",
       "source": {
         "source": "local",
@@ -99,18 +111,6 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Security"
-    },
-    {
-      "name": "fleet-mesh",
-      "source": {
-        "source": "local",
-        "path": "./plugins/fleet-mesh"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
     },
     {
       "name": "handle-pr",
