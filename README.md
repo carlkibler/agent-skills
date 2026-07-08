@@ -52,7 +52,7 @@ Repo-local skills under `.agents/skills/` travel with the repository and are ava
 
 A few skills are intentionally local-machine-centric and work best in CLI/app sessions on your own machine, not generic cloud containers. Examples: `chezmoi-drift`, `profile-me`, and parts of `handle-pr`.
 
-Cloud-friendlier skills: `pre-mortem`, `trust-audit`, `support-storm`, `first-contact`, `parallel-isolated-app-testing`, `second-opinions`, and `wifi-qr`.
+Cloud-friendlier skills: `pre-mortem`, `trust-audit`, `support-storm`, `first-contact`, `parallel-isolated-app-testing` and `second-opinions`.
 
 ## Usage
 
@@ -77,8 +77,8 @@ Broadly useful, no coding required — point them at a plan, your contacts, or a
 | **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
 | **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
+| **second-opinions** | Get a second opinion from a different AI on complex changes<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
 | **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
-| **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
 
 ### Product & Launch
 
@@ -102,6 +102,7 @@ Tools for the day-to-day of writing, reviewing, and releasing code.
 |-------|---|
 | **agent-log-forensics** | Turn local and remote agent session logs into workflow improvements<br><sub>`/plugin install agent-log-forensics@carl-tools`</sub> |
 | **changelog-writer** | Transform git commits into user-facing changelog entries segmented by audience<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
+| **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
 | **decision-log** | Record decisions with rationale and rejected alternatives for future agent context<br><sub>`/plugin install decision-log@carl-tools`</sub> |
 | **dependency-pinning** | Audit projects for SHA-pinning + release cooldowns; fix on approval<br><sub>`/plugin install dependency-pinning@carl-tools`</sub> |
 | **django-smoke-alarm** | Triage Django security smoke checks into real risks, hygiene, and false positives<br><sub>`/plugin install django-smoke-alarm@carl-tools`</sub> |
@@ -111,18 +112,7 @@ Tools for the day-to-day of writing, reviewing, and releasing code.
 | **ralph-loop** | Repeatable multi-LLM hardening sweeps for codebases<br><sub>`/plugin install ralph-loop@carl-tools`</sub> |
 | **release-operator** | End-to-end release execution with post-release install verification<br><sub>`/plugin install release-operator@carl-tools`</sub> |
 | **remote-host-verifier** | Compare local and remote host behavior before declaring a tool fixed<br><sub>`/plugin install remote-host-verifier@carl-tools`</sub> |
-| **second-opinions** | Get a second opinion from a different AI on complex changes<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
 | **visual-qa-loop** | Repeatable visual screenshots and review notes for UI changes<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
-
-### Homelab & Personal Ops
-
-Machine, dotfile, and homelab housekeeping (Carl-specific, but adaptable).
-
-| Skill | |
-|-------|---|
-| **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
-| **fleet-mesh** | Verify every host can ssh/et every other host, and catch the hygiene problems that quietly break it<br><sub>`/plugin install fleet-mesh@carl-tools`</sub> |
-| **vesta-penates** | Operate vesta host, media stack, nginx/Tailscale/Cloudflare, and restore runbooks<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
 
 ## Managing plugins
 

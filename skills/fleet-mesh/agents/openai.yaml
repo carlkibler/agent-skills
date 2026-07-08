@@ -1,9 +1,0 @@
-interface:
-  display_name: "Fleet Mesh"
-  short_description: "Check personal fleet ssh/et reachability over Tailscale, then flag duplicate private keys, dead etserver, stale IPs, and missing Host entries. (local-only)"
-  icon_small: "./assets/icon.svg"
-  icon_large: "./assets/icon.svg"
-  brand_color: "#0EA5E9"
-  default_prompt: "Run the fleet-mesh check from this host and report the reachability matrix and any hygiene findings. If a link is down or a key/config problem is found, diagnose it and propose the fix before changing anything."
-policy:
-  allow_implicit_invocation: false

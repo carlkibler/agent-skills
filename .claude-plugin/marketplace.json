@@ -118,16 +118,6 @@
       "version": "1.0.0"
     },
     {
-      "name": "wifi-qr",
-      "description": "Generate a WiFi QR code PNG phones can scan to join a network instantly.",
-      "source": "./plugins/wifi-qr",
-      "skills": [
-        "./skills/wifi-qr"
-      ],
-      "category": "productivity",
-      "version": "1.0.0"
-    },
-    {
       "name": "parallel-isolated-app-testing",
       "description": "Design parallel isolated test lanes for desktop apps and local tools with shared state \u2014 maps collision surfaces and splits non-colliding test lanes.",
       "source": "./plugins/parallel-isolated-app-testing",
@@ -275,26 +265,6 @@
         "./skills/dependency-pinning"
       ],
       "category": "development",
-      "version": "1.0.0"
-    },
-    {
-      "name": "fleet-mesh",
-      "description": "Check personal fleet ssh/et reachability over Tailscale, then flag duplicate private keys, dead etserver, stale IPs, and missing Host entries.",
-      "source": "./plugins/fleet-mesh",
-      "skills": [
-        "./skills/fleet-mesh"
-      ],
-      "category": "productivity",
-      "version": "1.0.0"
-    },
-    {
-      "name": "vesta-penates",
-      "description": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.",
-      "source": "./plugins/vesta-penates",
-      "skills": [
-        "./skills/vesta-penates"
-      ],
-      "category": "productivity",
       "version": "1.0.0"
     }
   ]

@@ -4,7 +4,7 @@ description: Get validation from a different AI model before committing major ch
 display_name: "Second Opinions"
 brand_color: "#4F46E5"
 local_only: false
-group: "Dev Workflow"
+group: "For Anyone"
 usage: "/second-opinions:run"
 summary: "Get a second opinion from a different AI on complex changes"
 default_prompt: "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
