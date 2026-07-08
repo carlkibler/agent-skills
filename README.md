@@ -28,6 +28,13 @@ Or install anything from the full list below, or browse via `/plugin` → **Disc
 
 After installing, run `/reload-plugins` to activate.
 
+### Claude Desktop
+
+Claude Desktop installs skills from a `.zip` upload, not the marketplace. Prebuilt,
+upload-ready zips for every skill live in **[`desktop-install-ready/`](desktop-install-ready/README.md)** —
+that folder's README lists each skill with its purpose and a one-click download link.
+Grab a zip, then in Claude Desktop go to Settings → Capabilities → Skills → **Upload skill**.
+
 ### Codex CLI / Codex app
 
 This repo now includes native Codex integration in two forms:
@@ -139,6 +146,7 @@ Tools for the day-to-day of writing and reviewing code.
 - `skills/*/agents/openai.yaml`
 - `skills/*/assets/icon.svg`
 - the `## Skills` section in `README.md`
+- `desktop-install-ready/*.zip` and `desktop-install-ready/README.md`
 
 If you edit generated files manually, the sync script will cheerfully overwrite your artisanal snowflake.
 
