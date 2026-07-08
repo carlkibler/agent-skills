@@ -6,7 +6,8 @@ brand_color: "#059669"
 local_only: false
 group: "Product & Launch"
 usage: "/trust-audit:run"
-summary: "Audit a product's trust surface: permissions, privacy, billing, and silent failures"
+summary: "Find the moments your product feels sketchy — surprise charges, scary permissions, silent failures — and close the trust gaps."
+favorite: true
 default_prompt: "Audit this product or feature for trust risks: permissions, privacy, billing, surprise mutations, and anything that feels creepy or unsafe."
 ---
 

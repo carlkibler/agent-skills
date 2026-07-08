@@ -6,7 +6,7 @@ brand_color: "#2563EB"
 local_only: true
 group: "Dev Workflow"
 usage: "/chezmoi-drift:run"
-summary: "Audit chezmoi dotfiles for drift and broken skill installs"
+summary: "Catch when your dotfiles have drifted from what's committed, and when a skill install silently broke."
 default_prompt: "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask."
 ---
 

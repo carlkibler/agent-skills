@@ -6,7 +6,7 @@ brand_color: "#DB2777"
 local_only: true
 group: "Dev Workflow"
 usage: "/visual-qa-loop:run"
-summary: "Repeatable visual screenshots and review notes for UI changes"
+summary: "Catch visual regressions with repeatable before/after screenshots and tight review notes."
 default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
 ---
 

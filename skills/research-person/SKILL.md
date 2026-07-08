@@ -6,7 +6,7 @@ brand_color: "#0EA5E9"
 local_only: true
 group: "For Anyone"
 usage: "/research-person:run <name> [disambiguators]"
-summary: "Research a real person from public sources and write/update their Obsidian People note"
+summary: "Get the rundown on someone before a meeting or intro — pulled from public sources into one tidy, confidence-rated brief."
 default_prompt: "Research the named person(s) from public sources and create or update their People note in my Obsidian vault, with confidence markers, cross-links, and a raw-research dump in agent-notes."
 ---
 

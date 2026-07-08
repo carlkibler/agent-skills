@@ -6,7 +6,8 @@ brand_color: "#7C3AED"
 local_only: false
 group: "Dev Workflow"
 usage: "/empathy-audit:run"
-summary: "Four-lens empathy review: user, machine, developer, support"
+summary: "Review a feature through four sets of eyes — user, machine, developer, support — to catch what plain code review misses."
+favorite: true
 default_prompt: "Run an empathy audit on this code or feature through user, machine, developer, and support lenses."
 ---
 

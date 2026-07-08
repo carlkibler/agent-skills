@@ -67,18 +67,20 @@ Or just ask naturally — Claude will invoke the right skill based on context.
 
 ## Skills
 
+⭐ = Carl's favorites — start here.
+
 ### For Anyone
 
 Broadly useful, no coding required — point them at a plan, your contacts, or a person and go.
 
 | Skill | |
 |-------|---|
-| **contacts-unify** | Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection<br><sub>`/plugin install contacts-unify@carl-tools`</sub> |
-| **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
-| **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
-| **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
-| **second-opinions** | Get a second opinion from a different AI on complex changes<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
-| **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
+| **contacts-unify** | Clean up the mess of contacts scattered across Apple, Google, and your phone — dedupe the duplicates and make it make sense again.<br><sub>`/plugin install contacts-unify@carl-tools`</sub> |
+| ⭐ **pre-mortem** | Before you commit to a plan, find out how it could fail — a team of critics stress-tests it and hands you the real risks, ranked.<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
+| **profile-me** | Turn your digital footprint into a profile any AI can read, so assistants actually get you from the first message.<br><sub>`/plugin install profile-me@carl-tools`</sub> |
+| **research-person** | Get the rundown on someone before a meeting or intro — pulled from public sources into one tidy, confidence-rated brief.<br><sub>`/plugin install research-person@carl-tools`</sub> |
+| ⭐ **second-opinions** | About to make a big call? Get a gut-check from a second AI with a different perspective before you commit.<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
+| ⭐ **wide-open-brainstorm** | A room full of idea generators, serious and playful, riffing on your product or problem from every angle.<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
 
 ### Product & Launch
 
@@ -86,13 +88,13 @@ Stress-test a product before real users do: onboarding, trust, support load, lau
 
 | Skill | |
 |-------|---|
-| **first-contact** | Red-team onboarding and first-run experience for abandonment traps<br><sub>`/plugin install first-contact@carl-tools`</sub> |
-| **launch-sequence** | Full pre-launch gauntlet with GO/CAUTION/NO-GO verdict<br><sub>`/plugin install launch-sequence@carl-tools`</sub> |
-| **post-mortem** | Blameless post-mortem that feeds learnings back into your skill collection<br><sub>`/plugin install post-mortem@carl-tools`</sub> |
-| **scope-hammer** | Compress brainstorm output into MVP scope with DELETE/MOCK/ALREADY EXISTS/SHIP classification<br><sub>`/plugin install scope-hammer@carl-tools`</sub> |
-| **status-copy-trust-audit** | Make status/update/doctor output explain exactly what changed and why<br><sub>`/plugin install status-copy-trust-audit@carl-tools`</sub> |
-| **support-storm** | Simulate the support emails and refunds a launch will generate<br><sub>`/plugin install support-storm@carl-tools`</sub> |
-| **trust-audit** | Audit a product's trust surface: permissions, privacy, billing, and silent failures<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
+| **first-contact** | See where brand-new users get confused, stuck, or give up during setup — before they actually do.<br><sub>`/plugin install first-contact@carl-tools`</sub> |
+| **launch-sequence** | Run the whole pre-launch gauntlet in one pass and get a single go / caution / no-go call.<br><sub>`/plugin install launch-sequence@carl-tools`</sub> |
+| **post-mortem** | Something broke? Reconstruct what really happened, find the root cause, and turn the lesson into a lasting fix.<br><sub>`/plugin install post-mortem@carl-tools`</sub> |
+| **scope-hammer** | Drowning in ideas? Cut a bloated wishlist down to the smallest thing you can actually ship.<br><sub>`/plugin install scope-hammer@carl-tools`</sub> |
+| **status-copy-trust-audit** | Make your app's status and progress messages say what actually changed, so people trust what they're reading.<br><sub>`/plugin install status-copy-trust-audit@carl-tools`</sub> |
+| **support-storm** | Preview the support emails, refunds, and 1-star reviews a launch will trigger, then fix the causes first.<br><sub>`/plugin install support-storm@carl-tools`</sub> |
+| ⭐ **trust-audit** | Find the moments your product feels sketchy — surprise charges, scary permissions, silent failures — and close the trust gaps.<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
 
 ### Dev Workflow
 
@@ -100,19 +102,19 @@ Tools for the day-to-day of writing, reviewing, and releasing code.
 
 | Skill | |
 |-------|---|
-| **agent-log-forensics** | Turn local and remote agent session logs into workflow improvements<br><sub>`/plugin install agent-log-forensics@carl-tools`</sub> |
-| **changelog-writer** | Transform git commits into user-facing changelog entries segmented by audience<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
-| **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
-| **decision-log** | Record decisions with rationale and rejected alternatives for future agent context<br><sub>`/plugin install decision-log@carl-tools`</sub> |
-| **dependency-pinning** | Audit projects for SHA-pinning + release cooldowns; fix on approval<br><sub>`/plugin install dependency-pinning@carl-tools`</sub> |
-| **django-smoke-alarm** | Triage Django security smoke checks into real risks, hygiene, and false positives<br><sub>`/plugin install django-smoke-alarm@carl-tools`</sub> |
-| **empathy-audit** | Four-lens empathy review: user, machine, developer, support<br><sub>`/plugin install empathy-audit@carl-tools`</sub> |
-| **handle-pr** | Autonomously address PR review comments end-to-end<br><sub>`/plugin install handle-pr@carl-tools`</sub> |
-| **parallel-isolated-app-testing** | Design parallel isolated test lanes for apps with shared local state<br><sub>`/plugin install parallel-isolated-app-testing@carl-tools`</sub> |
-| **ralph-loop** | Repeatable multi-LLM hardening sweeps for codebases<br><sub>`/plugin install ralph-loop@carl-tools`</sub> |
-| **release-operator** | End-to-end release execution with post-release install verification<br><sub>`/plugin install release-operator@carl-tools`</sub> |
-| **remote-host-verifier** | Compare local and remote host behavior before declaring a tool fixed<br><sub>`/plugin install remote-host-verifier@carl-tools`</sub> |
-| **visual-qa-loop** | Repeatable visual screenshots and review notes for UI changes<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
+| **agent-log-forensics** | Mine your AI coding sessions for the habits that quietly waste time, and turn them into workflow fixes.<br><sub>`/plugin install agent-log-forensics@carl-tools`</sub> |
+| **changelog-writer** | Turn a pile of git commits into a changelog your users will actually understand.<br><sub>`/plugin install changelog-writer@carl-tools`</sub> |
+| **chezmoi-drift** | Catch when your dotfiles have drifted from what's committed, and when a skill install silently broke.<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
+| **decision-log** | Capture why you picked this over the alternatives, so future-you never has to re-litigate the choice.<br><sub>`/plugin install decision-log@carl-tools`</sub> |
+| **dependency-pinning** | Lock dependencies to safe, pinned versions with cooldowns so a bad release can't blindside you.<br><sub>`/plugin install dependency-pinning@carl-tools`</sub> |
+| **django-smoke-alarm** | Sort a noisy Django security scan into what's actually dangerous, what's hygiene, and what's a false alarm.<br><sub>`/plugin install django-smoke-alarm@carl-tools`</sub> |
+| ⭐ **empathy-audit** | Review a feature through four sets of eyes — user, machine, developer, support — to catch what plain code review misses.<br><sub>`/plugin install empathy-audit@carl-tools`</sub> |
+| **handle-pr** | Hand off your PR review comments and let it implement, test, and reply to every thread on its own.<br><sub>`/plugin install handle-pr@carl-tools`</sub> |
+| **parallel-isolated-app-testing** | Test an app many ways at once without the runs tripping over each other's shared state.<br><sub>`/plugin install parallel-isolated-app-testing@carl-tools`</sub> |
+| **ralph-loop** | Run repeatable multi-AI hardening passes over a codebase to shake out bugs and weak spots.<br><sub>`/plugin install ralph-loop@carl-tools`</sub> |
+| **release-operator** | Drive a release end to end — version, build, publish — and confirm the install actually works afterward.<br><sub>`/plugin install release-operator@carl-tools`</sub> |
+| **remote-host-verifier** | Prove a fix works on the real remote machine, not just your laptop, before you call it done.<br><sub>`/plugin install remote-host-verifier@carl-tools`</sub> |
+| **visual-qa-loop** | Catch visual regressions with repeatable before/after screenshots and tight review notes.<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
 
 ## Managing plugins
 

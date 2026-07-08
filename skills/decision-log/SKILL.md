@@ -6,7 +6,7 @@ brand_color: "#6366F1"
 local_only: false
 group: "Dev Workflow"
 usage: "/decision-log:run"
-summary: "Record decisions with rationale and rejected alternatives for future agent context"
+summary: "Capture why you picked this over the alternatives, so future-you never has to re-litigate the choice."
 default_prompt: "Log this decision: what we chose, what we rejected, and why. Save it in a format a future Claude session can read."
 ---
 

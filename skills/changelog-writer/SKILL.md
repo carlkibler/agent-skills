@@ -6,7 +6,7 @@ brand_color: "#8B5CF6"
 local_only: true
 group: "Dev Workflow"
 usage: "/changelog-writer:run"
-summary: "Transform git commits into user-facing changelog entries segmented by audience"
+summary: "Turn a pile of git commits into a changelog your users will actually understand."
 default_prompt: "Write a user-facing changelog for the changes since the last release. Segment by audience: users, developers, operators. Plain language only — no commit hashes or internal jargon."
 ---
 
