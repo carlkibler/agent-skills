@@ -4,7 +4,7 @@ description: Run a repeatable before/after visual QA loop for local web/app UI c
 display_name: "Visual QA Loop"
 brand_color: "#DB2777"
 local_only: true
-group: "Better Products"
+group: "Dev Workflow"
 usage: "/visual-qa-loop:run"
 summary: "Repeatable visual screenshots and review notes for UI changes"
 default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."

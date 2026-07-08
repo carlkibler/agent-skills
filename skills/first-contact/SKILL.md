@@ -4,7 +4,7 @@ description: Red-team a product’s onboarding and first-run experience to find 
 display_name: "First Contact"
 brand_color: "#DC2626"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/first-contact:run"
 summary: "Red-team onboarding and first-run experience for abandonment traps"
 default_prompt: "Red-team the first-run experience for this product. Find where a new user gets confused, abandons setup, or thinks the app is broken."

@@ -35,6 +35,17 @@ SKILLS_DIR = REPO / "skills"
 OUT_DIR = REPO / "desktop-install-ready"
 RAW_BASE = "https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready"
 
+# Single source of truth for skill grouping — imported by sync_codex_packaging.py
+# so the main README and the desktop README always agree on order and intros.
+# Non-technical groups first, so a non-developer sees what's for them at the top.
+GROUP_ORDER = ["For Anyone", "Product & Launch", "Dev Workflow", "Homelab & Personal Ops"]
+GROUP_INTROS = {
+    "For Anyone": "Broadly useful, no coding required — point them at a plan, your contacts, or a person and go.",
+    "Product & Launch": "Stress-test a product before real users do: onboarding, trust, support load, launch readiness.",
+    "Dev Workflow": "Tools for the day-to-day of writing, reviewing, and releasing code.",
+    "Homelab & Personal Ops": "Machine, dotfile, and homelab housekeeping (Carl-specific, but adaptable).",
+}
+
 # Directories inside a skill that are Codex-specific and not needed by Desktop.
 EXCLUDE_DIRS = {"agents"}
 # File patterns to skip everywhere.
@@ -87,10 +98,23 @@ def build_zip(skill_dir: Path) -> Path | None:
 
 
 def write_folder_readme(skills: list[dict[str, str]]) -> None:
-    rows = "\n".join(
-        f"| **{s['name']}** | {s['summary']} | [Download]({RAW_BASE}/{s['name']}.zip) |"
-        for s in sorted(skills, key=lambda s: s["name"])
-    )
+    by_group: dict[str, list[dict[str, str]]] = {}
+    for s in skills:
+        by_group.setdefault(s["group"], []).append(s)
+    ordered = [g for g in GROUP_ORDER if by_group.get(g)]
+    ordered += sorted(g for g in by_group if g not in GROUP_ORDER)
+
+    sections = []
+    for group in ordered:
+        rows = "\n".join(
+            f"| **{s['name']}** | {s['summary']} | [Download]({RAW_BASE}/{s['name']}.zip) |"
+            for s in sorted(by_group[group], key=lambda s: s["name"])
+        )
+        intro = GROUP_INTROS.get(group, "")
+        head = f"### {group}\n\n" + (f"{intro}\n\n" if intro else "")
+        sections.append(f"{head}| Skill | Purpose | Download |\n|-------|---------|----------|\n{rows}")
+    skills_body = "\n\n".join(sections)
+
     body = f"""# Desktop-install-ready skills
 
 Prebuilt `.zip` bundles of every skill, ready to upload to **Claude Desktop**.
@@ -107,9 +131,7 @@ Codex-only `agents/` dir is excluded — Claude Desktop doesn't use it.
 
 ## Skills
 
-| Skill | Purpose | Download |
-|-------|---------|----------|
-{rows}
+{skills_body}
 
 ---
 
@@ -133,16 +155,18 @@ def build(targets: list[str] | None = None, *, quiet: bool = False) -> list[dict
         skill_dirs = [d for d in sorted(SKILLS_DIR.iterdir()) if d.is_dir()]
 
     # README always reflects every skill, not just the built subset.
-    all_meta = [
-        {
-            "name": d.name,
-            "summary": (
-                fm := parse_frontmatter((d / "SKILL.md").read_text())
-            ).get("summary", fm.get("description", d.name)),
-        }
-        for d in sorted(SKILLS_DIR.iterdir())
-        if d.is_dir() and (d / "SKILL.md").exists()
-    ]
+    all_meta = []
+    for d in sorted(SKILLS_DIR.iterdir()):
+        if not (d.is_dir() and (d / "SKILL.md").exists()):
+            continue
+        fm = parse_frontmatter((d / "SKILL.md").read_text())
+        all_meta.append(
+            {
+                "name": d.name,
+                "summary": fm.get("summary", fm.get("description", d.name)),
+                "group": fm.get("group", "Dev Workflow"),
+            }
+        )
 
     built = 0
     for skill_dir in skill_dirs:

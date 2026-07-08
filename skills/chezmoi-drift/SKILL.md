@@ -4,7 +4,7 @@ description: Audit chezmoi dotfiles for drift, unmanaged files, and broken agent
 display_name: "Chezmoi Drift"
 brand_color: "#2563EB"
 local_only: true
-group: "Utilities"
+group: "Homelab & Personal Ops"
 usage: "/chezmoi-drift:run"
 summary: "Audit chezmoi dotfiles for drift and broken skill installs"
 default_prompt: "Audit this machine or dotfiles setup for chezmoi drift and broken shared skill installs. Report first; don't mutate anything unless I explicitly ask."

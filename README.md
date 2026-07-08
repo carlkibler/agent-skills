@@ -67,26 +67,36 @@ Or just ask naturally — Claude will invoke the right skill based on context.
 
 ## Skills
 
-### Better Products
+### For Anyone
 
-Find failure modes, trust problems, and support burden before your users do.
+Broadly useful, no coding required — point them at a plan, your contacts, or a person and go.
+
+| Skill | |
+|-------|---|
+| **contacts-unify** | Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection<br><sub>`/plugin install contacts-unify@carl-tools`</sub> |
+| **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
+| **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
+| **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
+| **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
+| **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
+
+### Product & Launch
+
+Stress-test a product before real users do: onboarding, trust, support load, launch readiness.
 
 | Skill | |
 |-------|---|
 | **first-contact** | Red-team onboarding and first-run experience for abandonment traps<br><sub>`/plugin install first-contact@carl-tools`</sub> |
 | **launch-sequence** | Full pre-launch gauntlet with GO/CAUTION/NO-GO verdict<br><sub>`/plugin install launch-sequence@carl-tools`</sub> |
 | **post-mortem** | Blameless post-mortem that feeds learnings back into your skill collection<br><sub>`/plugin install post-mortem@carl-tools`</sub> |
-| **pre-mortem** | Multi-agent project pre-mortem — ranked risks with mitigations<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **scope-hammer** | Compress brainstorm output into MVP scope with DELETE/MOCK/ALREADY EXISTS/SHIP classification<br><sub>`/plugin install scope-hammer@carl-tools`</sub> |
 | **status-copy-trust-audit** | Make status/update/doctor output explain exactly what changed and why<br><sub>`/plugin install status-copy-trust-audit@carl-tools`</sub> |
 | **support-storm** | Simulate the support emails and refunds a launch will generate<br><sub>`/plugin install support-storm@carl-tools`</sub> |
 | **trust-audit** | Audit a product's trust surface: permissions, privacy, billing, and silent failures<br><sub>`/plugin install trust-audit@carl-tools`</sub> |
-| **visual-qa-loop** | Repeatable visual screenshots and review notes for UI changes<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
-| **wide-open-brainstorm** | Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
 
 ### Dev Workflow
 
-Tools for the day-to-day of writing and reviewing code.
+Tools for the day-to-day of writing, reviewing, and releasing code.
 
 | Skill | |
 |-------|---|
@@ -102,18 +112,17 @@ Tools for the day-to-day of writing and reviewing code.
 | **release-operator** | End-to-end release execution with post-release install verification<br><sub>`/plugin install release-operator@carl-tools`</sub> |
 | **remote-host-verifier** | Compare local and remote host behavior before declaring a tool fixed<br><sub>`/plugin install remote-host-verifier@carl-tools`</sub> |
 | **second-opinions** | Get a second opinion from a different AI on complex changes<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
+| **visual-qa-loop** | Repeatable visual screenshots and review notes for UI changes<br><sub>`/plugin install visual-qa-loop@carl-tools`</sub> |
 
-### Utilities
+### Homelab & Personal Ops
+
+Machine, dotfile, and homelab housekeeping (Carl-specific, but adaptable).
 
 | Skill | |
 |-------|---|
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
-| **contacts-unify** | Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection<br><sub>`/plugin install contacts-unify@carl-tools`</sub> |
 | **fleet-mesh** | Verify every host can ssh/et every other host, and catch the hygiene problems that quietly break it<br><sub>`/plugin install fleet-mesh@carl-tools`</sub> |
-| **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
-| **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
 | **vesta-penates** | Operate vesta host, media stack, nginx/Tailscale/Cloudflare, and restore runbooks<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
-| **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
 
 ## Managing plugins
 

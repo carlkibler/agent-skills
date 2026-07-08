@@ -4,7 +4,7 @@ description: "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/T
 display_name: "Vesta Penates"
 brand_color: "#F97316"
 local_only: true
-group: "Utilities"
+group: "Homelab & Personal Ops"
 usage: "/vesta-penates:run"
 summary: "Operate vesta host, media stack, nginx/Tailscale/Cloudflare, and restore runbooks"
 default_prompt: "Check vesta health with the Penates scripts, diagnose any failures read-only first, and propose the safest fix before running live repair commands."

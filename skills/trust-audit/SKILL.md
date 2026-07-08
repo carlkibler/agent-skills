@@ -4,7 +4,7 @@ description: Audit whether a product feels trustworthy or unsafe — covering pe
 display_name: "Trust Audit"
 brand_color: "#059669"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/trust-audit:run"
 summary: "Audit a product's trust surface: permissions, privacy, billing, and silent failures"
 default_prompt: "Audit this product or feature for trust risks: permissions, privacy, billing, surprise mutations, and anything that feels creepy or unsafe."

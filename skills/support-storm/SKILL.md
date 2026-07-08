@@ -4,7 +4,7 @@ description: Simulate the support emails, reviews, and complaints a launch will 
 display_name: "Support Storm"
 brand_color: "#DB2777"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/support-storm:run"
 summary: "Simulate the support emails and refunds a launch will generate"
 default_prompt: "Simulate the support emails, bug reports, reviews, and refund requests this launch or feature change is likely to generate."
