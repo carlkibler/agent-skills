@@ -1,9 +1,9 @@
 interface:
   display_name: "Vesta Penates"
-  short_description: "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks."
+  short_description: "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks. (local-only)"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
-  brand_color: "#10A37F"
-  default_prompt: "Use the vesta-penates skill."
+  brand_color: "#F97316"
+  default_prompt: "Check vesta health with the Penates scripts, diagnose any failures read-only first, and propose the safest fix before running live repair commands."
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

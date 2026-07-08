@@ -56,10 +56,12 @@ Before fan-out, detect which external LLM CLIs are available. Use the pre-mortem
 ```bash
 # Preferred — reuse pre-mortem's script if the skill is installed:
 bash "${SKILL_DIR}/../pre-mortem/scripts/detect-llms.sh" 2>/dev/null || \
-  for tool in agent ask-gemini gemini llm codex; do
+  for tool in agent claude codex ask-gemini gemini llm; do
     command -v "$tool" >/dev/null 2>&1 && echo "found: $tool"
   done
 ```
+
+Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
 
 Determine your execution mode from the result:
 
@@ -89,7 +91,7 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 
 | Role | What they generate | Ideal agent type |
 |---|---|---|
-| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | External LLM (e.g., `agent --frontier` or `ask-gemini`) |
+| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | External LLM (e.g., `agent --frontier`, local-Claude `agent opus --no-fallback`, or `ask-gemini`) |
 | **Outsider / Cultural Stranger** | Assumptions the team never questioned; non-default user perspectives | External LLM |
 | **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | External LLM |
 | **Devil's Advocate** | The honest thing nobody wants to say; core assumption challenges | Any model with a blunt mandate |
@@ -162,12 +164,12 @@ FORMAT: Flowing prose or numbered list, your choice. No hedging. No meta-comment
 |---|---|
 | Strategist | Code-aware subagent (`general-purpose` agent with local file access) |
 | Operator | Code-aware subagent |
-| Cartographer | `agent --smart` (gemini-2.5-pro, strong spatial/systems reasoning) |
-| Archivist | `agent --smart` or `agent` (default flash) |
-| Trickster | `agent --fast` (llama-4-scout, fast and generative, less anchored) |
+| Cartographer | `agent --smart` (strong spatial/systems reasoning) |
+| Archivist | `agent --smart` or `agent` (subscription/default router) |
+| Trickster | `agent --fast` (fast and generative, less anchored) |
 | Skeptic | `agent --fast` (blunt, fast output) |
-| Future Self | `agent --frontier` (claude-opus-4-5, widest horizon) |
-| Outsider | `agent` (default, fresh framing via gemini-2.5-flash) |
+| Future Self | `agent --frontier` (codex subscription) or `agent opus --no-fallback` (local `claude -p`) |
+| Outsider | `agent` (default router, fresh framing) |
 | Customer Whisperer | `agent --smart` or any external LLM |
 | Devil's Advocate | `agent --fast` — give the fastest, bluntest model |
 | Executioner | `agent --fast` preferred; subagent with explicit "argue for abandonment" mandate otherwise |

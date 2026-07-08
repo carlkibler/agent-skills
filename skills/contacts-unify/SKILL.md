@@ -1,6 +1,6 @@
 ---
 name: contacts-unify
-description: Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one trustworthy address book, with a friend-simple review UI showing competing values plus provenance and edit dates. Optional opt-in Phase B ranks who you talk to from iMessage and builds dossiers only on people you name. Use for "fix my contacts", "merge duplicate contacts", "clean up contacts", "who do I talk to most".
+description: Consolidate/dedupe contacts from macOS, iCloud, Google, Zoho, or VCF with provenance-aware review, backups, and optional approved dossiers.
 display_name: "Contacts Unify"
 brand_color: "#22C55E"
 local_only: true

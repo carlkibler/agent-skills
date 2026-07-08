@@ -102,9 +102,10 @@ Tools for the day-to-day of writing and reviewing code.
 |-------|---|
 | **chezmoi-drift** | Audit chezmoi dotfiles for drift and broken skill installs<br><sub>`/plugin install chezmoi-drift@carl-tools`</sub> |
 | **contacts-unify** | Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection<br><sub>`/plugin install contacts-unify@carl-tools`</sub> |
+| **fleet-mesh** | Verify every host can ssh/et every other host, and catch the hygiene problems that quietly break it<br><sub>`/plugin install fleet-mesh@carl-tools`</sub> |
 | **profile-me** | Build a portable AI profile from your digital footprint<br><sub>`/plugin install profile-me@carl-tools`</sub> |
 | **research-person** | Research a real person from public sources and write/update their Obsidian People note<br><sub>`/plugin install research-person@carl-tools`</sub> |
-| **vesta-penates** | Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
+| **vesta-penates** | Operate vesta host, media stack, nginx/Tailscale/Cloudflare, and restore runbooks<br><sub>`/plugin install vesta-penates@carl-tools`</sub> |
 | **wifi-qr** | Generate a WiFi QR code PNG<br><sub>`/plugin install wifi-qr@carl-tools`</sub> |
 
 ## Managing plugins

@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "contacts-unify",
-      "description": "Consolidate and dedupe contacts across macOS/iCloud/Google/Zoho/VCF into one address book with a provenance-aware review UI. Optional, opt-in Phase B ranks who you talk to from iMessage and builds research dossiers only on people you explicitly name.",
+      "description": "Consolidate/dedupe contacts from macOS, iCloud, Google, Zoho, or VCF with provenance-aware review, backups, and optional approved dossiers.",
       "source": "./plugins/contacts-unify",
       "skills": [
         "./skills/contacts-unify"
@@ -265,6 +265,36 @@
         "./skills/ralph-loop"
       ],
       "category": "development",
+      "version": "1.0.0"
+    },
+    {
+      "name": "dependency-pinning",
+      "description": "Audit repos for SHA/digest dependency pinning and release cooldowns across Docker, CI, and major language ecosystems; report violations, fix with approval.",
+      "source": "./plugins/dependency-pinning",
+      "skills": [
+        "./skills/dependency-pinning"
+      ],
+      "category": "development",
+      "version": "1.0.0"
+    },
+    {
+      "name": "fleet-mesh",
+      "description": "Check personal fleet ssh/et reachability over Tailscale, then flag duplicate private keys, dead etserver, stale IPs, and missing Host entries.",
+      "source": "./plugins/fleet-mesh",
+      "skills": [
+        "./skills/fleet-mesh"
+      ],
+      "category": "productivity",
+      "version": "1.0.0"
+    },
+    {
+      "name": "vesta-penates",
+      "description": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.",
+      "source": "./plugins/vesta-penates",
+      "skills": [
+        "./skills/vesta-penates"
+      ],
+      "category": "productivity",
       "version": "1.0.0"
     }
   ]

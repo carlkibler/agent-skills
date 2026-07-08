@@ -23,9 +23,11 @@ Verify tools once, upfront. Note availability — it shapes later steps.
 ```bash
 which gh && gh auth status          # required — stop if missing or unauthenticated
 bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
-  for t in agent ask-gemini codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+  for t in agent claude codex ask-gemini gemini llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
 # detect available code agents for quality pass
 ```
+
+Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
 
 Check for MCP GitHub tools by attempting `mcp__github__list_pull_requests` with a trivial call. Note whether MCP is available — use it where noted, fall back to `gh` otherwise.
 

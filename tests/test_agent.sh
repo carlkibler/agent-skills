@@ -50,7 +50,7 @@ printf 'FILE TWO\n' > "$TMPDIR/two.txt"
 bash -n "$AGENT"
 
 printf 'PIPE DATA' | "$AGENT" --dry-run --file "$TMPDIR/one.txt" --context "$TMPDIR/two.txt" flash 'Main prompt' >"$TMPDIR/combined.out" 2>"$TMPDIR/combined.err"
-assert_contains "$TMPDIR/combined.err" 'agent: model=~google/gemini-flash-latest'
+assert_contains "$TMPDIR/combined.err" 'agent: routes=deepseek|deepseek-v4-flash,openrouter|deepseek/deepseek-v4-flash'
 assert_contains "$TMPDIR/combined.err" 'files=2'
 assert_contains "$TMPDIR/combined.out" 'Main prompt'
 assert_contains "$TMPDIR/combined.out" "--- file: $TMPDIR/one.txt ---"
@@ -64,7 +64,7 @@ printf 'PIPE ONLY' | "$AGENT" --dry-run --stdin 'Main prompt' >"$TMPDIR/stdin.ou
 assert_contains "$TMPDIR/stdin.out" 'PIPE ONLY'
 
 "$AGENT" --dry-run "@$TMPDIR/one.txt" grok 'Prompt' >"$TMPDIR/atfile.out" 2>"$TMPDIR/atfile.err"
-assert_contains "$TMPDIR/atfile.err" 'agent: model=x-ai/grok-4.3'
+assert_contains "$TMPDIR/atfile.err" 'agent: routes=openrouter|x-ai/grok-4.3'
 assert_contains "$TMPDIR/atfile.out" 'FILE ONE'
 
 "$AGENT" --dry-run --no-stdin 'Prompt' < "$TMPDIR/one.txt" >"$TMPDIR/no-stdin.out" 2>"$TMPDIR/no-stdin.err"
@@ -72,8 +72,15 @@ assert_contains "$TMPDIR/no-stdin.out" 'Prompt'
 assert_not_contains "$TMPDIR/no-stdin.out" 'FILE ONE'
 
 "$AGENT" --dry-run --model=openai/gpt-5.5 --timeout 12 'Prompt' >"$TMPDIR/model-eq.out" 2>"$TMPDIR/model-eq.err"
-assert_contains "$TMPDIR/model-eq.err" 'agent: model=openai/gpt-5.5'
+assert_contains "$TMPDIR/model-eq.err" 'agent: routes=openrouter|openai/gpt-5.5'
 assert_contains "$TMPDIR/model-eq.err" 'timeout=12'
+
+"$AGENT" --dry-run --frontier 'Prompt' >"$TMPDIR/frontier.out" 2>"$TMPDIR/frontier.err"
+assert_contains "$TMPDIR/frontier.err" 'agent: routes=codex_cli|,openrouter|z-ai/glm-5.2'
+
+"$AGENT" --dry-run opus 'Prompt' >"$TMPDIR/opus.out" 2>"$TMPDIR/opus.err"
+assert_contains "$TMPDIR/opus.err" 'agent: routes=claude_cli|opus'
+assert_not_contains "$TMPDIR/opus.err" 'openrouter|anthropic'
 
 assert_fails missing "$AGENT" --dry-run --file "$TMPDIR/missing.txt" 'Prompt'
 assert_contains "$TMPDIR/missing.err" 'cannot read file'
@@ -93,6 +100,6 @@ assert_contains "$TMPDIR/bad-max-tokens.err" 'positive integer'
 "$AGENT" --help >"$TMPDIR/help.out"
 assert_contains "$TMPDIR/help.out" '--file, -f PATH'
 assert_contains "$TMPDIR/help.out" '--timeout N'
-assert_contains "$TMPDIR/help.out" 'agent @review-packet.md grok'
+assert_contains "$TMPDIR/help.out" 'agent --file review-packet.md --smart'
 
 printf 'agent dry-run contract tests passed\n'

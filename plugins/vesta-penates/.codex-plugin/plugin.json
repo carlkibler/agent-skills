@@ -12,14 +12,14 @@
   "interface": {
     "displayName": "Vesta Penates",
     "shortDescription": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks.",
-    "longDescription": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
+    "longDescription": "Operate Carl's vesta host: Jolly Roger Jukebox, concierge, nginx/Tailscale/Cloudflare 521s, media containers, backups, and AI-agent restore runbooks. Works best on a local machine with user-specific files and tools available.",
     "developerName": "carlkibler",
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Use the vesta-penates skill."
+      "Check vesta health with the Penates scripts, diagnose any failures read-only first, and propose the safest fix before running live repair commands."
     ],
-    "brandColor": "#10A37F",
+    "brandColor": "#F97316",
     "composerIcon": "./skills/vesta-penates/assets/icon.svg",
     "logo": "./skills/vesta-penates/assets/icon.svg"
   }
