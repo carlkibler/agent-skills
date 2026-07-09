@@ -120,10 +120,12 @@ The skill ships with a detection script at `scripts/detect-llms.sh` inside the s
 bash "${SKILL_DIR}/scripts/detect-llms.sh"
 
 # Fallback if SKILL_DIR isn't set — inline detection:
-for tool in agent ask-gemini gemini llm codex; do
+for tool in agent claude codex ask-gemini gemini llm; do
   command -v "$tool" >/dev/null 2>&1 && echo "found: $tool"
 done
 ```
+
+Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
 
 If neither the script nor the variable is available, skip detection and default to single-agent mode. The fallback is always safe.
 
@@ -395,71 +397,14 @@ _"It is [future date]. [Project] launched, and the launch went badly. Here's wha
 
 ### Document 2: The Process Log — "How the Pre-Mortem Ran"
 
-This is the meta-document. It shows the work, not just the conclusions. Save it alongside the report.
+Save a compact process log beside the report. Include only:
 
-```markdown
-# Pre-Mortem Process Log: [Project]
-_Generated: [date]. This document records what happened during the pre-mortem, not just what it found._
-
-## Agents and Roles
-
-| Agent / Model | Role | Emotional Register | Prompt Variant |
-|---|---|---|---|
-| [model or "subagent-1"] | Saboteur | Cold glee | Standard + code access |
-| [model or "subagent-2"] | Emotional Witness | Raw empathy | Standard, no code access |
-| [model or "external tool"] | Burned Expert | Controlled fury | Standard + prior-failure framing |
-| ... | ... | ... | ... |
-
-## Scenario Briefing Sent
-
-> [verbatim briefing text sent to all agents]
-
-## What Each Agent Returned
-
-### Saboteur ([model])
-**Top 3 risks surfaced:**
-1. [risk]
-2. [risk]
-3. [risk]
-**Their "failure nobody wants to talk about":** [verbatim]
-**Surprising finding:** [what this role caught that others missed]
-
-### [Next role...]
-[Same structure]
-
-## Cross-Pollination Round (if run)
-
-### Round 2 Prompt Digest
-[The digest sent to each agent]
-
-### Exchanges and Disagreements
-- **[Role A] challenged [Role B]'s finding that [X]:** "[verbatim quote or paraphrase]"
-- **[Role B] responded:** "[verbatim quote or paraphrase]"
-- **Resolution:** [how synthesis handled it — accepted, rejected, escalated to critical]
-
-### What Changed After Cross-Pollination
-- [Risk upgraded/downgraded/merged because of cross-pollination]
-- [New cascading failure identified]
-- [Finding that appeared in round 1 but was retracted after challenge]
-
-## Where Perspectives Converged
-- [Risk X was surfaced by N roles independently — this convergence increased severity rating]
-- [Risk Y appeared in 4 of 6 roles with different framings — synthesis merged into one entry]
-
-## Where Perspectives Clashed
-- [Role A rated Risk X as critical; Role B rated it watch-list. Synthesis reasoning: ...]
-- [The Devil's Advocate disputed the Burned Expert's core assumption. Outcome: ...]
-
-## Synthesis Judgment Calls
-- [Decision made during synthesis that wasn't obvious — and why]
-- [Risk that was downgraded despite strong advocacy from one role — reason]
-
-## Process Quality Notes
-- Roles that felt too similar (potential for future differentiation): [list]
-- Roles that punched above their weight (surfaced unique risks): [list]
-- Gaps in perspective coverage for this type of project: [list]
-- Recommended additional roles for a follow-up exercise: [list]
-```
+- agents/models, roles, emotional registers, and prompt variants
+- the scenario briefing sent
+- each role's top 3 risks and any surprising finding
+- cross-pollination digest, disagreements, and changes, if run
+- where perspectives converged, where they clashed, and key synthesis judgment calls
+- process quality notes: roles that overlapped, roles that found unique risks, and coverage gaps
 
 ## Phase 6: Discussion and Follow-Through
 

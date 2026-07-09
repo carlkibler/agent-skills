@@ -298,8 +298,10 @@ For full codebase audits, use parallel agents for efficiency and perspective div
 
 ```bash
 bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
-  for t in agent ask-gemini codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+  for t in agent claude codex ask-gemini gemini llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
 ```
+
+Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
 
 #### Agent Assignment
 
