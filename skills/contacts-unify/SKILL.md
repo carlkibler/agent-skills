@@ -4,7 +4,7 @@ description: Consolidate/dedupe contacts from macOS, iCloud, Google, Zoho, or VC
 display_name: "Contacts Unify"
 brand_color: "#22C55E"
 local_only: true
-group: "Utilities"
+group: "For Anyone"
 usage: "Ask to fix/merge/clean up contacts, optionally naming whose (local Mac or an SSH host you control)."
 summary: "Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection"
 default_prompt: "Consolidate and dedupe my contacts across all sources into one address book, giving me a simple review UI that shows competing values with provenance and edit dates so I choose the winners. Back up first, dry-run before any change."

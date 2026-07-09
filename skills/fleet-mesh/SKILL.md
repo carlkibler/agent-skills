@@ -4,7 +4,7 @@ description: Check personal fleet ssh/et reachability over Tailscale, then flag 
 display_name: "Fleet Mesh"
 brand_color: "#0EA5E9"
 local_only: true
-group: "Utilities"
+group: "Homelab & Personal Ops"
 usage: "/fleet-mesh:check"
 summary: "Verify every host can ssh/et every other host, and catch the hygiene problems that quietly break it"
 default_prompt: "Run the fleet-mesh check from this host and report the reachability matrix and any hygiene findings. If a link is down or a key/config problem is found, diagnose it and propose the fix before changing anything."

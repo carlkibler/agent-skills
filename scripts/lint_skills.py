@@ -18,6 +18,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_desktop_zips import GROUP_ORDER
+
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO / "skills"
 AGENT_SKILLS_DIR = REPO / ".agents" / "skills"
@@ -97,7 +100,7 @@ def check_skill(skill_path: Path, claude_names: set[str]) -> None:
         warn(f"{name}/SKILL.md: missing 'display_name' in frontmatter")
     if not fm.get("brand_color"):
         warn(f"{name}/SKILL.md: missing 'brand_color' in frontmatter")
-    valid_groups = {"Better Products", "Dev Workflow", "Utilities"}
+    valid_groups = set(GROUP_ORDER)
     group = fm.get("group", "")
     if not group:
         warn(f"{name}/SKILL.md: missing 'group' in frontmatter")

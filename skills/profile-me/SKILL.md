@@ -4,7 +4,7 @@ description: Build a personal AI profile from your digital footprint — portrai
 display_name: "Profile Me"
 brand_color: "#1D4ED8"
 local_only: true
-group: "Utilities"
+group: "For Anyone"
 usage: "/profile-me:run"
 summary: "Build a portable AI profile from your digital footprint"
 default_prompt: "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations."
