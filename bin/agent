@@ -10,9 +10,11 @@
 #   - Route to a provider's DIRECT API when its key exists (cheaper than
 #     the same model resold through OpenRouter), falling back to OpenRouter.
 #   - Prefer a locally-authenticated subscription CLI (claude/codex) for
-#     premium models — no per-token cost — before paying OpenRouter for them.
-#   - Default + --frontier use the on-device codex subscription (free); Opus is
-#     explicit-only (--model opus) since it's the expensive OpenRouter path.
+#     premium models — no per-token cost.
+#   - Anthropic models are forbidden through OpenRouter. Claude routes must use
+#     the local `claude -p ...` CLI and fail closed if it is unavailable.
+#   - Default + --frontier use the on-device codex subscription (free). Claude
+#     is explicit-only (`agent opus|sonnet|haiku`) via the local Claude CLI.
 #   - A credential that exists but is REJECTED (e.g. a stale Gemini key) is
 #     detected and skipped, not silently trusted — the next route takes over.
 #
@@ -65,8 +67,6 @@ price_for() {
         zai\|glm-5.2|openrouter\|z-ai/glm-5.2)    echo "0.94 3.00" ;;
         zai\|glm-5.1|zai\|glm-4.7|zai\|glm-4.6)   echo "0.60 2.00" ;;
         codex_cli\|*|claude_cli\|*)               echo "0 0" ;;  # subscription, no per-token cost
-        openrouter\|anthropic/claude-opus-4.8|openrouter\|~anthropic/claude-opus-latest) echo "5.00 25.00" ;;
-        openrouter\|~anthropic/claude-sonnet-latest) echo "3.00 15.00" ;;
         openrouter\|x-ai/grok-4.3)                echo "1.25 2.50" ;;
         openrouter\|~openai/gpt-latest)           echo "5.00 30.00" ;;
         *)                                        echo "" ;;
@@ -97,7 +97,7 @@ resolve_routes() {
             echo "openrouter|deepseek/deepseek-v4-pro"
             ;;
         tier:frontier)  # codex (gpt-5.5, subscription) is frontier-class + free; GLM-5.2 fallback.
-            # NOT OpenRouter Opus — that was the expensive default. Opus is explicit-only (--model opus).
+            # NOT OpenRouter Opus — that was the expensive default. Claude is explicit-only via local CLI.
             echo "codex_cli|"
             echo "openrouter|z-ai/glm-5.2"
             ;;
@@ -116,10 +116,10 @@ resolve_routes() {
         short:gpt|short:codex)  # ChatGPT subscription via codex CLI, then OpenRouter
             echo "codex_cli|"; echo "openrouter|~openai/gpt-latest" ;;
         short:mini|short:gpt-mini) echo "openrouter|~openai/gpt-mini-latest" ;;
-        short:claude|short:opus)   # Claude subscription via claude CLI, then OpenRouter Opus 4.8 (pinned)
-            echo "claude_cli|opus"; echo "openrouter|anthropic/claude-opus-4.8" ;;
-        short:sonnet)      echo "claude_cli|sonnet"; echo "openrouter|~anthropic/claude-sonnet-latest" ;;
-        short:haiku)       echo "claude_cli|haiku"; echo "openrouter|~anthropic/claude-haiku-latest" ;;
+        short:claude|short:opus)   # Claude subscription via local claude CLI only; no OpenRouter fallback.
+            echo "claude_cli|opus" ;;
+        short:sonnet)      echo "claude_cli|sonnet" ;;
+        short:haiku)       echo "claude_cli|haiku" ;;
         short:qwen)        echo "openrouter|qwen/qwen3.6-plus" ;;
         short:mistral)     echo "openrouter|mistralai/mistral-medium-3-5" ;;
         # --- explicit --model VALUE ---
@@ -167,6 +167,8 @@ Usage: agent [OPTIONS] [SHORTHAND] "your question"
 Routing: each tier/shorthand resolves to an ordered list of provider routes.
 The cheapest available route is tried first; transient errors retry with
 backoff; rejected keys and unavailable models fall through to the next route.
+This helper is optional sugar; skills may call `claude -p`, `codex exec`, or
+any subscribed local-agent CLI directly when that is cheaper or clearer.
 
 Input behavior:
   Positional text becomes the main prompt.
@@ -194,15 +196,16 @@ Options:
   -h, --help          Show this help
 
 Premium models route to your local SUBSCRIPTION CLI first (no per-token
-cost), then fall back to OpenRouter if the CLI is missing or not logged in:
-  opus/sonnet/haiku -> `claude` CLI      gpt/codex -> `codex` CLI
+cost). Claude models are CLI-only and intentionally do not fall back to
+OpenRouter:
+  opus/sonnet/haiku -> `claude -p` CLI   gpt/codex -> `codex` CLI
 
 Tiers (cheap-first):
   (default)     codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
   --fast        deepseek-v4-flash direct -> OpenRouter (fast + cheap, for bulk)
   --smart       Z.AI glm-5.2 -> deepseek-v4-pro
   --frontier    codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
-                (Opus is explicit-only: --model opus / `agent opus ...`)
+                (Claude is explicit-only: `agent opus|sonnet|haiku ...`)
 
 Model shorthands (first positional arg):
   flash, dsf    deepseek-v4-flash (direct)
@@ -210,7 +213,7 @@ Model shorthands (first positional arg):
   glm           Z.AI glm-5.1            glm-turbo  Z.AI glm-5-turbo
   grok          x-ai/grok-4.3           gemini     gemini-pro (via OpenRouter)
   gpt, codex    ChatGPT via codex CLI   mini       gpt-mini (OpenRouter)
-  claude, opus  Claude Opus via CLI     sonnet / haiku  via claude CLI
+  claude, opus  Claude Opus via `claude -p` only; sonnet / haiku same
   qwen          qwen3.6-plus            mistral    mistral-medium-3-5
 
 Examples:
@@ -443,6 +446,14 @@ PY
 try_route() {
     local provider="$1" model="$2"
     local base_url key_env key attempt http_code curl_rc backoff
+    if [ "$provider" = "openrouter" ]; then
+        case "$model" in
+            anthropic/*|~anthropic/*|*claude*|opus|sonnet|haiku)
+                echo "agent: Anthropic/Claude via OpenRouter is forbidden; use local CLI: agent opus|sonnet|haiku ..." >&2
+                return 3
+                ;;
+        esac
+    fi
     base_url="$(provider_base_url "$provider")"
     key_env="$(provider_key_env "$provider")"
     if [ -z "$base_url" ] || [ -z "$key_env" ]; then

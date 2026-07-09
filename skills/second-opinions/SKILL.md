@@ -30,10 +30,10 @@ Use the bundled detection script, with an inline fallback if `SKILL_DIR` isn't s
 
 ```bash
 bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
-  for t in agent codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+  for t in agent claude codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
 ```
 
-Use the first one found. If none are available, tell the user and skip this step.
+Use the first one found. If none are available, tell the user and skip this step. Treat `agent` as a router, not a requirement: direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid. Do not call Anthropic/Claude models through OpenRouter; use local `claude -p` directly or via `agent <opus|sonnet|haiku> --no-fallback`, or skip Claude.
 
 > **Codex caveat:** `codex` loads `~/.codex/config.toml` → your CLAUDE.md, so by default it delegates the review back to the cheap-model toolchain (quick-check) — silently defeating the point of a *different* model's opinion. The detect script already adds `--ignore-user-config`; also end the prompt with: *"Do this review YOURSELF — do not delegate to any other tool or model."* Heavy reviews can exceed 10 min (use `-c model_reasoning_effort="xhigh"`, run in background).
 
@@ -43,10 +43,11 @@ Second opinions are about **deep analysis**, not speed. Use the smartest model a
 
 | Tool | For deep analysis | For quick checks |
 |---|---|---|
-| `agent` | `agent --frontier` (claude-opus-4-5) | `agent --fast` (llama-4-scout) |
+| `agent` | `agent --frontier` (codex subscription / GPT-5.5; no Anthropic OpenRouter) | `agent --fast` (deepseek-v4-flash) |
+| `agent` when Claude is wanted | `agent opus --no-fallback` (local `claude -p`; fails closed) | `agent sonnet --no-fallback` |
 | `codex` | GPT-5.5 — see Codex caveat above | — |
 
-When this skill is invoked for **pre-merge review, design validation, or architecture decisions**, prefer `agent --frontier`, or `codex` for a genuinely different architecture. For quick sanity checks, `agent --fast` is fine.
+When this skill is invoked for **pre-merge review, design validation, or architecture decisions**, prefer `agent --frontier`, or `codex` for a genuinely different architecture. If the desired second opinion is specifically Claude, use `agent opus --no-fallback`; the `agent` command must route Claude through local `claude -p`, never OpenRouter. For quick sanity checks, `agent --fast` is fine.
 
 ## How to Ask
 

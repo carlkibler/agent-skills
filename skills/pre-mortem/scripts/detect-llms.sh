@@ -5,7 +5,9 @@
 #
 # Each detected tool gets a line: NAME|INVOKE_PATTERN|MODEL_FAMILY|NOTES
 # Families are deduplicated so we prefer model diversity.
-# `agent` (OpenRouter) is preferred — covers all model tiers via flags.
+# `agent` is preferred when present: it routes direct providers plus local subscription CLIs.
+# It is optional; direct `claude -p`, `codex exec`, or another subscribed local-agent CLI
+# is valid when that avoids per-token API spend.
 
 set -uo pipefail
 
@@ -49,13 +51,19 @@ probe() {
 
 [[ "$QUIET" != "--quiet" ]] && echo "Detecting available LLM CLIs..." >&2
 
-# `agent` covers all tiers: default (gemini-2.5-flash), --fast (llama-4-scout),
-# --smart (gemini-2.5-pro), --frontier (claude-opus-4-5)
+# `agent` covers default/frontier (Codex subscription), --fast (DeepSeek),
+# and --smart (strong direct models). Claude routes must stay on local `claude -p`.
 probe "agent" \
-    "command -v agent && has_secret OPENROUTER_API_KEY" \
-    'agent "{prompt}"' \
-    "openrouter" \
-    "OpenRouter multi-model (--fast/--smart/--frontier)"
+    "command -v agent" \
+    'agent --frontier "{prompt}"' \
+    "agent-router" \
+    "Router for direct providers + local subscribed CLIs"
+
+probe "claude" \
+    "command -v claude" \
+    'claude -p "{prompt}"' \
+    "claude" \
+    "Claude CLI subscription; no OpenRouter"
 
 probe "llm" \
     "command -v llm" \

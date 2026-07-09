@@ -14,7 +14,7 @@
     "shortDescription": "Audit repos for SHA/digest dependency pinning and release cooldowns across Docker, CI, and major language ecosystems; report violations, fix with approval.",
     "longDescription": "Audit repos for SHA/digest dependency pinning and release cooldowns across Docker, CI, and major language ecosystems; report violations, fix with approval. Works well in repo-local and Codex cloud workflows that operate on a checked-out repository.",
     "developerName": "carlkibler",
-    "category": "Productivity",
+    "category": "Development",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
       "Scan this project (or the repos I point you at) for dependency pinning and release-cooldown hygiene across Docker, CI, JS, Python, and Terraform. Report first; propose exact fixes and ask before changing anything."
