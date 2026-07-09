@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-cd /Users/carl/dev/me/penates
-exec bin/penates "$@"
