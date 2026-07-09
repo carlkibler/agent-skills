@@ -7,8 +7,12 @@
 import json
 import os
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import build_desktop_zips
 
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO / "skills"
@@ -211,6 +215,9 @@ def main() -> None:
 
     (AGENT_PLUGINS_DIR / "marketplace.json").write_text(json.dumps(codex_marketplace, indent=2, ensure_ascii=False) + "\n")
     update_readme(readme_rows)
+
+    # Rebuild Claude Desktop zips + their folder README so they never drift.
+    build_desktop_zips.build(quiet=True)
 
 
 if __name__ == "__main__":
