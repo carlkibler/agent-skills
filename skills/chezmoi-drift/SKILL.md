@@ -106,10 +106,15 @@ Call out:
 
 A skill must load through **one** mechanism only. The expensive failure mode is a skill present **both** as a symlink in `~/.claude/skills/<name>` **and** as an installed plugin (`<name>@<marketplace>`). It then appears twice in every agent's skill list — wasted context and confusing UX. This has bitten this setup before (the `carl-tools` marketplace overlapping the live repo symlinks); keep it dead.
 
+Use `command ls`, not bare `ls`. Carl's shells alias `ls` to `eza`, which prints
+`name -> target` for symlinks — every symlinked skill then fails to match and the
+check silently reports only the real directories. This under-reported 9 of 10
+duplicates on gauss (2026-07-08).
+
 ```bash
 comm -12 \
-  <(ls -1 ~/.claude/skills 2>/dev/null | sort -u) \
-  <(claude plugin list 2>/dev/null | sed -E 's/.*[❯> ]+//; s/@.*//' | grep . | sort -u)
+  <(command ls -1 ~/.claude/skills 2>/dev/null | sort -u) \
+  <(claude plugin list 2>/dev/null | grep '❯' | sed 's/^[^❯]*❯ *//; s/@.*//' | grep . | sort -u)
 ```
 
 Any name printed is double-installed. The fix is to keep **one** mechanism:
@@ -117,6 +122,10 @@ Any name printed is double-installed. The fix is to keep **one** mechanism:
 - On a machine without the repo, plugin install is canonical. Remove the stray symlink instead.
 
 Never install a `carl-tools` (or any agent-skills-derived) plugin on a box that already symlinks the live repo.
+
+A marketplace with `"autoUpdate": true` in `~/.claude/settings.json` will keep
+reinstating its plugins. Uninstalling the plugins is not enough — remove the
+marketplace too: `claude plugin marketplace remove <name>`.
 
 ### 6. Report
 
