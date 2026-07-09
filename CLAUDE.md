@@ -112,6 +112,5 @@ skills/
   ├── trust-audit/                # Product trust surface audit
   ├── support-storm/              # Pre-launch support email simulation
   ├── first-contact/              # First-run experience red-teaming
-  ├── wifi-qr/                    # WiFi QR code generator
   └── empathy-audit/              # Four-lens empathy review (user, machine, developer, support)
 ```
