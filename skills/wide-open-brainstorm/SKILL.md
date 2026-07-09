@@ -4,7 +4,7 @@ description: Multi-model brainstorming room for product strategy and experience 
 display_name: "Wide-Open Brainstorm"
 brand_color: "#C87941"
 local_only: false
-group: "Better Products"
+group: "For Anyone"
 usage: "/wide-open-brainstorm:run"
 summary: "Multi-model brainstorming room for product strategy — serious plus whimsical, multi-altitude ideation"
 default_prompt: "Run a wide-open brainstorming room for this product idea. Move between big-picture strategy, project-level organization, tactical actions, and whimsical metaphors; then distill the strongest differentiated concepts."

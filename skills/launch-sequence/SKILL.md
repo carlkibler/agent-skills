@@ -4,7 +4,7 @@ description: Run the full pre-launch gauntlet (first-contact â†’ support-storm â
 display_name: "Launch Sequence"
 brand_color: "#0D9488"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/launch-sequence:run"
 summary: "Full pre-launch gauntlet with GO/CAUTION/NO-GO verdict"
 default_prompt: "Run the full pre-launch sequence on this product or feature. Surface every risk across first-run experience, support load, trust surface, and catastrophic failure modes."

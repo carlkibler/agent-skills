@@ -22,7 +22,9 @@ PLUGINS_DIR = REPO / "plugins"
 CLAUDE_MARKETPLACE = REPO / ".claude-plugin" / "marketplace.json"
 README = REPO / "README.md"
 
-GROUP_ORDER = ["Better Products", "Dev Workflow", "Utilities"]
+# Group order/intros live in build_desktop_zips so both READMEs stay in sync.
+GROUP_ORDER = build_desktop_zips.GROUP_ORDER
+GROUP_INTROS = build_desktop_zips.GROUP_INTROS
 
 
 def parse_skill_frontmatter(text: str) -> dict[str, str]:
@@ -92,18 +94,13 @@ def replace_section(text: str, heading: str, body: str) -> str:
 
 def build_skills_section(rows: dict[str, list[dict[str, str]]]) -> str:
     parts = []
-    intros = {
-        "Better Products": "Find failure modes, trust problems, and support burden before your users do.",
-        "Dev Workflow": "Tools for the day-to-day of writing and reviewing code.",
-        "Utilities": "",
-    }
     # Known groups keep their curated order; any unknown group appends alphabetically
     # so a new skill declaring a fresh group never crashes the sync.
     ordered = [g for g in GROUP_ORDER if rows.get(g)]
     extras = sorted(g for g in rows if g not in GROUP_ORDER and rows.get(g))
     for group in ordered + extras:
         parts.append(f"### {group}\n")
-        intro = intros.get(group, "")
+        intro = GROUP_INTROS.get(group, "")
         if intro:
             parts.append(f"{intro}\n")
         parts.append("| Skill | |")
@@ -147,7 +144,7 @@ def main() -> None:
             "brand_color": frontmatter.get("brand_color", "#10A37F"),
             "default_prompt": frontmatter.get("default_prompt", f"Use the {skill_name} skill."),
             "local_only": frontmatter.get("local_only", "false").lower() == "true",
-            "group": frontmatter.get("group", "Utilities"),
+            "group": frontmatter.get("group", "Dev Workflow"),
             "usage": frontmatter.get("usage", f"/{skill_name}:run"),
             "summary": frontmatter.get("summary", frontmatter.get("description", skill_name)),
         }

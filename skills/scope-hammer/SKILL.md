@@ -4,7 +4,7 @@ description: Ruthlessly compress brainstorm output into a shippable MVP — clas
 display_name: "Scope Hammer"
 brand_color: "#F97316"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/scope-hammer:run"
 summary: "Compress brainstorm output into MVP scope with DELETE/MOCK/ALREADY EXISTS/SHIP classification"
 default_prompt: "Apply the scope hammer to this brainstorm or feature list. Classify everything as DELETE, MOCK, ALREADY EXISTS, or SHIP. Give me the shortest path to a launchable MVP."

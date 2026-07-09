@@ -4,7 +4,7 @@ description: Analyze a real failure — reconstruct what happened, find root cau
 display_name: "Post-Mortem"
 brand_color: "#DC2626"
 local_only: false
-group: "Better Products"
+group: "Product & Launch"
 usage: "/post-mortem:run"
 summary: "Blameless post-mortem that feeds learnings back into your skill collection"
 default_prompt: "Run a blameless post-mortem on what just broke. Reconstruct the timeline, find root cause, extract learnings, and tell me what to add to my pre-mortem or support-storm skills."

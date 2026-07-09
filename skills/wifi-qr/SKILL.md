@@ -5,7 +5,7 @@ allowed-tools: Bash(uv run *)
 display_name: "WiFi QR"
 brand_color: "#0891B2"
 local_only: false
-group: "Utilities"
+group: "For Anyone"
 usage: "/wifi-qr:run"
 summary: "Generate a WiFi QR code PNG"
 default_prompt: "Generate a WiFi QR code PNG from an SSID and password, and save it to a path I specify."
