@@ -6,7 +6,7 @@ brand_color: "#22C55E"
 local_only: true
 group: "For Anyone"
 usage: "Ask to fix/merge/clean up contacts, optionally naming whose (local Mac or an SSH host you control)."
-summary: "Multi-source contact dedupe with a provenance-aware review UI, plus optional iMessage-driven dossier collection"
+summary: "Clean up the mess of contacts scattered across Apple, Google, and your phone — dedupe the duplicates and make it make sense again."
 default_prompt: "Consolidate and dedupe my contacts across all sources into one address book, giving me a simple review UI that shows competing values with provenance and edit dates so I choose the winners. Back up first, dry-run before any change."
 ---
 

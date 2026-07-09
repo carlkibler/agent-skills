@@ -6,7 +6,7 @@ brand_color: "#1D4ED8"
 local_only: true
 group: "For Anyone"
 usage: "/profile-me:run"
-summary: "Build a portable AI profile from your digital footprint"
+summary: "Turn your digital footprint into a profile any AI can read, so assistants actually get you from the first message."
 default_prompt: "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations."
 ---
 

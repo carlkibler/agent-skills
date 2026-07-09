@@ -6,7 +6,7 @@ brand_color: "#DC2626"
 local_only: true
 group: "Dev Workflow"
 usage: "/django-smoke-alarm:run"
-summary: "Triage Django security smoke checks into real risks, hygiene, and false positives"
+summary: "Sort a noisy Django security scan into what's actually dangerous, what's hygiene, and what's a false alarm."
 default_prompt: "Run a Django smoke-alarm pass on this project. Use a clean scan, exclude worktrees/vendor/generated folders, and classify findings as REAL, HYGIENE, or FALSE POSITIVE with file-line evidence."
 ---
 

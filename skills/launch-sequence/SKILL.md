@@ -6,7 +6,7 @@ brand_color: "#0D9488"
 local_only: false
 group: "Product & Launch"
 usage: "/launch-sequence:run"
-summary: "Full pre-launch gauntlet with GO/CAUTION/NO-GO verdict"
+summary: "Run the whole pre-launch gauntlet in one pass and get a single go / caution / no-go call."
 default_prompt: "Run the full pre-launch sequence on this product or feature. Surface every risk across first-run experience, support load, trust surface, and catastrophic failure modes."
 ---
 

@@ -6,7 +6,7 @@ brand_color: "#6D28D9"
 local_only: true
 group: "Dev Workflow"
 usage: "/agent-log-forensics:run"
-summary: "Turn local and remote agent session logs into workflow improvements"
+summary: "Mine your AI coding sessions for the habits that quietly waste time, and turn them into workflow fixes."
 default_prompt: "Scan recent Claude and Codex session logs on this machine and any named remote hosts. Report Toolsmith adoption, lost opportunities, recurring frustrations, and concrete new skills/scripts to add. Keep examples privacy-light."
 ---
 

@@ -6,7 +6,7 @@ brand_color: "#C2410C"
 local_only: false
 group: "Dev Workflow"
 usage: "/ralph-loop:run"
-summary: "Repeatable multi-LLM hardening sweeps for codebases"
+summary: "Run repeatable multi-AI hardening passes over a codebase to shake out bugs and weak spots."
 default_prompt: "Run a RALPH loop over this repo: map the next under-reviewed surfaces, get multi-LLM review, apply high-confidence fixes, document findings, and tell me the next sweep frontier."
 ---
 
