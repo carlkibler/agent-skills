@@ -6,7 +6,7 @@ brand_color: "#0369A1"
 local_only: true
 group: "Dev Workflow"
 usage: "/remote-host-verifier:run"
-summary: "Compare local and remote host behavior before declaring a tool fixed"
+summary: "Prove a fix works on the real remote machine, not just your laptop, before you call it done."
 default_prompt: "Verify this command locally and on the named remote host(s). Capture versions, paths, output differences, and a final pass/fail verdict with exact commands."
 ---
 

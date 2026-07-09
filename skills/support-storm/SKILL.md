@@ -6,7 +6,7 @@ brand_color: "#DB2777"
 local_only: false
 group: "Product & Launch"
 usage: "/support-storm:run"
-summary: "Simulate the support emails and refunds a launch will generate"
+summary: "Preview the support emails, refunds, and 1-star reviews a launch will trigger, then fix the causes first."
 default_prompt: "Simulate the support emails, bug reports, reviews, and refund requests this launch or feature change is likely to generate."
 ---
 

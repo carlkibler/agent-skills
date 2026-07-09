@@ -6,7 +6,8 @@ brand_color: "#B45309"
 local_only: false
 group: "For Anyone"
 usage: "/pre-mortem:run"
-summary: "Multi-agent project pre-mortem — ranked risks with mitigations"
+summary: "Before you commit to a plan, find out how it could fail — a team of critics stress-tests it and hands you the real risks, ranked."
+favorite: true
 default_prompt: "Run a sharp pre-mortem on this project or launch. Surface specific failure modes, then rank them and propose mitigations."
 ---
 

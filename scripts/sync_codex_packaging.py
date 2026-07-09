@@ -93,7 +93,7 @@ def replace_section(text: str, heading: str, body: str) -> str:
 
 
 def build_skills_section(rows: dict[str, list[dict[str, str]]]) -> str:
-    parts = []
+    parts = ["⭐ = Carl's favorites — start here.\n"]
     # Known groups keep their curated order; any unknown group appends alphabetically
     # so a new skill declaring a fresh group never crashes the sync.
     ordered = [g for g in GROUP_ORDER if rows.get(g)]
@@ -107,7 +107,8 @@ def build_skills_section(rows: dict[str, list[dict[str, str]]]) -> str:
         parts.append("|-------|---|")
         for row in rows[group]:
             install = f"`/plugin install {row['name']}@carl-tools`"
-            parts.append(f"| **{row['name']}** | {row['summary']}<br><sub>{install}</sub> |")
+            star = "⭐ " if row.get("favorite") else ""
+            parts.append(f"| {star}**{row['name']}** | {row['summary']}<br><sub>{install}</sub> |")
         parts.append("")
     return "\n".join(parts).rstrip() + "\n"
 
@@ -147,6 +148,7 @@ def main() -> None:
             "group": frontmatter.get("group", "Dev Workflow"),
             "usage": frontmatter.get("usage", f"/{skill_name}:run"),
             "summary": frontmatter.get("summary", frontmatter.get("description", skill_name)),
+            "favorite": frontmatter.get("favorite", "false").lower() == "true",
         }
         display_name = config_fields["display_name"]
         description = plugin_meta.get("description") or frontmatter.get("description", display_name)
@@ -208,7 +210,9 @@ def main() -> None:
                 "category": category,
             }
         )
-        readme_rows[group].append({"name": skill_name, "usage": usage, "summary": summary})
+        readme_rows[group].append(
+            {"name": skill_name, "usage": usage, "summary": summary, "favorite": config_fields["favorite"]}
+        )
 
     (AGENT_PLUGINS_DIR / "marketplace.json").write_text(json.dumps(codex_marketplace, indent=2, ensure_ascii=False) + "\n")
     update_readme(readme_rows)

@@ -6,7 +6,7 @@ brand_color: "#B45309"
 local_only: true
 group: "Product & Launch"
 usage: "/status-copy-trust-audit:run"
-summary: "Make status/update/doctor output explain exactly what changed and why"
+summary: "Make your app's status and progress messages say what actually changed, so people trust what they're reading."
 default_prompt: "Audit this CLI/status output. Make the states consistent, idempotent, and plain-language. Verify repeated runs and update tests/docs so the output stays trustworthy."
 ---
 

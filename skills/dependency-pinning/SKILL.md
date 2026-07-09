@@ -5,7 +5,7 @@ display_name: "Dependency Pinning"
 brand_color: "#15803D"
 group: "Dev Workflow"
 usage: "/dependency-pinning"
-summary: "Audit projects for SHA-pinning + release cooldowns; fix on approval"
+summary: "Lock dependencies to safe, pinned versions with cooldowns so a bad release can't blindside you."
 default_prompt: "Scan this project (or the repos I point you at) for dependency pinning and release-cooldown hygiene across Docker, CI, JS, Python, and Terraform. Report first; propose exact fixes and ask before changing anything."
 ---
 

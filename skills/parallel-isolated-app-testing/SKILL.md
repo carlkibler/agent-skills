@@ -6,7 +6,7 @@ brand_color: "#0F766E"
 local_only: false
 group: "Dev Workflow"
 usage: "/parallel-isolated-app-testing:run"
-summary: "Design parallel isolated test lanes for apps with shared local state"
+summary: "Test an app many ways at once without the runs tripping over each other's shared state."
 default_prompt: "Design a safe parallel isolated testing plan for this app, including collision surfaces, lane boundaries, and launcher contracts."
 ---
 

@@ -6,7 +6,7 @@ brand_color: "#7C3AED"
 local_only: true
 group: "Dev Workflow"
 usage: "/handle-pr:run"
-summary: "Autonomously address PR review comments end-to-end"
+summary: "Hand off your PR review comments and let it implement, test, and reply to every thread on its own."
 default_prompt: "Handle the PR review comments end-to-end: evaluate each thread, implement the worthwhile changes, run checks, and prepare replies."
 ---
 

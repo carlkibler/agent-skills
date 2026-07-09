@@ -106,7 +106,7 @@ def write_folder_readme(skills: list[dict[str, str]]) -> None:
     sections = []
     for group in ordered:
         rows = "\n".join(
-            f"| **{s['name']}** | {s['summary']} | [Download]({RAW_BASE}/{s['name']}.zip) |"
+            f"| {'⭐ ' if s['favorite'] else ''}**{s['name']}** | {s['summary']} | [Download]({RAW_BASE}/{s['name']}.zip) |"
             for s in sorted(by_group[group], key=lambda s: s["name"])
         )
         intro = GROUP_INTROS.get(group, "")
@@ -129,6 +129,8 @@ Codex-only `agents/` dir is excluded — Claude Desktop doesn't use it.
 3. Select the `.zip`.
 
 ## Skills
+
+⭐ = Carl's favorites — start here.
 
 {skills_body}
 
@@ -164,6 +166,7 @@ def build(targets: list[str] | None = None, *, quiet: bool = False) -> list[dict
                 "name": d.name,
                 "summary": fm.get("summary", fm.get("description", d.name)),
                 "group": fm.get("group", "Dev Workflow"),
+                "favorite": fm.get("favorite", "false").lower() == "true",
             }
         )
 

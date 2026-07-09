@@ -6,7 +6,8 @@ brand_color: "#4F46E5"
 local_only: false
 group: "For Anyone"
 usage: "/second-opinions:run"
-summary: "Get a second opinion from a different AI on complex changes"
+summary: "About to make a big call? Get a gut-check from a second AI with a different perspective before you commit."
+favorite: true
 default_prompt: "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
 ---
 

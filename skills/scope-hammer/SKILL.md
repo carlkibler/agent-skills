@@ -6,7 +6,7 @@ brand_color: "#F97316"
 local_only: false
 group: "Product & Launch"
 usage: "/scope-hammer:run"
-summary: "Compress brainstorm output into MVP scope with DELETE/MOCK/ALREADY EXISTS/SHIP classification"
+summary: "Drowning in ideas? Cut a bloated wishlist down to the smallest thing you can actually ship."
 default_prompt: "Apply the scope hammer to this brainstorm or feature list. Classify everything as DELETE, MOCK, ALREADY EXISTS, or SHIP. Give me the shortest path to a launchable MVP."
 ---
 

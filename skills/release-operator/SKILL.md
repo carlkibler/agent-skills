@@ -6,7 +6,7 @@ brand_color: "#059669"
 local_only: true
 group: "Dev Workflow"
 usage: "/release-operator:run"
-summary: "End-to-end release execution with post-release install verification"
+summary: "Drive a release end to end — version, build, publish — and confirm the install actually works afterward."
 default_prompt: "Run the release end-to-end. Verify tests and package contents, update changelog/version, commit/tag/push, publish, then verify install/update locally and on any named remote hosts."
 ---
 
