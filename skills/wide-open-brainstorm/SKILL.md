@@ -52,25 +52,20 @@ If the user provided enough direction, proceed without questions. If not, ask on
 
 ### 2. Environment detection — discover available agents
 
-Before fan-out, detect which external LLM CLIs are available. Use the pre-mortem skill's detection script if it is installed, otherwise run the inline fallback:
+Before fan-out, check whether `agent` — the single front door for external-model calls — is on
+PATH. It already handles provider selection and fallback internally, so this skill does not probe
+for individual LLM CLIs.
 
 ```bash
-# Preferred — reuse pre-mortem's script if the skill is installed:
-bash "${SKILL_DIR}/../pre-mortem/scripts/detect-llms.sh" 2>/dev/null || \
-  for tool in agent claude codex ask-gemini gemini llm; do
-    command -v "$tool" >/dev/null 2>&1 && echo "found: $tool"
-  done
+command -v agent >/dev/null 2>&1 && echo "agent available"
 ```
-
-Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
 
 Determine your execution mode from the result:
 
-| Available | Mode | Strategy |
+| `agent` available | Mode | Strategy |
 |---|---|---|
-| 2+ external LLMs | **Full diversity** | Subagents for project-aware roles + external LLMs for outsider/whimsy roles |
-| 1 external LLM | **Hybrid** | Subagents + one external LLM for a contrasting outsider perspective |
-| None | **Single-agent** | All roles as subagents with strongly differentiated mandates and tones |
+| yes | **Full diversity** | Subagents for project-aware roles + `agent` (varied tiers) for outsider/whimsy roles |
+| no | **Single-agent** | All roles as subagents with strongly differentiated mandates and tones |
 
 ### 3. Role assignment
 
@@ -92,7 +87,7 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 
 | Role | What they generate | Ideal agent type |
 |---|---|---|
-| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | External LLM (e.g., `agent --frontier`, local-Claude `agent opus --no-fallback`, or `ask-gemini`) |
+| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | External LLM (`agent --frontier`, or local-Claude `agent opus --no-fallback`) |
 | **Outsider / Cultural Stranger** | Assumptions the team never questioned; non-default user perspectives | External LLM |
 | **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | External LLM |
 | **Devil's Advocate** | The honest thing nobody wants to say; core assumption challenges | Any model with a blunt mandate |

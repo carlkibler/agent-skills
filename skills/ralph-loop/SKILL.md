@@ -79,12 +79,13 @@ Keep prompts under shell argument limits. If using a CLI wrapper that passes pro
 
 ### 3. Launch — fan out reviewers
 
-Use at least three diverse reviewers when available. `agent` is a router, not mandatory: direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes. Prefer:
+Use at least three diverse reviewers when available. `agent` is the single front door for
+external-model calls — route every reviewer through it rather than probing for other CLIs. Prefer:
 
 - `agent --model x-ai/grok-4.3` for bluntness/edge cases;
 - `agent --model '~google/gemini-pro-latest'` for systems/code reasoning;
 - `agent --model deepseek/deepseek-v4-pro` for bug-hunting/value;
-- or fallback to `ask-gemini`, `llm`, `codex`, `ask-copilot`, etc.
+- or `agent --smart` / `agent --frontier` when a specific model isn't needed.
 
 Run reviewers in parallel when tools allow. Store raw outputs under `~/dev/agent-notes/<repo>/` with model and date in the filename.
 

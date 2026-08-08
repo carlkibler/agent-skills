@@ -1,6 +1,6 @@
 ---
 name: second-opinions
-description: Get validation from a different AI model before committing major changes — detects available LLM CLIs and routes to the best one.
+description: Get validation from a different AI model before committing major changes — routes through `agent` to the best model for the job.
 display_name: "Second Opinions"
 brand_color: "#4F46E5"
 local_only: false
@@ -27,16 +27,19 @@ Get validation from a different AI before committing. Any single model — regar
 
 ## Agent Detection
 
-Use the bundled detection script, with an inline fallback if `SKILL_DIR` isn't set:
+`agent` (`~/.local/bin/agent`) is the single front door for second-opinion calls — it already
+handles provider selection and fallback internally, so this skill does not probe for individual
+LLM CLIs. Check once:
 
 ```bash
-bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
-  for t in agent claude codex llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+command -v agent >/dev/null 2>&1 && echo "agent available"
 ```
 
-Use the first one found. If none are available, tell the user and skip this step. Treat `agent` as a router, not a requirement: direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid. Do not call Anthropic/Claude models through OpenRouter; use local `claude -p` directly or via `agent <opus|sonnet|haiku> --no-fallback`, or skip Claude.
+If `agent` is not available, tell the user and skip this step — do not fall back to hand-picking
+another CLI. Do not call Anthropic/Claude models through OpenRouter; use local `claude -p` directly
+or via `agent <opus|sonnet|haiku> --no-fallback`, or skip Claude.
 
-> **Codex caveat:** `codex` loads `~/.codex/config.toml` → your CLAUDE.md, so by default it delegates the review back to the cheap-model toolchain (quick-check) — silently defeating the point of a *different* model's opinion. The detect script already adds `--ignore-user-config`; also end the prompt with: *"Do this review YOURSELF — do not delegate to any other tool or model."* Heavy reviews can exceed 10 min (use `-c model_reasoning_effort="xhigh"`, run in background).
+> **Codex caveat:** `codex` loads `~/.codex/config.toml` → your CLAUDE.md, so by default it delegates the review back to the cheap-model toolchain (quick-check) — silently defeating the point of a *different* model's opinion. Pass `--ignore-user-config` when invoking `codex` directly; also end the prompt with: *"Do this review YOURSELF — do not delegate to any other tool or model."* Heavy reviews can exceed 10 min (use `-c model_reasoning_effort="xhigh"`, run in background).
 
 ## Model Selection
 
@@ -52,7 +55,7 @@ When this skill is invoked for **pre-merge review, design validation, or archite
 
 ## How to Ask
 
-The prompt is the same regardless of agent — adapt the invocation to whatever's available. The `detect-llms.sh` script outputs `NAME|INVOKE_PATTERN|MODEL_FAMILY|NOTES` — use the `INVOKE_PATTERN` field, substituting `{prompt}` with your actual prompt.
+The prompt is the same regardless of model — pick the invocation from the Model Selection table above and substitute your actual prompt.
 
 ### Pre-Merge Review (Most Common)
 

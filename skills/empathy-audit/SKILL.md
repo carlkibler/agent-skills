@@ -297,12 +297,16 @@ For full codebase audits, use parallel agents for efficiency and perspective div
 
 #### Environment Detection
 
+`agent` is the single front door for external-model calls — it already handles provider selection
+and fallback internally. Check once:
+
 ```bash
-bash "${SKILL_DIR}/scripts/detect-llms.sh" --quiet 2>/dev/null || \
-  for t in agent claude codex ask-gemini gemini llm; do command -v "$t" >/dev/null 2>&1 && echo "$t"; done
+command -v agent >/dev/null 2>&1 && echo "agent available"
 ```
 
-Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
+If `agent` is present, use it for the External LLM assignments below (`agent --smart` or
+`agent --frontier` for the fresh-eyes lenses). If it is not present, run those lenses as subagents
+of the running agent instead — do not probe for other CLIs.
 
 #### Agent Assignment
 

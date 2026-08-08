@@ -114,29 +114,24 @@ If the project appears to contain proprietary code, customer data, secrets, or r
 
 ### Environment Detection
 
-The skill ships with a detection script at `scripts/detect-llms.sh` inside the skill directory. Run it using the skill's bundled path:
+`agent` (`~/.local/bin/agent`) is the single front door for external-model calls — it already
+handles provider selection and fallback internally, so this skill does not probe for individual
+LLM CLIs. Check once:
 
 ```bash
-# The skill's scripts live at ${SKILL_DIR} (set by the host agent on install):
-bash "${SKILL_DIR}/scripts/detect-llms.sh"
-
-# Fallback if SKILL_DIR isn't set — inline detection:
-for tool in agent claude codex ask-gemini gemini llm; do
-  command -v "$tool" >/dev/null 2>&1 && echo "found: $tool"
-done
+command -v agent >/dev/null 2>&1 && echo "agent available"
 ```
 
-Treat `agent` as a router, not a requirement. Direct `claude -p`, `codex exec`, or any subscribed local-agent CLI is valid when it avoids paid API routes.
-
-If neither the script nor the variable is available, skip detection and default to single-agent mode. The fallback is always safe.
+If `agent` is present, use it (via the bundled `scripts/fan-out.sh`) for outsider/emotional roles.
+If it is not present, skip fan-out entirely and default to single-agent mode — all roles run as
+subagents of the running agent instead. The fallback is always safe.
 
 Modes:
 
-| Available tools | Mode | Strategy |
+| `agent` available | Mode | Strategy |
 |---|---|---|
-| 2+ external LLMs | Full diversity | Subagents of the running agent for code-aware roles + external LLMs for outsider roles |
-| 1 external LLM | Hybrid | Subagents of the running agent + one outsider model |
-| none | Single-agent | All roles as subagents with strongly differentiated mandates and emotional registers |
+| yes | Full diversity | Subagents of the running agent for code-aware roles + `agent` (varied tiers) for outsider roles |
+| no | Single-agent | All roles as subagents with strongly differentiated mandates and emotional registers |
 
 ### Role roster
 
