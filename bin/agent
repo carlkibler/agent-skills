@@ -5,16 +5,18 @@
 # owes nothing to ~/.claude. env bash picks up a modern bash; the array
 # guards below also keep it safe under macOS stock /bin/bash 3.2.
 #
-# Routing philosophy (cheap-first):
-#   - Default to cheap, fast, increasingly-capable models for daily work.
-#   - Route to a provider's DIRECT API when its key exists (cheaper than
-#     the same model resold through OpenRouter), falling back to OpenRouter.
-#   - Prefer a locally-authenticated subscription CLI (claude/codex) for
-#     premium models — no per-token cost.
+# Routing philosophy (subscription-first):
+#   - Every tier tries Carl's paid subscription CLIs first: local `claude -p`
+#     (provider claude_cli), then local `codex exec` (provider codex_cli).
+#     Both cost nothing per token, so they are always the cheapest capable
+#     route when available.
+#   - OpenRouter and direct pay-per-token API providers (deepseek, zai) are
+#     LAST-RESORT fallbacks, tried only when both subscription CLIs are
+#     unavailable or reject the request. They exist so a tier can't go
+#     completely silent when a subscription CLI hiccups — not to be a
+#     primary route.
 #   - Anthropic models are forbidden through OpenRouter. Claude routes must use
 #     the local `claude -p ...` CLI and fail closed if it is unavailable.
-#   - Default + --frontier use the on-device codex subscription (free). Claude
-#     is explicit-only (`agent opus|sonnet|haiku`) via the local Claude CLI.
 #   - A credential that exists but is REJECTED (e.g. a stale Gemini key) is
 #     detected and skipped, not silently trusted — the next route takes over.
 #
@@ -83,21 +85,25 @@ price_for() {
 resolve_routes() {
     case "$1" in
         # --- capability tiers ---
-        tier:default)   # on-device codex subscription (free), GLM-5.2 fallback
+        tier:default)   # subscription-first: claude -p (sonnet) -> codex exec -> OpenRouter GLM last resort
+            echo "claude_cli|sonnet"
             echo "codex_cli|"
             echo "openrouter|z-ai/glm-5.2"
             ;;
-        tier:fast)      # literally fast + cheap for bulk/high-volume (codex exec is slow)
+        tier:fast)      # subscription-first: claude -p (haiku) -> codex exec -> deepseek direct -> OpenRouter
+            echo "claude_cli|haiku"
+            echo "codex_cli|"
             echo "deepseek|deepseek-v4-flash"
             echo "openrouter|deepseek/deepseek-v4-flash"
             ;;
-        tier:smart)     # strong reasoning, still cheap
-            echo "zai|glm-5.2"
+        tier:smart)     # subscription-first: claude -p (opus) -> codex exec -> deepseek-pro direct -> OpenRouter
+            echo "claude_cli|opus"
+            echo "codex_cli|"
             echo "deepseek|deepseek-v4-pro"
             echo "openrouter|deepseek/deepseek-v4-pro"
             ;;
-        tier:frontier)  # codex (gpt-5.5, subscription) is frontier-class + free; GLM-5.2 fallback.
-            # NOT OpenRouter Opus — that was the expensive default. Claude is explicit-only via local CLI.
+        tier:frontier)  # subscription-first: claude -p (opus) -> codex exec -> OpenRouter GLM last resort
+            echo "claude_cli|opus"
             echo "codex_cli|"
             echo "openrouter|z-ai/glm-5.2"
             ;;
@@ -176,9 +182,9 @@ Input behavior:
   --file/-f PATH may be repeated; each file is appended with a filename header.
 
 Options:
-  --fast              Fast + cheap tier (deepseek-v4-flash)
-  --smart             Strong-reasoning tier (GLM / DeepSeek pro)
-  --frontier          codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
+  --fast              Fast tier: claude -p haiku -> codex exec -> deepseek-v4-flash fallback
+  --smart             Strong reasoning: claude -p opus -> codex exec -> deepseek-v4-pro fallback
+  --frontier          claude -p opus -> codex exec -> GLM-5.2 fallback
   --model ID          Explicit model. Bare id -> OpenRouter; or provider:model
                       (e.g. deepseek:deepseek-v4-pro, zai:glm-5-turbo)
   --no-fallback       Try only the first resolved route; do not fall through
@@ -195,17 +201,18 @@ Options:
   --dry-run           Print routing summary and final prompt; do not call any API
   -h, --help          Show this help
 
-Premium models route to your local SUBSCRIPTION CLI first (no per-token
-cost). Claude models are CLI-only and intentionally do not fall back to
-OpenRouter:
-  opus/sonnet/haiku -> `claude -p` CLI   gpt/codex -> `codex` CLI
+Every tier routes to your paid SUBSCRIPTION CLIs first (no per-token cost):
+  claude -p (Claude subscription) -> codex exec (ChatGPT subscription)
+OpenRouter and direct pay-per-token providers (deepseek, zai) are LAST-RESORT
+fallbacks, used only when both subscription CLIs are unavailable or rejected.
+Explicit shorthands (`agent glm`, `agent deepseek`, ...) are opt-in exceptions
+to this — an explicit request for a specific model bypasses the tier order.
 
-Tiers (cheap-first):
-  (default)     codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
-  --fast        deepseek-v4-flash direct -> OpenRouter (fast + cheap, for bulk)
-  --smart       Z.AI glm-5.2 -> deepseek-v4-pro
-  --frontier    codex subscription (gpt-5.5, free) -> GLM-5.2 fallback
-                (Claude is explicit-only: `agent opus|sonnet|haiku ...`)
+Tiers (subscription-first):
+  (default)     claude -p sonnet -> codex exec -> OpenRouter GLM-5.2 (last resort)
+  --fast        claude -p haiku -> codex exec -> deepseek-v4-flash -> OpenRouter (last resort)
+  --smart       claude -p opus -> codex exec -> deepseek-v4-pro -> OpenRouter (last resort)
+  --frontier    claude -p opus -> codex exec -> OpenRouter GLM-5.2 (last resort)
 
 Model shorthands (first positional arg):
   flash, dsf    deepseek-v4-flash (direct)
