@@ -50,22 +50,15 @@ Restate the user's idea in a richer prompt that preserves their language and exp
 
 If the user provided enough direction, proceed without questions. If not, ask one short question about the desired domain or artifact.
 
-### 2. Environment detection — discover available agents
+### 2. Environment detection
 
-Before fan-out, check whether `agent` — the single front door for external-model calls — is on
-PATH. It already handles provider selection and fallback internally, so this skill does not probe
-for individual LLM CLIs.
+Check the direct Claude CLI:
 
 ```bash
-command -v agent >/dev/null 2>&1 && echo "agent available"
+command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-Determine your execution mode from the result:
-
-| `agent` available | Mode | Strategy |
-|---|---|---|
-| yes | **Full diversity** | Subagents for project-aware roles + `agent` (varied tiers) for outsider/whimsy roles |
-| no | **Single-agent** | All roles as subagents with strongly differentiated mandates and tones |
+Use project-aware subagents for roles that need local files. Use direct `claude -p` calls for outsider roles. Add `--model opus` for the hardest synthesis. If Claude fails, report it and continue with subagents; do not route through another provider.
 
 ### 3. Role assignment
 
@@ -80,14 +73,14 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 | **Cartographer** | Views, maps, grouping patterns, zoom levels, navigation metaphors | External LLM (fresh eyes — no codebase access) |
 | **Archivist** | Memory, synthesis, knowledge capture, long-term coherence, recovery flows | External LLM |
 | **Trickster** | Whimsical metaphors, silly-but-useful delight, strange UI lenses, absurdist reframes | External LLM (most creative divergence happens with no anchoring context) |
-| **Skeptic** | What becomes noise, what users ignore, what shouldn't ship, local maxima | Any model — assign to `agent --fast` if available for blunt, fast output |
+| **Skeptic** | What becomes noise, what users ignore, what shouldn't ship, local maxima | `claude -p --model sonnet` with a blunt mandate |
 | **Executioner** | The strongest honest case for never building this at all — wrong timing, wrong audience, wrong founder, already solved, fundamental flaw in premise | Any model with a blunt mandate — always included, never optional |
 
 #### Perspective-expanding roles (add at least 2)
 
 | Role | What they generate | Ideal agent type |
 |---|---|---|
-| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | External LLM (`agent --frontier`, or local-Claude `agent opus --no-fallback`) |
+| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | `claude -p --model opus` |
 | **Outsider / Cultural Stranger** | Assumptions the team never questioned; non-default user perspectives | External LLM |
 | **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | External LLM |
 | **Devil's Advocate** | The honest thing nobody wants to say; core assumption challenges | Any model with a blunt mandate |
@@ -154,21 +147,21 @@ FORMAT: Flowing prose or numbered list, your choice. No hedging. No meta-comment
 | **Devil's Advocate** | Make the strongest honest case against the core premise. What if the fundamental assumption is wrong? What would make this irrelevant? |
 | **Executioner** | Your job is not to find flaws — it is to argue that this idea should be abandoned entirely. Find the single strongest reason it should never be built: wrong timing, already exists and is better, fundamental audience mismatch, wrong founder for this problem, market that won't pay, regulatory trap, or premise that sounds good but collapses on first contact with reality. You are not here to balance — you are here to kill the idea if it deserves killing. If you cannot find a compelling reason to kill it, say so explicitly: "This idea survived the kill test. Here's why." That verdict is a green light. |
 
-#### Preferred model assignment when multiple LLMs are available
+#### Preferred model assignment
 
 | Role | Preferred model |
 |---|---|
-| Strategist | Code-aware subagent (`general-purpose` agent with local file access) |
+| Strategist | Code-aware subagent with local file access |
 | Operator | Code-aware subagent |
-| Cartographer | `agent --smart` (strong spatial/systems reasoning) |
-| Archivist | `agent --smart` or `agent` (subscription/default router) |
-| Trickster | `agent --fast` (fast and generative, less anchored) |
-| Skeptic | `agent --fast` (blunt, fast output) |
-| Future Self | `agent --frontier` (codex subscription) or `agent opus --no-fallback` (local `claude -p`) |
-| Outsider | `agent` (default router, fresh framing) |
-| Customer Whisperer | `agent --smart` or any external LLM |
-| Devil's Advocate | `agent --fast` — give the fastest, bluntest model |
-| Executioner | `agent --fast` preferred; subagent with explicit "argue for abandonment" mandate otherwise |
+| Cartographer | `claude -p --model opus` |
+| Archivist | `claude -p` |
+| Trickster | `claude -p --model haiku` |
+| Skeptic | `claude -p --model sonnet` |
+| Future Self | `claude -p --model opus` |
+| Outsider | `claude -p` |
+| Customer Whisperer | `claude -p --model sonnet` |
+| Devil's Advocate | `claude -p --model sonnet` |
+| Executioner | `claude -p --model opus` with the explicit kill-test mandate |
 
 ### 5. Force altitude switching (apply during synthesis)
 

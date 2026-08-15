@@ -18,16 +18,14 @@ Autonomous, end-to-end GitHub PR review handler. Fan out one agent per thread fo
 
 ## Step 0: Environment Check
 
-Verify tools once, upfront. Note availability — it shapes later steps.
+Verify required tools once, upfront:
 
 ```bash
-which gh && gh auth status          # required — stop if missing or unauthenticated
-command -v agent >/dev/null 2>&1 && echo "agent available"   # front door for any second-opinion/quality pass
+which gh && gh auth status
+command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-`agent` is the single front door for external-model calls — it already handles provider selection
-and fallback internally, so this skill does not probe for individual LLM CLIs. If `agent` is not on
-PATH, run the quality pass as a subagent of the running agent instead.
+`claude -p` is the only second-opinion path. Use `claude -p --model opus` for the final quality pass. If it fails, report the failure; do not fall back to another provider.
 
 Check for MCP GitHub tools by attempting `mcp__github__list_pull_requests` with a trivial call. Note whether MCP is available — use it where noted, fall back to `gh` otherwise.
 

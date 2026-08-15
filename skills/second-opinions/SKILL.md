@@ -1,6 +1,6 @@
 ---
 name: second-opinions
-description: Get validation from a different AI model before committing major changes — routes through `agent` to the best model for the job.
+description: Get validation from Claude before committing major changes, using the subscribed `claude -p` CLI directly.
 display_name: "Second Opinions"
 brand_color: "#4F46E5"
 local_only: false
@@ -25,33 +25,28 @@ Get validation from a different AI before committing. Any single model — regar
 
 **Skip for:** trivial fixes, style questions, crystal-clear requirements
 
-## Agent Detection
+## Claude Detection
 
-`agent` (`~/.local/bin/agent`) is the single front door for second-opinion calls — it already
-handles provider selection and fallback internally, so this skill does not probe for individual
-LLM CLIs. Check once:
+`claude -p` is the only second-opinion path. Check once:
 
 ```bash
-command -v agent >/dev/null 2>&1 && echo "agent available"
+command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-If `agent` is not available, tell the user and skip this step — do not fall back to hand-picking
-another CLI. Do not call Anthropic/Claude models through OpenRouter; use local `claude -p` directly
-or via `agent <opus|sonnet|haiku> --no-fallback`, or skip Claude.
-
-> **Codex caveat:** `codex` loads `~/.codex/config.toml` → your CLAUDE.md, so by default it delegates the review back to the cheap-model toolchain (quick-check) — silently defeating the point of a *different* model's opinion. Pass `--ignore-user-config` when invoking `codex` directly; also end the prompt with: *"Do this review YOURSELF — do not delegate to any other tool or model."* Heavy reviews can exceed 10 min (use `-c model_reasoning_effort="xhigh"`, run in background).
+If Claude is unavailable or fails, tell the user and skip the cross-check. Do not silently fall back
+to another CLI or provider.
 
 ## Model Selection
 
 Second opinions are about **deep analysis**, not speed. Use the smartest model available:
 
-| Tool | For deep analysis | For quick checks |
-|---|---|---|
-| `agent` | `agent --frontier` (codex subscription / GPT-5.5; no Anthropic OpenRouter) | `agent --fast` (deepseek-v4-flash) |
-| `agent` when Claude is wanted | `agent opus --no-fallback` (local `claude -p`; fails closed) | `agent sonnet --no-fallback` |
-| `codex` | GPT-5.5 — see Codex caveat above | — |
+| Work | Invocation |
+|---|---|
+| Deep review or architecture | `claude -p --model opus "..."` |
+| Normal review | `claude -p "..."` |
+| Fast sanity check | `claude -p --model haiku "..."` |
 
-When this skill is invoked for **pre-merge review, design validation, or architecture decisions**, prefer `agent --frontier`, or `codex` for a genuinely different architecture. If the desired second opinion is specifically Claude, use `agent opus --no-fallback`; the `agent` command must route Claude through local `claude -p`, never OpenRouter. For quick sanity checks, `agent --fast` is fine.
+For **pre-merge review, design validation, or architecture decisions**, use Opus. Calls fail closed: no OpenRouter, `codex exec`, or provider fallback.
 
 ## How to Ask
 

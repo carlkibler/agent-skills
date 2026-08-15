@@ -114,24 +114,13 @@ If the project appears to contain proprietary code, customer data, secrets, or r
 
 ### Environment Detection
 
-`agent` (`~/.local/bin/agent`) is the single front door for external-model calls — it already
-handles provider selection and fallback internally, so this skill does not probe for individual
-LLM CLIs. Check once:
+Use the direct Claude CLI for outsider and emotional roles:
 
 ```bash
-command -v agent >/dev/null 2>&1 && echo "agent available"
+command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-If `agent` is present, use it (via the bundled `scripts/fan-out.sh`) for outsider/emotional roles.
-If it is not present, skip fan-out entirely and default to single-agent mode — all roles run as
-subagents of the running agent instead. The fallback is always safe.
-
-Modes:
-
-| `agent` available | Mode | Strategy |
-|---|---|---|
-| yes | Full diversity | Subagents of the running agent for code-aware roles + `agent` (varied tiers) for outsider roles |
-| no | Single-agent | All roles as subagents with strongly differentiated mandates and emotional registers |
+When available, run the bundled `scripts/fan-out.sh`; it calls `claude -p` directly and fails closed. If Claude is unavailable, use single-agent mode with strongly differentiated subagents. Report that the external cross-check did not run. Do not fall back to another provider.
 
 ### Role roster
 
