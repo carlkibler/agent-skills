@@ -202,8 +202,4 @@ Test locally without installing from GitHub:
 claude --plugin-dir ./skills/pre-mortem
 ```
 
-Run helper contract tests after editing `bin/agent`:
-
-```bash
-tests/test_agent.sh
-```
+Second-opinion skills call the subscribed `claude -p` CLI directly. No provider router is installed.

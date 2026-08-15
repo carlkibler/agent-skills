@@ -106,7 +106,7 @@ scripts/
 skills/
   ├── pre-mortem/                 # Multi-agent pre-mortem analysis
   ├── profile-me/                 # Build AI profile from digital footprint
-  ├── second-opinions/            # Copilot/Codex validation from another model
+  ├── second-opinions/            # Direct Claude CLI validation
   ├── handle-pr/                  # Auto-handle PR review comments
   ├── chezmoi-drift/              # Dotfiles drift + shared-skill install audit
   ├── trust-audit/                # Product trust surface audit

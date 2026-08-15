@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
-# Pre-mortem fan-out: runs outsider/emotional roles in parallel through `agent`.
+# Pre-mortem fan-out: runs outsider/emotional roles in parallel through Claude.
 # Usage: fan-out.sh <scenario-file> <output-dir>
 #   scenario-file: text file with the full scenario + preamble for each role
 #   output-dir: directory where agent outputs land (one file per agent)
 #
-# `agent` (~/.local/bin/agent) is the single front door for external-model
-# calls — it already handles provider selection and fallback internally, so
-# this script does not probe for individual LLM CLIs. Roles get distinct
-# `agent` tiers (--fast/--smart/--frontier/default) for perspective diversity
-# instead of being routed to different binaries.
+# Calls the subscribed `claude -p` CLI directly. Roles use different Claude
+# models and prompts for perspective diversity. There is no provider fallback.
 #
 # A failed role writes its stderr into <name>.txt so a skipped/broken call is
 # visible in the output, never silently missing.
@@ -19,16 +16,8 @@ set -euo pipefail
 
 SCENARIO_FILE="${1:?Usage: fan-out.sh <scenario-file> <output-dir>}"
 OUTPUT_DIR="${2:?Usage: fan-out.sh <scenario-file> <output-dir>}"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-# Add the repo's bin/ to PATH so `agent` is findable even without chezmoi install.
-REPO_BIN="${SCRIPT_DIR}/../../../bin"
-if [ -d "$REPO_BIN" ] && [[ ":$PATH:" != *":${REPO_BIN}:"* ]]; then
-    export PATH="${REPO_BIN}:$PATH"
-fi
-
-if ! command -v agent >/dev/null 2>&1; then
-    echo "!!! 'agent' not found on PATH. Fan-out requires it — falling back to single-agent mode is the caller's job." >&2
+if ! command -v claude >/dev/null 2>&1; then
+    echo "!!! 'claude' not found on PATH. Fan-out cannot run; use single-agent mode." >&2
     echo "SINGLE_AGENT" > "${OUTPUT_DIR}/.mode" 2>/dev/null || true
     exit 1
 fi
@@ -62,17 +51,16 @@ INSTRUCTIONS:
 
 FORMAT: numbered list. No preamble, no hedging."
 
-# Role definitions: NAME|MANDATE|EMOTIONAL_REGISTER|CATEGORIES|AGENT_TIER
-# Tiers are varied across roles for perspective diversity, not speed.
+# Role definitions: NAME|MANDATE|EMOTIONAL_REGISTER|CATEGORIES|CLAUDE_MODEL
 ROLES=(
-    "customer|You are the user advocate. This launched and users are disappointed, confused, or angry. Surface the exact moments where expectations are violated and trust erodes. Describe what users feel at the precise moment of failure — not just frustrated, but which specific emotion: betrayed, embarrassed, gaslit, patronized. You succeed when you articulate what the builders would rationalize away.|Protective anger — you speak for the person who deserved better and didn't get it|Onboarding, daily UX, expectation mismatch, trust loss, emotional injury, uninstall triggers|--smart"
-    "support|You run support for this product after launch. Find the failures that generate vague, repetitive, emotionally draining tickets that are hard to diagnose. You have seen this exact class of ticket before. You succeed when you expose hidden support burden and diagnostic blind spots — and the specific despair of the user who gives up without ever emailing.|Exhausted resignation — you know how this ends, you've typed this reply a hundred times|Support burden, missing diagnostics, confusing states, documentation gaps, maintenance drag, silent churn|--fast"
-    "accountant|Find every way this costs more than expected — in money, time, maintenance burden, abuse, margin erosion, tech debt, or opportunity cost. You succeed when you surface hidden costs the team is ignoring, especially the ones that only become visible 6 months after launch.|Dry alarm — you watch the numbers quietly deteriorate while everyone else celebrates|Budget, margin, maintenance, abuse, operational overhead, deferred cost, opportunity cost|--smart"
-    "pessimist|Assume the worst about every external dependency, platform, timing decision, and distribution channel in this plan. External things will fail, shift, or betray. What dominoes fall? You succeed when you map cascading failures nobody bothered to trace.|Grim satisfaction — you called it, you always call it, nobody listens until it's too late|External risks, dependencies, platform shifts, timing, scope creep, domino effects|--frontier"
-    "burned_expert|You have watched a nearly identical product fail before. You carry scar tissue from that experience. You are not being contrarian — you are pattern-matching to documented, prior, painful failure. You succeed when you force the team to confront the part of the plan that is most similar to something that already went wrong.|Controlled fury — you tried to warn someone last time and they didn't listen either|Prior failure patterns, assumptions that looked safe until they weren't, second-order consequences, recovery debt|--frontier"
-    "emotional_witness|You are not focused on UX or features. You focus entirely on the psychological and emotional experience of users when something goes wrong. Not just 'they are frustrated' but: do they feel stupid? Abandoned? Violated? Ashamed? These emotional injuries outlast the bug. You succeed when you name what users feel in their bodies when this product fails them.|Raw empathy — you describe what the failure feels like, not what it is technically|Shame, helplessness, grief, betrayal, anxiety, loss of trust, the emotional cost of not getting what you were promised|--smart"
-    "outsider|You have never worked in this domain and have no patience for insider assumptions. You bring a completely adjacent frame. Everything the team treats as obvious, you treat as suspicious. You succeed when you surface the assumption that everyone in the room shares — and that real users don't.|Bewildered estrangement — you genuinely don't understand why this was built this way, and that's exactly the point|Insider assumptions, domain jargon, non-default users, accessibility, cultural mismatch, 'this only works if you already know'|--fast"
-    "critic|You are an early reviewer, blogger, or skeptical power user composing your 2-star review while reading the onboarding docs. Find the narrative that compresses many issues into one damaging public story. You succeed when you predict the review headline, the tweet, or the Hacker News thread title.|Performative disappointment — you wanted to like it|Public narrative, reviews, word of mouth, credibility, positioning, reputational compression|--fast"
+    "customer|You are the user advocate. This launched and users are disappointed, confused, or angry. Surface the exact moments where expectations are violated and trust erodes. Describe what users feel at the precise moment of failure — not just frustrated, but which specific emotion: betrayed, embarrassed, gaslit, patronized. You succeed when you articulate what the builders would rationalize away.|Protective anger — you speak for the person who deserved better and didn't get it|Onboarding, daily UX, expectation mismatch, trust loss, emotional injury, uninstall triggers|sonnet"
+    "support|You run support for this product after launch. Find the failures that generate vague, repetitive, emotionally draining tickets that are hard to diagnose. You have seen this exact class of ticket before. You succeed when you expose hidden support burden and diagnostic blind spots — and the specific despair of the user who gives up without ever emailing.|Exhausted resignation — you know how this ends, you've typed this reply a hundred times|Support burden, missing diagnostics, confusing states, documentation gaps, maintenance drag, silent churn|haiku"
+    "accountant|Find every way this costs more than expected — in money, time, maintenance burden, abuse, margin erosion, tech debt, or opportunity cost. You succeed when you surface hidden costs the team is ignoring, especially the ones that only become visible 6 months after launch.|Dry alarm — you watch the numbers quietly deteriorate while everyone else celebrates|Budget, margin, maintenance, abuse, operational overhead, deferred cost, opportunity cost|sonnet"
+    "pessimist|Assume the worst about every external dependency, platform, timing decision, and distribution channel in this plan. External things will fail, shift, or betray. What dominoes fall? You succeed when you map cascading failures nobody bothered to trace.|Grim satisfaction — you called it, you always call it, nobody listens until it's too late|External risks, dependencies, platform shifts, timing, scope creep, domino effects|opus"
+    "burned_expert|You have watched a nearly identical product fail before. You carry scar tissue from that experience. You are not being contrarian — you are pattern-matching to documented, prior, painful failure. You succeed when you force the team to confront the part of the plan that is most similar to something that already went wrong.|Controlled fury — you tried to warn someone last time and they didn't listen either|Prior failure patterns, assumptions that looked safe until they weren't, second-order consequences, recovery debt|opus"
+    "emotional_witness|You are not focused on UX or features. You focus entirely on the psychological and emotional experience of users when something goes wrong. Not just 'they are frustrated' but: do they feel stupid? Abandoned? Violated? Ashamed? These emotional injuries outlast the bug. You succeed when you name what users feel in their bodies when this product fails them.|Raw empathy — you describe what the failure feels like, not what it is technically|Shame, helplessness, grief, betrayal, anxiety, loss of trust, the emotional cost of not getting what you were promised|sonnet"
+    "outsider|You have never worked in this domain and have no patience for insider assumptions. You bring a completely adjacent frame. Everything the team treats as obvious, you treat as suspicious. You succeed when you surface the assumption that everyone in the room shares — and that real users don't.|Bewildered estrangement — you genuinely don't understand why this was built this way, and that's exactly the point|Insider assumptions, domain jargon, non-default users, accessibility, cultural mismatch, 'this only works if you already know'|haiku"
+    "critic|You are an early reviewer, blogger, or skeptical power user composing your 2-star review while reading the onboarding docs. Find the narrative that compresses many issues into one damaging public story. You succeed when you predict the review headline, the tweet, or the Hacker News thread title.|Performative disappointment — you wanted to like it|Public narrative, reviews, word of mouth, credibility, positioning, reputational compression|haiku"
 )
 
 # Write prompt to a temp file to avoid shell escaping issues
@@ -98,22 +86,22 @@ PROMPT_EOF
     echo "$prompt_file"
 }
 
-# Run a role's prompt through `agent` at its assigned tier. Never swallow
+# Run a role's prompt through Claude at its assigned model. Never swallow
 # failures silently — stderr and a failure marker land in the output file so
 # a broken/skipped call is visible, not indistinguishable from a real answer.
 run_role() {
     local name="$1"
-    local tier="$2"
+    local model="$2"
     local prompt_file="$3"
     local outfile="${OUTPUT_DIR}/${name}.txt"
     local prompt
     prompt=$(cat "$prompt_file")
 
-    echo ">>> ${name} → agent ${tier}" >&2
+    echo ">>> ${name} → claude ${model}" >&2
 
-    if ! agent ${tier} "$prompt" > "$outfile" 2>"${outfile}.stderr"; then
+    if ! claude -p --model "$model" "$prompt" > "$outfile" 2>"${outfile}.stderr"; then
         {
-            echo "!!! FAN-OUT FAILURE: role '${name}' (agent ${tier}) exited non-zero."
+            echo "!!! FAN-OUT FAILURE: role '${name}' (claude ${model}) exited non-zero."
             echo "!!! This role's findings are MISSING, not just thin. Do not treat this file as a completed perspective."
             echo "--- stderr ---"
             cat "${outfile}.stderr"
@@ -137,7 +125,7 @@ run_role() {
     return 0
 }
 
-echo "=== Pre-mortem fan-out (via agent) ===" >&2
+echo "=== Pre-mortem fan-out (via claude -p) ===" >&2
 echo "EXTERNAL" > "${OUTPUT_DIR}/.mode"
 
 PIDS=()
@@ -146,10 +134,10 @@ SUCCEEDED=0
 FAILED_COUNT=0
 
 for role_def in "${ROLES[@]}"; do
-    IFS='|' read -r name mandate register categories tier <<< "$role_def"
+    IFS='|' read -r name mandate register categories model <<< "$role_def"
     prompt_file=$(write_prompt "$name" "$mandate" "$register" "$categories")
 
-    run_role "$name" "$tier" "$prompt_file" &
+    run_role "$name" "$model" "$prompt_file" &
     PIDS+=($!)
     NAMES+=("$name")
 done

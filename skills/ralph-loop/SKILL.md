@@ -79,13 +79,13 @@ Keep prompts under shell argument limits. If using a CLI wrapper that passes pro
 
 ### 3. Launch — fan out reviewers
 
-Use at least three diverse reviewers when available. `agent` is the single front door for
-external-model calls — route every reviewer through it rather than probing for other CLIs. Prefer:
+Use at least three differentiated review prompts when the change warrants it. Call Claude directly:
 
-- `agent --model x-ai/grok-4.3` for bluntness/edge cases;
-- `agent --model '~google/gemini-pro-latest'` for systems/code reasoning;
-- `agent --model deepseek/deepseek-v4-pro` for bug-hunting/value;
-- or `agent --smart` / `agent --frontier` when a specific model isn't needed.
+- `claude -p --model opus` for architecture and hard correctness;
+- `claude -p --model sonnet` for practical bug hunting;
+- `claude -p --model haiku` for a fast, blunt edge-case pass.
+
+Do not route through another provider. Prompt diversity matters more than pretending three wrappers are three independent judges.
 
 Run reviewers in parallel when tools allow. Store raw outputs under `~/dev/agent-notes/<repo>/` with model and date in the filename.
 

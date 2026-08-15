@@ -297,16 +297,13 @@ For full codebase audits, use parallel agents for efficiency and perspective div
 
 #### Environment Detection
 
-`agent` is the single front door for external-model calls — it already handles provider selection
-and fallback internally. Check once:
+Use the direct Claude CLI for the fresh-eyes lenses. Check once:
 
 ```bash
-command -v agent >/dev/null 2>&1 && echo "agent available"
+command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-If `agent` is present, use it for the External LLM assignments below (`agent --smart` or
-`agent --frontier` for the fresh-eyes lenses). If it is not present, run those lenses as subagents
-of the running agent instead — do not probe for other CLIs.
+Use `claude -p --model opus` for the hardest external review and `claude -p` for the other outsider lens. If Claude is unavailable, run those lenses as subagents and report that the external cross-check did not run. Do not fall back to another provider.
 
 #### Agent Assignment
 
