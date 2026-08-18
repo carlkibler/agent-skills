@@ -1,6 +1,6 @@
 ---
 name: post-mortem
-description: Analyze a real failure — reconstruct what happened, find root cause, extract learnings, and feed them back into the skill collection to prevent recurrence.
+description: "Analyze a failure, find its cause, capture learnings, and prevent recurrence."
 display_name: "Post-Mortem"
 brand_color: "#DC2626"
 local_only: false

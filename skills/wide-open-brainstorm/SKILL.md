@@ -1,6 +1,6 @@
 ---
 name: wide-open-brainstorm
-description: Multi-model brainstorming room for product strategy and experience design — serious plus whimsical, multi-altitude, multi-round ideation.
+description: "Run multi-model brainstorming for product strategy and experience design."
 display_name: "Wide-Open Brainstorm"
 brand_color: "#C87941"
 local_only: false

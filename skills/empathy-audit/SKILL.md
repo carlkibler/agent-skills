@@ -1,6 +1,6 @@
 ---
 name: empathy-audit
-description: Review code through four empathy lenses — user, machine, developer, support — to surface quality issues that pure technical review misses.
+description: "Review code through user, machine, developer, and support lenses."
 display_name: "Empathy Audit"
 brand_color: "#7C3AED"
 local_only: false

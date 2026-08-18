@@ -1,6 +1,6 @@
 ---
 name: changelog-writer
-description: Generate user-facing changelog entries from git history — plain language, audience-segmented, with optional CHANGELOG.md update.
+description: "Draft plain-language changelog entries from Git history, optionally updating CHANGELOG.md."
 display_name: "Changelog Writer"
 brand_color: "#8B5CF6"
 local_only: true

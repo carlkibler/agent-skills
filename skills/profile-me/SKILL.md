@@ -1,6 +1,6 @@
 ---
 name: profile-me
-description: Build a personal AI profile from your digital footprint — portrait, working-with-me guide, and compact system prompt for any AI assistant.
+description: "Create a personal AI profile, working guide, and compact assistant prompt."
 display_name: "Profile Me"
 brand_color: "#1D4ED8"
 local_only: true

@@ -1,6 +1,6 @@
 ---
 name: dependency-pinning
-description: Audit repos for SHA/digest dependency pinning and release cooldowns across Docker, CI, and major language ecosystems; report violations, fix with approval.
+description: "Audit Docker, CI, and language dependencies for SHA/digest pinning and cooldowns."
 display_name: "Dependency Pinning"
 brand_color: "#15803D"
 group: "Dev Workflow"

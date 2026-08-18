@@ -1,6 +1,6 @@
 ---
 name: launch-sequence
-description: Run the full pre-launch gauntlet (first-contact → support-storm → trust-audit → pre-mortem) and get a single GO/CAUTION/NO-GO verdict.
+description: "Run first-contact, support-storm, trust-audit, and pre-mortem for a launch verdict."
 display_name: "Launch Sequence"
 brand_color: "#0D9488"
 local_only: false

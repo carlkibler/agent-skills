@@ -1,6 +1,6 @@
 ---
 name: ralph-loop
-description: "Run repeatable multi-LLM codebase hardening sweeps: map under-reviewed surfaces, get tough reviewers, patch fixes, document learnings, and loop."
+description: "Run repeatable multi-LLM hardening sweeps: review, fix, document, repeat."
 display_name: "RALPH Loop"
 brand_color: "#C2410C"
 local_only: false

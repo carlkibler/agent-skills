@@ -1,6 +1,6 @@
 ---
 name: parallel-isolated-app-testing
-description: Design parallel isolated test lanes for desktop apps and local tools with shared state — maps collision surfaces and splits non-colliding test lanes.
+description: "Plan isolated parallel test lanes for desktop apps and local tools with shared state."
 display_name: "Parallel Isolated App Testing"
 brand_color: "#0F766E"
 local_only: false

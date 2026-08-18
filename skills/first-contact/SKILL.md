@@ -1,6 +1,6 @@
 ---
 name: first-contact
-description: Red-team a product’s onboarding and first-run experience to find where new users get confused, think it’s broken, or abandon setup.
+description: "Red-team onboarding and first use to find confusion, broken expectations, and abandonment."
 display_name: "First Contact"
 brand_color: "#DC2626"
 local_only: false

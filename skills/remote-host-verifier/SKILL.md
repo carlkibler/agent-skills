@@ -1,6 +1,6 @@
 ---
 name: remote-host-verifier
-description: Verify commands across this machine and named SSH hosts, comparing versions, install paths, config, and behavior with clean local/remote evidence.
+description: "Compare commands, versions, config, and behavior across local and SSH hosts."
 display_name: "Remote Host Verifier"
 brand_color: "#0369A1"
 local_only: true

@@ -1,6 +1,6 @@
 ---
 name: second-opinions
-description: Get validation from Claude before committing major changes, using the subscribed `claude -p` CLI directly.
+description: "Get a Claude CLI second opinion before committing major changes."
 display_name: "Second Opinions"
 brand_color: "#4F46E5"
 local_only: false
