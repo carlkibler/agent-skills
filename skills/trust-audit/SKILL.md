@@ -1,6 +1,6 @@
 ---
 name: trust-audit
-description: Audit whether a product feels trustworthy or unsafe — covering permissions, privacy, billing, file mutation, and silent-failure surfaces.
+description: "Audit product trust: permissions, privacy, billing, file changes, and silent failures."
 display_name: "Trust Audit"
 brand_color: "#059669"
 local_only: false

@@ -1,6 +1,6 @@
 ---
 name: support-storm
-description: Simulate the support emails, reviews, and complaints a launch will generate, then identify product fixes that cut maintenance drag.
+description: "Simulate launch support load and identify fixes that reduce maintenance."
 display_name: "Support Storm"
 brand_color: "#DB2777"
 local_only: false

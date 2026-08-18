@@ -1,6 +1,6 @@
 ---
 name: django-smoke-alarm
-description: Run/triage Django/DRF security smoke checks — settings, throttling, safe HTML, ORM races, model integrity — before shipping or on scanner findings.
+description: "Run and triage Django/DRF security smoke checks before shipping or after scanner findings."
 display_name: "Django Smoke Alarm"
 brand_color: "#DC2626"
 local_only: true

@@ -1,6 +1,6 @@
 ---
 name: scope-hammer
-description: Ruthlessly compress brainstorm output into a shippable MVP — classify ideas as DELETE / MOCK / ALREADY EXISTS / SHIP and surface the shortest path to launch.
+description: "Cut brainstorm output to a shippable MVP: delete, mock, reuse, or ship."
 display_name: "Scope Hammer"
 brand_color: "#F97316"
 local_only: false

@@ -1,6 +1,6 @@
 ---
 name: pre-mortem
-description: Multi-agent project pre-mortem — parallel agents with different failure-finding mandates, synthesized into ranked risks with mitigations.
+description: "Run a multi-agent pre-mortem that returns ranked risks and mitigations."
 display_name: "Pre-Mortem"
 brand_color: "#B45309"
 local_only: false

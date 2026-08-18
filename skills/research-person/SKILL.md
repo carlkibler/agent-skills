@@ -1,6 +1,6 @@
 ---
 name: research-person
-description: Research a named person from public sources into a confidence-marked People dossier in Carl's Obsidian vault. Use to research or build a dossier on someone.
+description: "Research a person from public sources into a confidence-marked Obsidian People dossier."
 display_name: "Research Person"
 brand_color: "#0EA5E9"
 local_only: true

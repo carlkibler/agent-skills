@@ -1,6 +1,6 @@
 ---
 name: visual-qa-loop
-description: Run a repeatable before/after visual QA loop for local web/app UI changes, using stable screenshots, artifact folders, and concise visual findings.
+description: "Run before/after visual QA for local UI changes with screenshots and concise findings."
 display_name: "Visual QA Loop"
 brand_color: "#DB2777"
 local_only: true

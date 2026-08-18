@@ -1,6 +1,6 @@
 ---
 name: contacts-unify
-description: Consolidate/dedupe contacts from macOS, iCloud, Google, Zoho, or VCF with provenance-aware review, backups, and optional approved dossiers.
+description: "Merge and dedupe macOS, iCloud, Google, Zoho, or VCF contacts with reviewable provenance."
 display_name: "Contacts Unify"
 brand_color: "#22C55E"
 local_only: true

@@ -1,6 +1,6 @@
 ---
 name: decision-log
-description: Capture a technical or product decision with chosen option, rejected alternatives, and rationale — in a format a future agent can read to reconstruct context.
+description: "Record a technical or product decision, alternatives, and rationale for future agents."
 display_name: "Decision Log"
 brand_color: "#6366F1"
 local_only: false

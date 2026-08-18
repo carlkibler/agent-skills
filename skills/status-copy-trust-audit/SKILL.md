@@ -1,6 +1,6 @@
 ---
 name: status-copy-trust-audit
-description: Audit CLI/app status output for confusing, inconsistent, or trust-eroding wording; verify idempotent repeated runs and align labels across clients.
+description: "Audit CLI and app status wording, repeated-run behavior, and client label alignment."
 display_name: "Status Copy Trust Audit"
 brand_color: "#B45309"
 local_only: true

@@ -1,6 +1,6 @@
 ---
 name: agent-log-forensics
-description: Scan Claude/Codex session logs to find agent behavior patterns, Toolsmith adoption gaps, repeated frustrations, and candidates for new skills/tools.
+description: "Analyze Claude/Codex logs for behavior patterns, repeated friction, and Toolsmith gaps."
 display_name: "Agent Log Forensics"
 brand_color: "#6D28D9"
 local_only: true
