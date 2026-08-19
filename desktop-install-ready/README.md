@@ -26,7 +26,7 @@ Broadly useful, no coding required — point them at a plan, your contacts, or a
 | ⭐ **pre-mortem** | Before you commit to a plan, find out how it could fail — a team of critics stress-tests it and hands you the real risks, ranked. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/pre-mortem.zip) |
 | **profile-me** | Turn your digital footprint into a profile any AI can read, so assistants actually get you from the first message. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/profile-me.zip) |
 | **research-person** | Get the rundown on someone before a meeting or intro — pulled from public sources into one tidy, confidence-rated brief. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/research-person.zip) |
-| ⭐ **second-opinions** | About to make a big call? Get a gut-check from a second AI with a different perspective before you commit. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/second-opinions.zip) |
+| ⭐ **second-opinions** | Get a time-bounded independent review before committing or merging. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/second-opinions.zip) |
 | ⭐ **wide-open-brainstorm** | A room full of idea generators, serious and playful, riffing on your product or problem from every angle. | [Download](https://github.com/carlkibler/agent-skills/raw/main/desktop-install-ready/wide-open-brainstorm.zip) |
 
 ### Product & Launch

@@ -17,7 +17,7 @@
     "category": "Development",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
+      "Run a bounded independent review of the complete requested worktree or diff and summarize actionable findings."
     ],
     "brandColor": "#4F46E5",
     "composerIcon": "./skills/second-opinions/assets/icon.svg",
