@@ -26,6 +26,8 @@ decisions with real tradeoffs, and work that has consumed more than two hours. S
 Use the installed `review-watch` command. It has a **10-minute total deadline** across both attempts,
 prints 15-second heartbeats, captures output, and terminates the entire review process tree on timeout.
 Do not invoke bare `codex review`, `claude -p`, `codex exec`, or an unbounded agent call for review.
+A naked `review-watch` invocation prints copy-pasteable examples instead of failing with a grammar
+error. `--agent` prints the same contract for a first-pass agent.
 
 Tell it which provider is running the current task. It tries the opposite company first, then the same
 company if the first provider is unavailable, exhausted, or returns an error while time remains:
@@ -38,8 +40,12 @@ review-watch --current-provider codex --worktree "$PWD"
 review-watch --current-provider claude --worktree "$PWD"
 ```
 
-The script uses Claude Opus and Codex `gpt-5.6-sol` by default. Override only when needed:
-`--claude-model MODEL`, `--codex-model MODEL`, `--timeout SEC`, or `--heartbeat SEC`.
+The script uses Claude Opus and Codex `gpt-5.6-sol` by default. It accepts common aliases such as
+`openai`/`gpt`, `anthropic`/`opus`, `--against` for `--base`, `--diff` for `--range`, comma-separated
+SHAs, bare worktree/ref/range positional arguments, and durations such as `10m`, `600s`, or `1h`.
+Override only when needed: `--claude-model MODEL`, `--codex-model MODEL`, `--timeout SEC`, or
+`--heartbeat SEC`. Use `--json` when a caller needs a designed machine-readable receipt; progress and
+provider diagnostics stay on stderr so stdout remains valid JSON.
 
 ## Scope is explicit
 
@@ -60,7 +66,9 @@ review-watch --current-provider codex --worktree "$PWD" --range OLD..NEW
 
 `--worktree` changes the checkout the provider inspects. The prompt always includes its absolute path,
 branch, status snapshot, exact scope, and the instruction to inspect the complete diff. The provider
-must not edit files or perform live mutations.
+must not edit files or perform live mutations. Output restates canonical `WORKTREE`, `BRANCH`,
+`SCOPE`, provider order, deadline, and ends with runnable `Next commands` plus `REVIEW_STATUS`,
+`REVIEW_PROVIDER`, and `REVIEW_EXIT` keys.
 
 ## Review lens
 
