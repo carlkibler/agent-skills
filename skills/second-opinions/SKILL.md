@@ -1,98 +1,72 @@
 ---
 name: second-opinions
-description: "Get a Claude CLI second opinion before committing major changes."
+description: "Run a bounded independent code review with the opposite-company model first, complete git scope context, and a same-company fallback."
 display_name: "Second Opinions"
 brand_color: "#4F46E5"
 local_only: false
 group: "For Anyone"
 usage: "/second-opinions:run"
-summary: "About to make a big call? Get a gut-check from a second AI with a different perspective before you commit."
+summary: "Get a time-bounded independent review before committing or merging."
 favorite: true
-default_prompt: "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
+default_prompt: "Run a bounded independent review of the complete requested worktree or diff and summarize actionable findings."
 ---
 
 # Second Opinions
 
-Get validation from a different AI before committing. Any single model — regardless of which one is running — has blind spots shaped by its training, context, and the conversation so far. A different architecture, temperature, or framing catches different things.
+Use an independent provider before committing meaningful changes. The reviewer is a collaborator,
+not an authority. A timeout or provider failure is a failed review, never approval.
 
-## When to Use
+## When to use
 
-**Mandatory:**
-- Complex multi-file changes before merge
-- Design decisions with multiple valid approaches
-- After 2+ hours on a single approach (tunnel vision risk)
-- Security-sensitive or performance-critical code
+Mandatory for complex multi-file changes, security or PHI work, performance-critical code, design
+decisions with real tradeoffs, and work that has consumed more than two hours. Skip trivial fixes.
 
-**Skip for:** trivial fixes, style questions, crystal-clear requirements
+## One bounded entrypoint
 
-## Claude Detection
+Use the installed `review-watch` command. It has a **10-minute total deadline** across both attempts,
+prints 15-second heartbeats, captures output, and terminates the entire review process tree on timeout.
+Do not invoke bare `codex review`, `claude -p`, `codex exec`, or an unbounded agent call for review.
 
-`claude -p` is the only second-opinion path. Check once:
+Tell it which provider is running the current task. It tries the opposite company first, then the same
+company if the first provider is unavailable, exhausted, or returns an error while time remains:
 
 ```bash
-command -v claude >/dev/null 2>&1 && echo "claude available"
+# Running under Codex: Claude first, Codex fallback
+review-watch --current-provider codex --worktree "$PWD"
+
+# Running under Claude: Codex first, Claude fallback
+review-watch --current-provider claude --worktree "$PWD"
 ```
 
-If Claude is unavailable or fails, tell the user and skip the cross-check. Do not silently fall back
-to another CLI or provider.
+The script uses Claude Opus and Codex `gpt-5.6-sol` by default. Override only when needed:
+`--claude-model MODEL`, `--codex-model MODEL`, `--timeout SEC`, or `--heartbeat SEC`.
 
-## Model Selection
+## Scope is explicit
 
-Second opinions are about **deep analysis**, not speed. Use the smartest model available:
+A bare SHA is not enough context for a branch review. Prefer the complete branch diff:
 
-| Work | Invocation |
-|---|---|
-| Deep review or architecture | `claude -p --model opus "..."` |
-| Normal review | `claude -p "..."` |
-| Fast sanity check | `claude -p --model haiku "..."` |
-
-For **pre-merge review, design validation, or architecture decisions**, use Opus. Calls fail closed: no OpenRouter, `codex exec`, or provider fallback.
-
-## How to Ask
-
-The prompt is the same regardless of model — pick the invocation from the Model Selection table above and substitute your actual prompt.
-
-### Pre-Merge Review (Most Common)
-
-Show the diff and ask for a production-readiness check:
-
-```
-Review my git changes for production readiness.
-
-Show the diff from main and check for:
-- Correctness and edge cases
-- Architecture and design
-- Performance implications
-- Security concerns
+```bash
+review-watch --current-provider codex --worktree /absolute/path/to/worktree --base main
 ```
 
-### Design Decision Validation
+On a topic branch with no scope flags, the script automatically reviews the branch against its
+`main` merge-base. Use these forms when the scope is narrower or spans selected history:
 
-Describe the options and constraints, then ask: *What trade-offs am I not seeing?*
+```bash
+review-watch --current-provider codex --worktree "$PWD" --commit 470907dae
+review-watch --current-provider codex --worktree "$PWD" --commit SHA1 --commit SHA2
+review-watch --current-provider codex --worktree "$PWD" --range OLD..NEW
+```
 
-### Targeted Question
+`--worktree` changes the checkout the provider inspects. The prompt always includes its absolute path,
+branch, status snapshot, exact scope, and the instruction to inspect the complete diff. The provider
+must not edit files or perform live mutations.
 
-Ask one specific question about the implementation — don't fish for general feedback.
+## Review lens
 
-## Interpreting Results
+Check correctness and regressions first, then security/PHI, real outbound effects, performance, and
+maintainability. Return `PASS` or `NEEDS CHANGES`. Every finding needs severity, path, line, concrete
+evidence, and the smallest fix. If the scope is unavailable or ambiguous, fail closed.
 
-The other agent is a **collaborator, not an authority.** Classify each piece of feedback:
-
-| Category | Action |
-|----------|--------|
-| **Must-fix** | Bug, security issue, correctness problem → implement immediately |
-| **Should-fix** | Genuine simplification, better error handling → implement if clean |
-| **Nice-to-have** | Alternative approach, style preference → mention to user |
-| **Reject** | Over-engineering, conflicts with project conventions → skip with reason |
-
-If the other agent and your analysis disagree, explain the disagreement to the user and let them decide.
-
-## The Red Flags
-
-These thoughts mean STOP and get a second opinion:
-- "It works in my tests" — tests only prove known scenarios
-- "I've spent 3 hours on this" — sunk cost isn't validation
-- "I'm confident this is right" — confidence correlates with blind spots
-- "It's obviously the best approach" — obvious to you ≠ optimal
-
-**5 minutes of external validation prevents hours of debugging.**
+Record the provider, exact command, scope, exit status, and findings in the review note or merge
+receipt. A fallback is a real review; report that the primary provider failed and which fallback ran.

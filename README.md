@@ -79,7 +79,7 @@ Broadly useful, no coding required — point them at a plan, your contacts, or a
 | ⭐ **pre-mortem** | Before you commit to a plan, find out how it could fail — a team of critics stress-tests it and hands you the real risks, ranked.<br><sub>`/plugin install pre-mortem@carl-tools`</sub> |
 | **profile-me** | Turn your digital footprint into a profile any AI can read, so assistants actually get you from the first message.<br><sub>`/plugin install profile-me@carl-tools`</sub> |
 | **research-person** | Get the rundown on someone before a meeting or intro — pulled from public sources into one tidy, confidence-rated brief.<br><sub>`/plugin install research-person@carl-tools`</sub> |
-| ⭐ **second-opinions** | About to make a big call? Get a gut-check from a second AI with a different perspective before you commit.<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
+| ⭐ **second-opinions** | Get a time-bounded independent review before committing or merging.<br><sub>`/plugin install second-opinions@carl-tools`</sub> |
 | ⭐ **wide-open-brainstorm** | A room full of idea generators, serious and playful, riffing on your product or problem from every angle.<br><sub>`/plugin install wide-open-brainstorm@carl-tools`</sub> |
 
 ### Product & Launch

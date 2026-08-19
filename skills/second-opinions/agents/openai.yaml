@@ -4,6 +4,6 @@ interface:
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#4F46E5"
-  default_prompt: "Get a second opinion on this implementation or design decision and summarize the strongest agreement, disagreement, and actionable feedback."
+  default_prompt: "Run a bounded independent review of the complete requested worktree or diff and summarize actionable findings."
 policy:
   allow_implicit_invocation: true
