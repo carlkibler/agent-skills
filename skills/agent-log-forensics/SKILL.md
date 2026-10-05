@@ -133,7 +133,6 @@ Use `scripts/collect_toolsmith_scan.py` to run local and remote Toolsmith scans 
 - Use `remote-host-verifier` when comparing a command across local and remote hosts.
 - Use `skill-creator` when turning findings into new skills.
 - Use `status-copy-trust-audit` when confusing CLI output appears repeatedly in logs.
-- Use `beads-knowledge` or the project tracker to preserve hard-won patterns that should not be rediscovered.
 - Use `claude -p --model opus` for a broad synthesis pass before writing new skills.
 
 </interlocks>
