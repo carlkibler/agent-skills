@@ -9,16 +9,18 @@ No installs (stock macOS Python). It:
   4. On apply it unions the info into one card, exports the removed cards to a .vcf
      (easy undo), then deletes the extras.
 
-Run by double-clicking "Clean My Contacts.command", or:  python3 contacts_cleanup.py
+Dry-run by default (previews only):  python3 contacts_cleanup.py
+To actually merge/delete:            python3 contacts_cleanup.py --live
 """
-import http.server, socketserver, subprocess, json, os, webbrowser, datetime, threading, shutil, glob, sqlite3, re
+import http.server, socketserver, subprocess, json, os, sys, webbrowser, datetime, threading, shutil, glob, sqlite3, re
 
 PORT = 8765
 DESKTOP = os.path.expanduser("~/Desktop")
 ABDIR = os.path.expanduser("~/Library/Application Support/AddressBook")
 F, V = chr(31), chr(30)
 EPOCH = 978307200  # Core Data -> unix
-DRY_RUN = os.environ.get("CC_DRYRUN") == "1"
+# Dry-run is the default: nothing is merged or deleted unless --live is passed (or CC_LIVE=1).
+DRY_RUN = not ("--live" in sys.argv or os.environ.get("CC_LIVE") == "1")
 
 def osa(script, timeout=180):
     return subprocess.run(["osascript", "-e", script], capture_output=True, text=True, timeout=timeout)
@@ -293,8 +295,9 @@ class H(http.server.BaseHTTPRequestHandler):
         else: self._s(404,"{}")
 
 def main():
-    print("🧹 Contacts Cleanup\n  Backing up…")
+    print("🧹 Contacts Cleanup" + ("  [DRY RUN - no changes will be made; pass --live to apply]" if DRY_RUN else "  [LIVE]") + "\n  Backing up…")
     dest,err=backup(); print("  backup ->",dest if dest else f"(warn: {err})")
+    if not dest and not DRY_RUN: sys.exit("  Backup failed; refusing to merge or delete without one.")
     print("  Scanning + auto-combining exact duplicates…")
     scan()
     print(f"  {STATE['count']} contacts · auto-combined {STATE['auto']} exact dupes · {len(STATE['groups'])} groups to review")

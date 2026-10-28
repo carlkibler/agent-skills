@@ -50,7 +50,7 @@ def parse_probe(text: str) -> dict[str, str]:
 
 
 def collect_probe(label: str, host: str | None, timeout: int) -> dict[str, str]:
-    cmd = ["bash", "-lc", probe_command()] if host is None else ["ssh", host, "bash", "-lc", probe_command()]
+    cmd = ["bash", "-lc", probe_command()] if host is None else ["ssh", "-o", "BatchMode=yes", host, "bash -lc " + shlex.quote(probe_command())]
     proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=False)
     data = parse_probe(proc.stdout)
     if proc.returncode != 0 and proc.stderr:
@@ -79,7 +79,7 @@ def main() -> int:
         results[0].probe = collect_probe("local", None, args.timeout)
     quoted = " ".join(shlex.quote(part) for part in command)
     for host in args.host:
-        result = run(host, ["ssh", host, "bash", "-lc", quoted], args.timeout)
+        result = run(host, ["ssh", "-o", "BatchMode=yes", host, "bash -lc " + shlex.quote(quoted)], args.timeout)
         if args.probe_env:
             result.probe = collect_probe(host, host, args.timeout)
         results.append(result)
