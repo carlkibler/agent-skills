@@ -17,7 +17,7 @@
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
+      "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts outside the repo unless asked."
     ],
     "brandColor": "#DB2777",
     "composerIcon": "./skills/visual-qa-loop/assets/icon.svg",

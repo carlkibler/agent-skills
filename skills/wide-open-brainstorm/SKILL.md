@@ -50,19 +50,33 @@ Restate the user's idea in a richer prompt that preserves their language and exp
 
 If the user provided enough direction, proceed without questions. If not, ask one short question about the desired domain or artifact.
 
-### 2. Environment detection
+### 2. Choose how roles run
 
-Check the direct Claude CLI:
+Default: every role runs as an in-session subagent. Code-aware roles get the repo; fresh-eyes roles get only the seed brief (no files, no codebase hints), because anchoring context kills divergence. Using an outside CLI for the fresh-eyes roles adds real model diversity, but only after the permission check below.
 
-```bash
-command -v claude >/dev/null 2>&1 && echo "claude available"
-```
+**External model CLIs (ask first)**
 
-Use project-aware subagents for roles that need local files. Use direct `claude -p` calls for outsider roles. Add `--model opus` for the hardest synthesis. If Claude fails, report it and continue with subagents; do not route through another provider.
+In-session subagents need no extra permission and are the default for every role below.
+Launching a separate agent CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) is different:
+it spends the user's quota and sends project content to that provider. Before the first launch:
+
+1. Read `${XDG_CONFIG_HOME:-$HOME/.config}/agent-skills/external-clis.json` if it exists.
+   A CLI listed under `skills.wide-open-brainstorm.allow` or top-level `allow` may run without asking;
+   one listed under `deny` (either level) must not run. Skill-level entries win.
+2. Otherwise run `command -v claude codex omp pi`, then ask once: which installed CLIs may this
+   skill launch, and should the answer apply to this run, always for this skill, or always?
+3. For "always", create or update the file (merge; never drop other skills' entries), e.g.
+   `{"allow": ["codex"], "deny": [], "skills": {"wide-open-brainstorm": {"allow": ["claude", "codex"]}}}`.
+4. Bound every call (`timeout 600 …`). Report which CLI and model actually answered. If none
+   ran, say the outside cross-check did not happen rather than presenting subagent output as one.
+
+Equivalent one-shot forms: `claude -p --model <m> "<prompt>"`,
+`codex exec -m <m> --sandbox read-only "<prompt>"`, `omp -p --model <m> "<prompt>"`, `pi -p "<prompt>"`.
+Prefer a CLI from a different company than the current session for outsider roles.
 
 ### 3. Role assignment
 
-Use the **6 core roles** below. Run **every available agent type**; don't leave models idle.
+Use the **7 core roles** below (the Executioner is always one of them). Run roles in parallel; spread them across whatever model tiers and approved CLIs are available.
 
 #### Core roles
 
@@ -70,22 +84,22 @@ Use the **6 core roles** below. Run **every available agent type**; don't leave 
 |---|---|---|
 | **Strategist** | Product thesis, priorities, what existing tools miss, positioning | Code-aware subagent (reads local README, docs, recent git) |
 | **Operator** | Concrete workflows, statuses, actions, edge cases, day-to-day mechanics | Code-aware subagent |
-| **Cartographer** | Views, maps, grouping patterns, zoom levels, navigation metaphors | External LLM (fresh eyes — no codebase access) |
-| **Archivist** | Memory, synthesis, knowledge capture, long-term coherence, recovery flows | External LLM |
-| **Trickster** | Whimsical metaphors, silly-but-useful delight, strange UI lenses, absurdist reframes | External LLM (most creative divergence happens with no anchoring context) |
-| **Skeptic** | What becomes noise, what users ignore, what shouldn't ship, local maxima | `claude -p --model sonnet` with a blunt mandate |
+| **Cartographer** | Views, maps, grouping patterns, zoom levels, navigation metaphors | Fresh-eyes (no codebase access) |
+| **Archivist** | Memory, synthesis, knowledge capture, long-term coherence, recovery flows | Fresh-eyes |
+| **Trickster** | Whimsical metaphors, silly-but-useful delight, strange UI lenses, absurdist reframes | Fresh-eyes (most creative divergence happens with no anchoring context) |
+| **Skeptic** | What becomes noise, what users ignore, what shouldn't ship, local maxima | Balanced tier with a blunt mandate |
 | **Executioner** | The strongest honest case for never building this at all — wrong timing, wrong audience, wrong founder, already solved, fundamental flaw in premise | Any model with a blunt mandate — always included, never optional |
 
 #### Perspective-expanding roles (add at least 2)
 
 | Role | What they generate | Ideal agent type |
 |---|---|---|
-| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | `claude -p --model opus` |
-| **Outsider / Cultural Stranger** | Assumptions the team never questioned; non-default user perspectives | External LLM |
-| **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | External LLM |
+| **Future Self** | 6/12/24-month horizon ideas; what smart teams converge on; leapfrog moves | Strongest tier |
+| **Outsider / Cultural Stranger** | Assumptions the team never questioned; non-default user perspectives | Fresh-eyes |
+| **Customer Whisperer** | Emotional arc the user goes through; delight moments; trust signals | Fresh-eyes |
 | **Devil's Advocate** | The honest thing nobody wants to say; core assumption challenges | Any model with a blunt mandate |
 
-**Default panel for full-diversity mode:** all 6 core + Executioner + Future Self + Outsider.
+**Default panel for full-diversity mode:** all 7 core + Future Self + Outsider.
 
 **Default panel for single-agent mode:** Strategist, Operator, Trickster, Skeptic, Executioner, Future Self — as subagents with strongly differentiated tones.
 
@@ -147,21 +161,25 @@ FORMAT: Flowing prose or numbered list, your choice. No hedging. No meta-comment
 | **Devil's Advocate** | Make the strongest honest case against the core premise. What if the fundamental assumption is wrong? What would make this irrelevant? |
 | **Executioner** | Your job is not to find flaws — it is to argue that this idea should be abandoned entirely. Find the single strongest reason it should never be built: wrong timing, already exists and is better, fundamental audience mismatch, wrong founder for this problem, market that won't pay, regulatory trap, or premise that sounds good but collapses on first contact with reality. You are not here to balance — you are here to kill the idea if it deserves killing. If you cannot find a compelling reason to kill it, say so explicitly: "This idea survived the kill test. Here's why." That verdict is a green light. |
 
-#### Preferred model assignment
+#### Capability tiers
 
-| Role | Preferred model |
-|---|---|
-| Strategist | Code-aware subagent with local file access |
-| Operator | Code-aware subagent |
-| Cartographer | `claude -p --model opus` |
-| Archivist | `claude -p` |
-| Trickster | `claude -p --model haiku` |
-| Skeptic | `claude -p --model sonnet` |
-| Future Self | `claude -p --model opus` |
-| Outsider | `claude -p` |
-| Customer Whisperer | `claude -p --model sonnet` |
-| Devil's Advocate | `claude -p --model sonnet` |
-| Executioner | `claude -p --model opus` with the explicit kill-test mandate |
+Each role runs as a subagent, or an approved external CLI. Tiers, not model names (names go stale): **fast** = cheapest capable model, **balanced** = default workhorse, **strongest** = best available reasoning model.
+
+| Role | Context | Tier |
+|---|---|---|
+| Strategist | Code-aware (local files) | balanced |
+| Operator | Code-aware | balanced |
+| Cartographer | Fresh-eyes | strongest |
+| Archivist | Fresh-eyes | balanced |
+| Trickster | Fresh-eyes | fast (cheap, high-variance is the point) |
+| Skeptic | Fresh-eyes | balanced |
+| Future Self | Fresh-eyes | strongest |
+| Outsider | Fresh-eyes | balanced |
+| Customer Whisperer | Fresh-eyes | balanced |
+| Devil's Advocate | Fresh-eyes | balanced |
+| Executioner | Fresh-eyes | strongest, explicit kill-test mandate |
+
+If a role fails or times out, say so and rerun it as a subagent; never present a missing role as covered.
 
 ### 5. Force altitude switching (apply during synthesis)
 
@@ -171,7 +189,7 @@ Ensure the combined output covers all three levels:
 - **1,000 feet:** projects, workstreams, branches, tickets, docs, grouped activity.
 - **Ground level:** individual items, exact statuses, actions, recovery, tooltips, next clicks.
 
-Look for interaction patterns that let the user smoothly zoom out, zoom in, and jump precisely. If any altitude is thin, ask the relevant subagent to extend their output there.
+Look for interaction patterns that let the user smoothly zoom out, zoom in, and jump precisely. If any altitude is thin, ask the relevant role to extend its output there (one follow-up, no more).
 
 ### 5.5. Time-horizon leapfrog pass (during synthesis)
 
@@ -192,6 +210,8 @@ For each horizon, distinguish:
 Do not treat the far future as sci-fi garnish. Use it to identify which near-term choices keep optionality open, which ideas are local maxima, and which design thesis can leapfrog the expected market path.
 
 ### 6. Optional cross-pollination round
+
+One round maximum.
 
 After collecting first-round outputs, run a second round when:
 

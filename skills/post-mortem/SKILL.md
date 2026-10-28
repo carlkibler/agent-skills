@@ -79,7 +79,7 @@ Also classify the failure mode:
 
 ## Phase 4: Multi-Perspective Analysis
 
-Launch 2 parallel subagents with different lenses:
+Launch 2 parallel subagents with different lenses (or work through both lenses in turn if subagents are unavailable). Give each the Phase 1-3 facts and require evidence from them, not speculation:
 
 **Subagent 1 — User Impact Analyst**
 Focus on the user experience of the failure. What did affected users actually experience? What did they feel? What did they do (contact support, churn, post publicly, complain to friends)? What was the trust damage? How long does it take them to fully recover trust?

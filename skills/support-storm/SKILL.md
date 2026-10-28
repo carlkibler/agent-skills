@@ -29,6 +29,8 @@ Use this skill when reviewing:
 - status and failure messaging
 - any feature likely to produce “not working” tickets
 
+Use `trust-audit` instead when the question is whether the product feels safe (permissions, privacy, billing, file changes); use `status-copy-trust-audit` instead for CLI/status wording fixes. This skill predicts the support load those problems create.
+
 ## Core Principle
 
 A support burden is not just the number of issues. It is:
@@ -60,6 +62,8 @@ Generate a realistic mix of artifacts:
 - 3-5 App Store / public reviews
 - 2-4 refund requests or cancellation notes
 - 2-3 “this is probably user error but still your problem” complaints
+
+All artifacts are fabricated illustrations derived from the product's real failure points. Label them as simulated and never present them as actual user feedback. Ground each one in a specific flow or message you actually read.
 
 Make them feel real:
 - incomplete facts

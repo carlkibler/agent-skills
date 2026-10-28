@@ -41,6 +41,8 @@ The first-run experience fails when the product asks the user to do too much, tr
 
 ## Step 1: Map the first-run path
 
+Prefer observation over imagination: if the product can be installed or run here, walk the real path (fresh state, default settings) and note what you saw. Where you can only infer from code or docs, label the finding **inferred**, not observed.
+
 Build a minute-by-minute path from:
 - discovery / install
 - launch
@@ -64,6 +66,8 @@ At minimum, simulate these personas:
 For each persona, walk the path step by step.
 
 ## Step 3: Find first-run failure points
+
+Read `references/heuristics.md` (in this skill's directory) for severity-upgrade rules and common killers.
 
 Look for:
 - unexplained permissions

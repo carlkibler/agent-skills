@@ -17,7 +17,7 @@
     "category": "Productivity",
     "websiteURL": "https://github.com/carlkibler/agent-skills",
     "defaultPrompt": [
-      "Research the named person(s) from public sources and create or update their People note in my Obsidian vault, with confidence markers, cross-links, and a raw-research dump in agent-notes."
+      "Research the named person(s) from public sources and create or update their People note in my Obsidian vault, with confidence markers, cross-links, and a raw-research dump in my research folder."
     ],
     "brandColor": "#0EA5E9",
     "composerIcon": "./skills/research-person/assets/icon.svg",

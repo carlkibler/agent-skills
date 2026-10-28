@@ -45,7 +45,7 @@ note, confidence-marked, cross-linked). Feed it:
 - **Public sources** to enrich, chosen for the person's world. Examples:
   - LinkedIn and general web / news / org "about" pages.
   - For public-official or civic figures: state legislature sites, committee/bill records, and
-    lobbyist/disclosure registries (e.g. a state's `le.<state>.gov` and disclosures portal).
+    lobbyist/disclosure registries (e.g. a state legislature site and disclosures portal).
   - For arts/nonprofit figures: org websites (boards, staff, event rosters).
 
 Each dossier: who they are, role/affiliations, how the user knows them (from message context), best

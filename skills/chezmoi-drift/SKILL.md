@@ -65,19 +65,19 @@ Run:
 ```bash
 src_dir=$(chezmoi source-path)
 comm -23 \
-  <(ls ~/.local/bin | sort) \
-  <(ls "$src_dir/dot_local/bin" | sed 's/^executable_//' | sort)
+  <(command ls ~/.local/bin | sort) \
+  <(command ls "$src_dir/dot_local/bin" | sed 's/^executable_//' | sort)
 
 comm -23 \
-  <(ls ~/.config | sort) \
-  <(ls "$src_dir/dot_config" | sort)
+  <(command ls ~/.config | sort) \
+  <(command ls "$src_dir/dot_config" | sort)
 ```
 
 Report new scripts or config directories that look worth managing.
 
 ### 4. Check shared skill install health
 
-If a local agent-skills repo exists (e.g. `~/dev/me/agent-skills/skills`), prefer symlinks from the live skill directories back to that repo rather than copying.
+If a local agent-skills repo checkout exists (e.g. `~/dev/agent-skills/skills`; ask or search if unsure), prefer symlinks from the live skill directories back to that repo rather than copying.
 
 Inspect:
 
@@ -92,7 +92,7 @@ for host in \
   ~/.cursor/skills; do
   [ -d "$host" ] || continue
   echo "== $host =="
-  ls -ld "$host"/chezmoi-drift 2>/dev/null || true
+  command ls -ld "$host"/chezmoi-drift 2>/dev/null || true
   readlink "$host"/chezmoi-drift 2>/dev/null || true
 done
 ```
@@ -104,12 +104,13 @@ Call out:
 
 ### 5. Detect double-installed skills (symlink + plugin)
 
-A skill must load through **one** mechanism only. The expensive failure mode is a skill present **both** as a symlink in `~/.claude/skills/<name>` **and** as an installed plugin (`<name>@<marketplace>`). It then appears twice in every agent's skill list — wasted context and confusing UX. This has bitten this setup before (the `carl-tools` marketplace overlapping the live repo symlinks); keep it dead.
+A skill must load through **one** mechanism only. The expensive failure mode is a skill present **both** as a symlink in `~/.claude/skills/<name>` **and** as an installed plugin (`<name>@<marketplace>`). It then appears twice in every agent's skill list — wasted context and confusing UX. This happens when a plugin marketplace built from the same skills repo overlaps live repo symlinks.
 
-Use `command ls`, not bare `ls`. Carl's shells alias `ls` to `eza`, which prints
-`name -> target` for symlinks — every symlinked skill then fails to match and the
-check silently reports only the real directories. This under-reported 9 of 10
-duplicates on gauss (2026-07-08).
+This check is Claude Code specific: skip it if the `claude` CLI isn't installed (say so in the report).
+
+Use `command ls`, not bare `ls`. If `ls` is aliased to `eza` or similar, it prints
+`name -> target` for symlinks, so symlinked skills fail to match and the
+check silently under-reports.
 
 ```bash
 comm -12 \
@@ -118,10 +119,10 @@ comm -12 \
 ```
 
 Any name printed is double-installed. The fix is to keep **one** mechanism:
-- On a machine where the `agent-skills` repo is checked out and edited (any of Carl's boxes — gauss/euler/private-host), **symlinks are canonical** (live edits show instantly). Remove the plugin: `claude plugin uninstall <name>@<marketplace>`.
+- On a machine where the skills repo is checked out and edited, **symlinks are canonical** (live edits show instantly). Remove the plugin: `claude plugin uninstall <name>@<marketplace>`.
 - On a machine without the repo, plugin install is canonical. Remove the stray symlink instead.
 
-Never install a `carl-tools` (or any agent-skills-derived) plugin on a box that already symlinks the live repo.
+Never install a plugin derived from the skills repo on a machine that already symlinks the live repo.
 
 A marketplace with `"autoUpdate": true` in `~/.claude/settings.json` will keep
 reinstating its plugins. Uninstalling the plugins is not enough — remove the

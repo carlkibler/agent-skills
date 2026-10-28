@@ -10,6 +10,8 @@ summary: "Turn your digital footprint into a profile any AI can read, so assista
 default_prompt: "Build an evidence-based AI profile of me from the local artifacts available in this environment, and clearly label inferences vs. observations."
 ---
 
+Use the current session's model catalog and delegation rules. Preserve the parent model by default; these capability tiers do not authorize new providers, paid calls, or model overrides.
+
 # Profile Me
 
 Build an honest portrait of the user as a *person* — not a resume summary, not a list of their
@@ -55,6 +57,12 @@ Before reading ANY data, briefly tell the user what categories of data will be e
 
 This is a one-time check, not a per-file approval. Most users will say "go ahead" but some may exclude SSH config, AWS accounts, or specific directories. Respect exclusions completely — don't reference excluded data even indirectly.
 
+Handling rules (state them in the same message):
+
+- **Local-only.** Read and analyze locally. Don't upload, paste into web tools, or send raw history to any external service or model CLI; subagents in this session are fine.
+- **Never copy secrets or identifiers.** Read config files for structure and habits, not values. Omit tokens, keys, account IDs, hostnames, and third-party names or private details that appear in messages. Quote the user's own words sparingly and only when they carry personality.
+- **Outputs are sensitive.** The profile can be intimate. Write it to an output folder outside any git repo or synced/shared directory (ask where if unsure), and don't commit or publish it.
+
 ### Phase 1: Discovery
 
 Before analyzing anything, map what data sources exist. Not all users will have all sources.
@@ -70,6 +78,7 @@ Probe for each and read what exists. Don't assume any particular agent is instal
 | Aider | `**/.aider.chat.history.md` (per-project) | Markdown | lines after `#### human` |
 | OpenCode | `~/.local/share/opencode/opencode.db` | SQLite | `message` table, `data` col (JSON) |
 | Copilot Chat (VS Code) | `~/Library/Application Support/Code/User/globalStorage/github.copilot-chat/**/*.jsonl` | JSONL | `v.requests[].message` |
+| Codex CLI | `~/.codex/history.jsonl`, `~/.codex/sessions/` | JSONL | `text` in history; `role=user` items in sessions |
 | Gemini CLI | `~/.gemini/` | metadata only | no conversation data stored locally |
 | Cursor | `~/Library/Application Support/Cursor/User/globalStorage/` | SQLite/JSONL | similar to VS Code |
 | Windsurf | `~/Library/Application Support/Windsurf/User/globalStorage/` | SQLite/JSONL | similar to VS Code |
@@ -83,9 +92,15 @@ Discovery commands:
 ls ~/.claude/history.jsonl 2>/dev/null && echo "claude-code"
 find ~/dev -name ".aider.chat.history.md" -maxdepth 4 2>/dev/null
 ls ~/.local/share/opencode/opencode.db 2>/dev/null && echo "opencode"
-ls "~/Library/Application Support/Code/User/globalStorage/github.copilot-chat/" 2>/dev/null && echo "copilot-chat"
+ls "$HOME/Library/Application Support/Code/User/globalStorage/github.copilot-chat/" 2>/dev/null && echo "copilot-chat"
 ls ~/.continue/ 2>/dev/null && echo "continue"
+ls ~/.codex/history.jsonl 2>/dev/null && echo "codex"
 ```
+
+Bundled helpers (paths relative to this skill's directory; standard library only):
+`python3 scripts/discover_sources.py` prints a source inventory with sizes, and
+`python3 scripts/collect_history_stats.py --output-dir <dir>` writes `stats.json` and `samples.txt` from a
+Claude Code-format `history.jsonl` (pass `--history-file` for another JSONL). Both are optional shortcuts.
 
 **Source 1b: Claude Code Environment**
 ```
@@ -100,14 +115,14 @@ ls ~/.continue/ 2>/dev/null && echo "continue"
 
 **Source 2: Personal Expression (prioritize these over work repos)**
 ```
-~/dev/me/ (or personal equivalent)          # Personal/side projects — names, themes, what they chose to build
+~/dev/personal/ (or wherever side projects live)  # Personal/side projects — names, themes, what they chose to build
 ~/.local/share/chezmoi/ or ~/dotfiles/      # Dotfiles — configuration as aesthetic choice
 ~/cloud/ or ~/notes/ or ~/Documents/        # Personal notes, writing, Obsidian vaults
 ~/.zshrc or ~/.bashrc                       # Aliases and functions — naming reveals personality
-~/dev/me/*/README.md                        # Personal project READMEs (distinct from work)
+<personal projects dir>/*/README.md          # Personal project READMEs (distinct from work)
 ```
 
-**Skip for personal profile:** Work repositories (`~/dev/` excluding personal dir), work project READMEs, CI configs, deployment files. These describe the job, not the person.
+**Skip for personal profile:** Work repositories (everything under the dev folder except the personal projects dir), work project READMEs, CI configs, deployment files. These describe the job, not the person.
 
 **Source 3: Shell & System Configuration**
 ```
@@ -214,7 +229,7 @@ for the full analytical rubric with questions and evidence patterns for each dim
 
 Offer the Working-With-Me Guide and Professional Portrait as opt-in extras — mention them briefly after presenting the defaults. Do not produce a Professional Portrait unless explicitly requested.
 
-Store outputs in the user's preferred temp/output directory.
+Write outputs to the folder agreed at the privacy gate (default: a new `profile-me-output/` folder in the current working directory, if that is not inside a git repo; otherwise ask).
 
 ### 1. Personal Portrait (`portrait-personal.md`)
 
@@ -300,12 +315,16 @@ Must work in any LLM's system prompt field.
 
 ## Workflow
 
+### Step 0: Privacy gate
+Complete the Privacy Gate above and wait for the answer before touching any data.
+
 ### Step 1: Discover
 Run Phase 1 discovery. Report what sources were found and their sizes. Ask the user if there
 are additional data sources to include (e.g., specific directories, exported chat logs, notes).
+Proceed once they answer; don't re-ask per file.
 
 ### Step 2: Collect
-Run Phase 2 deep reading with parallel subagents. This is the most token-intensive step.
+Run Phase 2 deep reading, using parallel subagents if the environment supports them (otherwise read serially). This is the most token-intensive step.
 
 ### Step 3: Analyze
 Apply the analysis framework across all seven dimensions. Compile evidence for each finding.
@@ -315,7 +334,7 @@ Flag inferences that are weakly supported.
 Write all requested output documents. Apply bias guardrails during writing.
 
 ### Step 5: Present
-Share the outputs with the user. Invite feedback. Note that the profile is a snapshot — it
+Share the outputs with the user, ending with one line: which claims are inference rather than observation. Invite feedback. Note that the profile is a snapshot — it
 reflects who they are *now*, from the evidence available, and should be updated over time.
 
 ### Step 6: Iterate
@@ -344,15 +363,14 @@ knows themselves better than any analysis — their corrections are data too.
 The personal portrait quality depends heavily on the writing model's ability to synthesize
 narrative from evidence. Use the best available model tier for each task:
 
-- **Flagship / reasoning-tier models** (e.g., Opus, GPT-4o, Gemini Ultra, o3): Best for the
+- **Flagship / reasoning-tier models** (using currently available models): Best for the
   personal portrait and through-line identification. These produce the narrative cohesion and
   insight density the portrait demands.
-- **Mid-tier models** (e.g., Sonnet, GPT-4o-mini, Gemini Flash Pro): Good for the professional
+- **Mid-tier models** (using currently available models): Good for the professional
   portrait, working-with-me guide, and system prompt — structured documents where clarity
   matters more than voice.
-- **Fast / lightweight models** (e.g., Haiku, Gemini Flash, Cerebras): Suitable for data
+- **Fast / lightweight models** (using currently available models): Suitable for data
   collection, discovery scripts, and stats generation. Save expensive context for synthesis,
   not scanning.
 
-When running all four documents, consider dispatching subagents with model overrides: flagship
-tier for the personal portrait, mid-tier for the other three.
+When running several documents, write the personal portrait with the strongest model available to the session and use the same or a cheaper tier for the rest.

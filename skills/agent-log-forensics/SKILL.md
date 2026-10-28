@@ -36,14 +36,14 @@ Third-order stance: skip the obvious "agent forgot tool" answer. Ask what hidden
 
 ## Phase 1: Scope the Observation Window
 
-Default to the last 7 days unless the user names a different range. Include remote hosts explicitly named by the user, commonly `private-host`.
+Default to the last 7 days unless the user names a different range. Include remote hosts only when the user names them (an SSH alias they use).
 
-Prefer Toolsmith's built-in scanner when available:
+Prefer Toolsmith's built-in scanner when it is installed (optional; skip if absent):
 
 ```bash
 toolsmith scan-agent-logs --days 7 --max-examples 12
 toolsmith opportunities --days 7 --max-examples 8
-toolsmith scan-agent-logs --days 7 --remote private-host --max-examples 12
+toolsmith scan-agent-logs --days 7 --remote <ssh-host> --max-examples 12
 ```
 
 If the scanner is not installed yet, say that and fall back to a lightweight count of recent `~/.claude/projects/**/*.jsonl` and `~/.codex/sessions/**/*.jsonl` files rather than dumping raw prompts.
@@ -107,8 +107,8 @@ Name the proposed path in memorable language, for example "shadow workflow colle
 
 Store reports in:
 
-- Temporary artifacts: `~/dev/agent-notes/<project>/`
-- Durable reports: Obsidian project folder if the user asks or the work should guide future sessions
+- Temporary artifacts: a scratch dir such as `${TMPDIR:-/tmp}/agent-log-forensics/`
+- Durable reports: the user's notes vault or repo docs if the user asks or the work should guide future sessions
 
 Include:
 
@@ -124,7 +124,7 @@ Include:
 
 <scripts>
 
-Use `scripts/collect_toolsmith_scan.py` to run local and remote Toolsmith scans and write a combined Markdown report.
+Use `scripts/collect_toolsmith_scan.py` (relative to this skill directory, via `uv run`) to run local and remote Toolsmith scans and write a combined Markdown report. Pass `--notes-dir <dir>` to choose the output location (the script default is `~/dev/agent-notes/`; pass the user's notes dir or a temp dir instead).
 
 </scripts>
 
@@ -133,6 +133,6 @@ Use `scripts/collect_toolsmith_scan.py` to run local and remote Toolsmith scans 
 - Use `remote-host-verifier` when comparing a command across local and remote hosts.
 - Use `skill-creator` when turning findings into new skills.
 - Use `status-copy-trust-audit` when confusing CLI output appears repeatedly in logs.
-- Use `claude -p --model opus` for a broad synthesis pass before writing new skills.
+- For a broad synthesis pass before writing new skills, use a strongest-tier in-session subagent (outside CLIs only after asking the user; see the `second-opinions` policy).
 
 </interlocks>

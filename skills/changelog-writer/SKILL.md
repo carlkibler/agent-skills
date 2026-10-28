@@ -24,7 +24,7 @@ Turns git commits into changelog entries humans want to read. Covers the gap bet
 ## When NOT to Use
 
 - For internal-only changes with no user-visible effect
-- For very first releases (no "since last release" baseline)
+- When the user wants a changelog from scratch with no baseline: ask for a starting commit or date instead of guessing
 
 ---
 
@@ -34,7 +34,7 @@ Turns git commits into changelog entries humans want to read. Covers the gap bet
 
 Ask or infer:
 
-1. **Git range** — "since last release" (git tags), a specific SHA, or a branch diff. Default: `git log $(git describe --tags --abbrev=0)..HEAD` if tags exist, else `git log HEAD~20..HEAD`.
+1. **Git range** — "since last release" (git tags), a specific SHA, or a branch diff. Default: `git log $(git describe --tags --abbrev=0)..HEAD` if tags exist, else ask for a starting point (a short-history repo breaks `HEAD~20`). Confirm the resolved range before drafting.
 2. **Audiences** — which sections to generate. Default: all three (Users, Developers, Operators). Skip any that aren't relevant.
 3. **Format** — CHANGELOG.md (Keep a Changelog format), Markdown for a blog post, or plain text for an email.
 4. **Version** — if known, use it. Otherwise leave as `[NEXT VERSION]`.
@@ -55,10 +55,7 @@ Run:
 git log <range> --pretty=format:"%H %s" --no-merges
 ```
 
-For each commit, also read the full diff summary:
-```bash
-git show --stat <SHA>
-```
+For each commit whose subject does not make the user impact clear, read the body and diff summary (`git show --stat <SHA>`). PR-merge or squash commits may need `gh pr view` for intent. Do not guess impact from a subject alone.
 
 Group commits by type if using conventional commits (feat, fix, docs, chore, refactor, perf, test, build, ci). Otherwise, read the commit message and classify by likely intent.
 
@@ -105,7 +102,7 @@ Rules for writing:
 
 ### Keep a Changelog format (default)
 ```markdown
-## [NEXT VERSION] - YYYY-MM-DD
+## [NEXT VERSION] - <today's date, YYYY-MM-DD>
 
 ### For Users
 
@@ -134,7 +131,7 @@ Omit the markdown headers. Write short prose paragraphs instead of bullet lists.
 2. Identify the position of the `# Changelog` header (or top of file).
 3. Prepend the new section immediately after the header, before any existing entries.
 4. Preserve all existing content verbatim.
-5. Offer to write it back.
+5. Show the entry first; write it back only on confirmation. If the file uses a different heading style, match it.
 
 ## Phase 6: Review Pass
 

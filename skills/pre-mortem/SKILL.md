@@ -108,23 +108,37 @@ Use these to sharpen prompts and to judge severity later.
 
 This is the heart of the technique. Diversity of perspective matters more than coverage or politeness.
 
-### Data Sharing Gate
+### Data Sharing Gate and external CLIs
 
-If the project appears to contain proprietary code, customer data, secrets, or regulated material, ask before sending context to external models. If in doubt, default to **single-agent mode** (all roles as subagents of the running agent with strongly differentiated mandates).
+Default is **single-agent mode**: every role runs as an in-session subagent with a strongly differentiated mandate. That needs no extra permission.
 
-### Environment Detection
+An outside model CLI adds genuine model diversity for the fresh-eyes roles, but it sends the scenario brief to another provider. If the project appears to contain proprietary code, customer data, secrets, or regulated material, include only the scrubbed scenario brief, or stay in single-agent mode.
 
-Use the direct Claude CLI for outsider and emotional roles:
+**External model CLIs (ask first)**
 
-```bash
-command -v claude >/dev/null 2>&1 && echo "claude available"
-```
+In-session subagents need no extra permission and are the default for every role below.
+Launching a separate agent CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) is different:
+it spends the user's quota and sends project content to that provider. Before the first launch:
 
-When available, run the bundled `scripts/fan-out.sh`; it calls `claude -p` directly and fails closed. If Claude is unavailable, use single-agent mode with strongly differentiated subagents. Report that the external cross-check did not run. Do not fall back to another provider.
+1. Read `${XDG_CONFIG_HOME:-$HOME/.config}/agent-skills/external-clis.json` if it exists.
+   A CLI listed under `skills.pre-mortem.allow` or top-level `allow` may run without asking;
+   one listed under `deny` (either level) must not run. Skill-level entries win.
+2. Otherwise run `command -v claude codex omp pi`, then ask once: which installed CLIs may this
+   skill launch, and should the answer apply to this run, always for this skill, or always?
+3. For "always", create or update the file (merge; never drop other skills' entries), e.g.
+   `{"allow": ["codex"], "deny": [], "skills": {"pre-mortem": {"allow": ["claude", "codex"]}}}`.
+4. Bound every call (`timeout 600 …`). Report which CLI and model actually answered. If none
+   ran, say the outside cross-check did not happen rather than presenting subagent output as one.
+
+Equivalent one-shot forms: `claude -p --model <m> "<prompt>"`,
+`codex exec -m <m> --sandbox read-only "<prompt>"`, `omp -p --model <m> "<prompt>"`, `pi -p "<prompt>"`.
+Prefer a CLI from a different company than the current session for outsider roles.
+
+`scripts/fan-out.sh` is the only external launcher here. Run it only after the check above approves the CLI, passing that CLI as `FANOUT_CLI` (`claude`, `codex`, `omp`, or `pi`; default `claude`; optional `FANOUT_TIMEOUT` seconds, default 600). It maps tiers to models only for `claude`; other CLIs use their default model. It fails closed: a failed or truncated role leaves a `!!! FAN-OUT` marker in its output file, and `.mode` records `EXTERNAL` or `SINGLE_AGENT`. If it exits non-zero or a role file carries a marker, rerun that role as a subagent and say the external cross-check was partial or did not happen.
 
 ### Role roster
 
-Use **6 core roles** minimum. Add **specialized roles** for high-stakes launches. Assign each role a distinct **emotional register** — not just a functional lens but a visceral posture. Same facts read very differently through fear vs. contempt vs. grief.
+Use the **6 core roles** for launch-critical work (4 minimum for small exercises; see sizing below). Add **specialized roles** for high-stakes launches. Assign each role a distinct **emotional register** — not just a functional lens but a visceral posture. Same facts read very differently through fear vs. contempt vs. grief.
 
 #### Core roles
 
@@ -213,14 +227,15 @@ FORMAT: numbered list. No preamble. No hedging. Write as your character — in t
 
 Use **real parallelism**.
 
-- Spawn subagents of the running agent for code-aware roles (Saboteur, Historian, Burned Expert).
-- Use the fan-out script for outsider and emotional roles where external LLMs are available: `bash "${SKILL_DIR}/scripts/fan-out.sh" scenario.txt output/`
+- Spawn subagents of the running agent for code-aware roles (Saboteur, Historian).
+- If an external CLI is approved, run the fan-out script for the fresh-eyes roles: `FANOUT_CLI=<approved-cli> bash "${CLAUDE_SKILL_DIR}/scripts/fan-out.sh" scenario.txt output/` (or the script under the skill's directory). It covers 8 fixed roles: customer, support, accountant, pessimist, burned_expert, emotional_witness, outsider, critic. Don't also spawn those as subagents.
+- Otherwise run the fresh-eyes roles as subagents given only the scenario brief and no source access.
 - Do all launches in one turn when possible.
 - While agents run, do local work: map moments of truth, note trust surfaces, gather evidence from code/docs.
 
 Preferred split when multiple models are available:
-- **Saboteur, Historian, Burned Expert** — code-aware subagents (can read source, git log, architecture)
-- **Customer Advocate, Support Lead, Pessimist, Emotional Witness, Outsider, Critic, Trust Prosecutor, Devil's Advocate** — external LLMs or additional subagents with no source access (fresh eyes only)
+- **Saboteur, Historian** — code-aware subagents (can read source, git log, architecture)
+- **Customer Advocate, Support Lead, Accountant, Pessimist, Burned Expert, Emotional Witness, Outsider, Critic, Trust Prosecutor, Devil's Advocate** — fresh-eyes subagents with no source access, or the approved external CLI via the script (Trust Prosecutor and Devil's Advocate are not in the script; run them as subagents)
 
 If only one model/agent is available, use it for all roles with strongly differentiated mandates. The emotional register differentiation is what prevents them from collapsing into the same answer.
 
@@ -384,7 +399,7 @@ _"It is [future date]. [Project] launched, and the launch went badly. Here's wha
 
 Save a compact process log beside the report. Include only:
 
-- agents/models, roles, emotional registers, and prompt variants
+- agents/models/CLIs that actually answered (and any that failed), roles, emotional registers, and prompt variants
 - the scenario briefing sent
 - each role's top 3 risks and any surprising finding
 - cross-pollination digest, disagreements, and changes, if run
@@ -405,7 +420,7 @@ If useful, offer one follow-up mode:
 ## Variants
 
 ### Sprint / Feature pre-mortem
-Use 4 roles: Saboteur, Customer Advocate, Pessimist, Historian + Burned Expert. Ask for 3-5 risks each. Skip optional roles. Still produce both documents.
+Use 5 roles: Saboteur, Customer Advocate, Pessimist, Historian, Burned Expert (run as subagents; the fan-out script is overkill here). Ask for 3-5 risks each. Skip optional roles. Still produce both documents.
 
 ### Launch / GTM pre-mortem
 Add Reviewer / Critic, Privacy / Trust Prosecutor, Emotional Witness, and Devil's Advocate. Emphasize onboarding, pricing, trust, support, and review narratives. Run the cross-pollination round.

@@ -23,6 +23,8 @@ Third-order stance: trust is built in boring repeated runs and in failure paths.
 - Commands like update/setup/doctor/register/install report both no-op and changed states
 - Scope, provenance, or safety status is unclear
 
+Use `trust-audit` instead for broad permission/privacy/billing trust review, not wording and state semantics.
+
 ## When NOT to Use
 
 - The output is purely internal debug logging
@@ -35,13 +37,14 @@ Third-order stance: trust is built in boring repeated runs and in failure paths.
 
 ## Phase 1: Capture Real Transcripts
 
-Run the command at least twice. If scope flags exist, test the default and explicit scope.
+Use supplied transcripts or documented read-only checks first. Repeat mutating commands only within the authorized change scope or an isolated disposable fixture. If scope flags exist, test the default and explicit scope in that fixture.
 
 ```bash
+<tool> --version
+# In an authorized disposable fixture only:
 <tool> update
 <tool> update
 <tool> update --scope user
-<tool> doctor --smoke
 ```
 
 Keep exact stdout/stderr snippets in notes or tests. Also trigger at least one intentional failure when safe: missing config, stale path, bad scope, offline/network failure, or permission denied.
@@ -99,9 +102,8 @@ Add tests for:
 
 <interlocks>
 
-- Use `release-operator` before shipping changed status text.
 - Use `remote-host-verifier` to confirm the same status semantics on remote hosts.
 - Use `empathy-audit` when error copy may blame the user for system drift or tool limitations.
-- Use `release-operator` when status text changes must be verified from the published artifact, not just the checkout.
+- Use `release-operator` before shipping, or when status text changes must be verified from the published artifact, not just the checkout.
 
 </interlocks>

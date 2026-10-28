@@ -54,6 +54,8 @@ The goal is to create **isolated, attributable, repeatable test lanes** where ea
 - a clear scenario assignment
 - a clear teardown path
 
+If agents run lanes, build the app once and share the binary read-only; lanes differ by state root and fixture, not by build. Do not run competing builds.
+
 ## Quick Start
 
 When asked to set up parallel app testing:

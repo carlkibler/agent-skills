@@ -27,7 +27,7 @@ every proposed change names the new SHA and flags it for a supply-chain check.
 ## Scope
 
 Ask what to scan if unclear: a single project, a list of repos, or "everything under
-`~/dev/work`". Then discover dependency manifests:
+a directory the user names". Don't scan outside what the user named. Then discover dependency manifests (this prunes `bin`/`obj`/`packages` directories, so say if a .NET or other repo keeps manifests there):
 
 ```bash
 ROOT="${1:-.}"
@@ -164,7 +164,7 @@ SUMMARY: 4 pin gaps, 3 cooldown gaps, 1 uncommitted lock across N repos.
 ```
 
 Classify each as: `OK` · `PIN MISSING` · `COOLDOWN MISSING` · `LOCK NOT COMMITTED`.
-Then list **exact fixes** (the resolved SHA/digest, the config snippet) per item.
+Then list **exact fixes** (the resolved SHA/digest, the config snippet) per item, ordered by risk: unpinned CI actions and images first, cooldown settings last. Stop after the report and ask which ecosystems to change.
 
 ## Action rules
 - Default to **read-only**. Do not edit files, run installers, or commit until the user approves.

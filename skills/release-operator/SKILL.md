@@ -20,7 +20,7 @@ Third-order stance: a release is a trust event with an exit door. Verify not jus
 
 - The user says release, deploy, publish, `cpd`, or "do that release"
 - A packaged CLI/app needs version bump, changelog, tag, and verification
-- A remote host such as `private-host` should validate the install/update path
+- A remote host should validate the install/update path
 
 ## When NOT to Use
 
@@ -33,6 +33,8 @@ Third-order stance: a release is a trust event with an exit door. Verify not jus
 <process>
 
 ## Phase 1: Establish Release Facts
+
+Publishing, tagging, and pushing are outward-facing and hard to undo. Proceed through them only if the user asked for the release itself; otherwise stop after Phase 3 and confirm. Never publish with failing gates.
 
 Read the repo instructions and existing release docs/scripts. Determine:
 
@@ -92,10 +94,10 @@ Verify the published artifact, not just the local checkout:
 <tool> update
 ```
 
-If a remote host was named:
+If a remote host was named (use the user-supplied name, never guess one):
 
 ```bash
-ssh private-host '<tool> update; <tool> --version; <tool> doctor --smoke'
+ssh <host> '<tool> update; <tool> --version; <tool> doctor --smoke'
 ```
 
 Classify any warnings. Release blockers are install failure, wrong version, missing packaged files, broken smoke test, or stale remote config pointing at the wrong binary.
@@ -118,10 +120,9 @@ Return concise evidence:
 
 <interlocks>
 
-- Use `remote-host-verifier` for local/remote command comparison.
 - Use `status-copy-trust-audit` before release when CLI status text changed.
 - Use `changelog-writer` when changelog wording needs user-facing translation.
 - Use `support-storm` or `status-copy-trust-audit` when the release changes setup, billing, permissions, status output, or failure modes.
-- Use `remote-host-verifier` after release to catch stale package sources and hidden host drift.
+- Use `remote-host-verifier` for local/remote comparison, especially after release, to catch stale package sources and hidden host drift.
 
 </interlocks>

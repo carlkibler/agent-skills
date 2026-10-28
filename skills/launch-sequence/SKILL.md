@@ -43,7 +43,7 @@ If all four are clear from context, proceed immediately without asking.
 
 ## Phase 2: Parallel Analysis
 
-Launch all four constituent analysis passes in parallel as subagents. Each subagent gets the same context brief plus its specific mandate.
+Launch all four constituent analysis passes in parallel as in-session subagents (no external CLIs; nothing leaves the session). Each gets the same context brief plus its specific mandate. If the matching skill (first-contact, support-storm, trust-audit, pre-mortem) is installed, tell the subagent to follow it; otherwise the mandate below is enough. Ask each to return at most 7 findings, each tagged **catastrophic / serious / minor** with the evidence (file, screen, or flow) behind it, and to say what it could not check.
 
 ### Context Brief (inject into each subagent)
 ```
@@ -72,7 +72,7 @@ Assume it is 6 months after launch and the product failed. Write the postmortem.
 After all four subagents complete, synthesize their findings:
 
 ### Blocking Issues (must fix before launch)
-Issues that appear in 2+ analyses or represent catastrophic user harm.
+Issues that appear in 2+ analyses, or any finding tagged catastrophic (data loss, security/privacy breach, billing harm, unrecoverable user state). Dedupe by root cause, not wording.
 
 ### Non-Blocking Issues (fix post-launch)
 Single-analysis findings that are real but survivable.
@@ -86,6 +86,8 @@ Choose one:
 **🟡 CAUTION** — 1-2 blocking issues with clear, fast fixes. Launch after addressing.
 
 **🔴 NO-GO** — 3+ blocking issues or one catastrophic finding. Fix before launching.
+
+If an analysis could not be run or came back thin, say so in the report and cap the verdict at CAUTION; never issue GO on partial evidence.
 
 ### Output Format
 
@@ -105,6 +107,9 @@ Choose one:
 
 ### What to Do Next
 [Numbered list of immediate actions, ordered by priority]
+
+### Coverage
+[Which of the four analyses ran, and what each could not check]
 ```
 
 </process>

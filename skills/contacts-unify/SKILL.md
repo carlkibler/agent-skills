@@ -23,6 +23,10 @@ all. The win is a single source of truth they'll actually keep feeding.
 and its dossier step (`research-person`) *does* reach the public web (LinkedIn, gov/org sites). Treat
 Phase B network access as a deliberate, separately-approved step, never an automatic follow-on.
 
+**Before anything else:** tell the user what will be read (Contacts DB, exports, optionally Messages) and what
+will happen (backup, then a dry-run preview), and get a go-ahead. All data stays on the machine; don't paste
+contact or message content into external services.
+
 **Consent & authorization (read before running):** only operate on contacts/messages belonging to
 the user, on a machine they own or have explicit permission to access (including any SSH host). Phase
 B researches *other people* from the user's private data — only build a dossier on someone the user
@@ -67,16 +71,18 @@ Full plan: **`references/unify-plan.md`** (read it before building). Summary of 
    identical cards (same normalized phone/email set — no info lost).
 6. **Never sync back** to any cloud account until the user names an explicit target and approves.
 
-**Starter code:** `scripts/contacts_cleanup.py` is the proven single-source (macOS) merger with the
-full web review UI, backup, undo, and classification already working. Read it, then extend it to
-multi-source ingest + per-field winner selection. Do not rebuild from scratch.
+**Starter code:** `scripts/contacts_cleanup.py` (relative to this skill's directory) is a single-source (macOS)
+merger with a web review UI, backup, undo, and classification. It is **dry-run by default**; `--live` (or
+`CC_LIVE=1`) is required to merge or delete. Note that in live mode it also auto-combines exact duplicates at
+startup, so run it dry first and show the user the preview. Read it, then extend it to multi-source ingest +
+per-field winner selection rather than rebuilding. Run it only after the backup step has succeeded.
 
 ### Phase B — iMessage mining → dossiers (optional deep dive)
 
 Full plan: **`references/imessage-dossier-plan.md`**.
 
 1. **Ask the user who's worth a deep dive.** Before mining, offer to focus: high-value people,
-   specific groups, or traits (e.g. "Utah legislators", "arts-org board members", "clients",
+   specific groups, or traits (e.g. "state legislators", "arts-org board members", "clients",
    "family"). Let them steer the shortlist — don't research everyone. The ranking *informs* the
    conversation; it does not authorize research. A dossier runs only for a person the user names.
 2. **Mine the message graph (read-only).** Run `scripts/imessage_signal.py` — it copies `chat.db`
@@ -89,8 +95,8 @@ Full plan: **`references/imessage-dossier-plan.md`**.
 3. **Resolve identities** against the unified address book from Phase A (collapse phone+email splits).
 4. **Fan out dossiers.** For the approved shortlist, invoke the **`research-person`** skill to build
    confidence-marked Obsidian `People/` notes, enriched from public sources appropriate to the
-   person's world — LinkedIn, and (Utah-centric example) the state legislature site (le.utah.gov),
-   arts-group/nonprofit sites, and the lobbyist registry (disclosures.utah.gov). Private message
+   person's world — LinkedIn, and (for civic figures) state legislature sites, nonprofit/arts-group sites, and lobbyist or
+   disclosure registries. Private message
    content stays internal context, never published.
 
 ## Safety rules (both phases)
@@ -103,7 +109,8 @@ Full plan: **`references/imessage-dossier-plan.md`**.
 
 ## Deliverables
 
-- Working dir (e.g. `~/dev/agent-notes/me/contacts-merge/<person>/`) with source snapshots,
+- Working dir (a new folder outside any shared/synced repo, e.g. `~/contacts-merge/<person>/`) with source snapshots,
   `contacts-data.json`, `contacts-decisions.(csv|json)`, and the review HTML.
-- `Unify My Contacts.command` launcher + a friend-readable `README.md`.
+- A launcher (`.command` file) and a short friend-readable `README.md`, if the user wants to hand this off.
+- Final summary: counts auto-merged, sent to review, left alone; paths to the backup and the undo `.vcf`.
 - (Phase B) `people-signal.(csv|json)` + `research-person` dossiers for the approved shortlist.

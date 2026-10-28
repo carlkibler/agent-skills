@@ -18,7 +18,7 @@ Third-order stance: do not stop at whether the command works now. Ask whether th
 
 ## When to Use
 
-- The user names a remote host such as `private-host`
+- The user names a remote host (an SSH alias such as `devbox`)
 - A CLI install/update/release must work on more than one machine
 - You need to compare local vs remote config, version, path, or behavior
 - A remote machine has more representative data than the current one
@@ -27,6 +27,7 @@ Third-order stance: do not stop at whether the command works now. Ask whether th
 ## When NOT to Use
 
 - The command is destructive and no dry-run mode exists
+- The user hasn't said which hosts you may connect to (don't pick hosts from ~/.ssh/config yourself)
 - The user did not name or imply remote validation
 - The result depends on GUI state you cannot inspect over SSH
 
@@ -45,13 +46,13 @@ command -v <tool>
 ssh <host> 'hostname; command -v <tool>; <tool> --version'
 ```
 
-Capture exact hostnames. Do not assume `private-host` points where it did last time.
+Capture exact hostnames. Do not assume an SSH alias points where it did last time. Use non-interactive SSH (`ssh -o BatchMode=yes <host> ...`) so a password or host-key prompt fails fast instead of hanging; if it fails, report the connection error rather than guessing.
 
 Also capture environment risk signals before trusting the comparison:
 
 ```bash
-ssh <host> 'date -Is; uptime; df -h .; echo "$SHELL"; printf "%s\n" "$PATH"'
-date -Is; uptime; df -h .; echo "$SHELL"; printf "%s\n" "$PATH"
+ssh <host> 'date -u "+%Y-%m-%dT%H:%M:%SZ"; uptime; df -h .; echo "$SHELL"; printf "%s\n" "$PATH"'
+date -u "+%Y-%m-%dT%H:%M:%SZ"; uptime; df -h .; echo "$SHELL"; printf "%s\n" "$PATH"
 ```
 
 Look for time skew, nearly-full disks, different shells, and PATH order changes. These are predictive failures: the current command may pass while the next release/update fails.
@@ -61,10 +62,11 @@ Look for time skew, nearly-full disks, different shells, and PATH order changes.
 Run the smallest equivalent command locally and remotely. Prefer JSON output where available.
 
 ```bash
-python3 skills/remote-host-verifier/scripts/remote_compare.py --host private-host -- toolsmith doctor --smoke --json
+# path relative to this skill's directory; add --probe-env for time/PATH/disk probes
+python3 scripts/remote_compare.py --host <host> --probe-env -- <tool> doctor --smoke --json
 ```
 
-If a command mutates state, look for `--dry-run`, `--check`, `--json`, `--no-setup`, or a disposable temp workspace first.
+For a mutating command, use a documented read-only or dry-run mode, or an authorized disposable workspace. A `--json` flag changes output format and does not establish read-only behavior.
 
 ## Phase 3: Normalize and Interpret
 
@@ -96,7 +98,7 @@ If release/install/update was the goal, finish with:
 ssh <host> '<tool> --version; <tool> doctor --smoke'
 ```
 
-Report only after both sides have evidence. Include a small "tomorrow risk" note if drift is present even when the command passes.
+Report only after both sides have evidence. Finish with a verdict per host (PASS / FAIL / INCONCLUSIVE), the exact commands run, the differences classified as above, and a small "tomorrow risk" note if drift is present even when the command passes. Stop once each named host has a verdict; don't widen to other hosts.
 
 </process>
 

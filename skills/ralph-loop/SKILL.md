@@ -29,6 +29,28 @@ Be tough but fair. External models are collaborators, not judges. Prefer fixes t
 
 Reject reviewer suggestions that are stale, hallucinated, over-engineered, already fixed, or require product decisions.
 
+## External model CLIs (ask first)
+
+In-session subagents need no extra permission and are the default for every role below.
+Launching a separate agent CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) is different:
+it spends the user's quota and sends project content to that provider. Before the first launch:
+
+1. Read `${XDG_CONFIG_HOME:-$HOME/.config}/agent-skills/external-clis.json` if it exists.
+   A CLI listed under `skills.ralph-loop.allow` or top-level `allow` may run without asking;
+   one listed under `deny` (either level) must not run. Skill-level entries win.
+2. Otherwise run `command -v claude codex omp pi`, then ask once: which installed CLIs may this
+   skill launch, and should the answer apply to this run, always for this skill, or always?
+3. For "always", create or update the file (merge; never drop other skills' entries), e.g.
+   `{"allow": ["codex"], "deny": [], "skills": {"ralph-loop": {"allow": ["claude", "codex"]}}}`.
+4. Bound every call (`timeout 600 ...`). Report which CLI and model actually answered. If none
+   ran, say the outside cross-check did not happen rather than presenting subagent output as one.
+
+Equivalent one-shot forms: `claude -p --model <m> "<prompt>"`,
+`codex exec -m <m> --sandbox read-only "<prompt>"`, `omp -p --model <m> "<prompt>"`, `pi -p "<prompt>"`.
+Prefer a CLI from a different company than the current session for outsider roles.
+Pick a capability tier, not a pinned model name: fast, balanced, or strongest. Use each CLI's
+current model list or default to map the tier; omit `--model` if unsure.
+
 ## Loop shape
 
 ### 1. Recon — choose the next frontier
@@ -58,10 +80,10 @@ If the repo has prior review docs, append “already swept” and “next fronti
 Prefer the bundled prompt builder:
 
 ```bash
-uv run "${SKILL_DIR:-${CLAUDE_SKILL_DIR}}/scripts/build_ralph_prompt.py" --focus "views, API, auth" --out-dir "$HOME/dev/agent-notes/$(basename "$PWD")"
+uv run <skill-dir>/scripts/build_ralph_prompt.py --focus "views, API, auth" --out-dir "${TMPDIR:-/tmp}/ralph-$(basename "$PWD")"
 ```
 
-If the environment lacks `SKILL_DIR`, locate the script in the skill directory or build the packet manually.
+`<skill-dir>` is this skill's directory; if the script cannot be found, build the packet manually.
 
 The packet should include:
 
@@ -79,15 +101,13 @@ Keep prompts under shell argument limits. If using a CLI wrapper that passes pro
 
 ### 3. Launch — fan out reviewers
 
-Use at least three differentiated review prompts when the change warrants it. Call Claude directly:
+Use at least three differentiated review prompts when the change warrants it: architecture and hard
+correctness (strongest tier), practical bug hunting (balanced), and a fast blunt edge-case pass (fast).
+Default to in-session subagents at those tiers. Add outside model CLIs only per the policy above,
+preferring a different company than the current session for at least one reviewer. Prompt diversity
+matters more than pretending three wrappers are three independent judges.
 
-- `claude -p --model opus` for architecture and hard correctness;
-- `claude -p --model sonnet` for practical bug hunting;
-- `claude -p --model haiku` for a fast, blunt edge-case pass.
-
-Do not route through another provider. Prompt diversity matters more than pretending three wrappers are three independent judges.
-
-Run reviewers in parallel when tools allow. Store raw outputs under `~/dev/agent-notes/<repo>/` with model and date in the filename.
+Run reviewers in parallel when tools allow. Store raw outputs outside the repo (the user's notes dir if named, otherwise a temp dir) with model and date in the filename.
 
 Prompt reviewers to include file/function, reason, suggested fix, severity, and a Reject/Do-not-do section.
 

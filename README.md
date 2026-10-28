@@ -202,4 +202,19 @@ Test locally without installing from GitHub:
 claude --plugin-dir ./skills/pre-mortem
 ```
 
-Second-opinion skills call the subscribed `claude -p` CLI directly. No provider router is installed.
+## External model CLIs
+
+Multi-perspective skills (brainstorm, pre-mortem, empathy-audit, second-opinions, …) use in-session
+subagents by default. Launching a separate CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) spends
+your quota and sends project content to that provider, so each skill asks first. Answer "always" and
+the choice is saved in `${XDG_CONFIG_HOME:-~/.config}/agent-skills/external-clis.json`:
+
+```json
+{
+  "allow": ["codex"],
+  "deny": [],
+  "skills": { "wide-open-brainstorm": { "allow": ["claude", "codex"] } }
+}
+```
+
+Skill-level entries win over the top-level lists. Delete the file to be asked again.

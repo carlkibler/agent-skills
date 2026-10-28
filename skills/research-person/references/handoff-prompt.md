@@ -57,11 +57,10 @@ End with: where confidence is weakest, and what one extra input from me would sh
 
 ---
 
-## Notes for Carl (not part of the prompt)
+## Notes for the user (not part of the prompt)
 
 - This is the same methodology the `/research-person` skill runs, minus the vault write. Paste the dossier
-  into `halo/People/<Name>.md` (work) or `People/<Name>.md` (personal) and add frontmatter + `[[cross-links]]`
-  per `_KB Conventions.md`.
+  into your work or personal People note and add frontmatter + `[[cross-links]]` per your vault's conventions.
 - For JS-heavy/blocked sources (LinkedIn, academia.edu, Bandcamp/Spotify), a browser-driving tool that can
   read `innerText` + `<meta>` + JSON-LD beats a plain fetcher — that's where the structured, verifiable data
   lives.

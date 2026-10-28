@@ -90,8 +90,8 @@ python only — no pip installs.** Local `http.server`, opens the browser. Requi
 
 ## Deliverables
 
-1. `contacts_unify.py` (evolved from the bundled cleaner) + `Unify My Contacts.command` launcher.
-2. A working dir under `~/dev/agent-notes/me/contacts-merge/<person>/` (or any working folder) with
+1. `contacts_unify.py` (evolved from the bundled cleaner, keeping its dry-run-by-default / `--live` gate) + a `.command` launcher.
+2. A working dir under a new private working folder such as `~/contacts-merge/<person>/` with
    all source snapshots, `contacts-data.json`, `contacts-decisions.(csv|json)`, and the review HTML.
 3. A short `README.md` a friend could follow, and a one-paragraph summary of what was merged.
 

@@ -53,7 +53,8 @@ Exclude at minimum:
 If using `djangoSecurityHunter`, prefer a clean temp copy and scan-only env values:
 
 ```bash
-python3 skills/django-smoke-alarm/scripts/django_smoke_alarm.py \
+# run from the project root; script path is relative to this skill's directory
+python3 <path-to-this-skill>/scripts/django_smoke_alarm.py \
   --project . \
   --settings myproject.settings \
   --project-python .venv/bin/python \
@@ -64,7 +65,7 @@ python3 skills/django-smoke-alarm/scripts/django_smoke_alarm.py \
   --env DATABASE_URL=sqlite:////tmp/django-smoke.sqlite3
 ```
 
-If the scanner cannot import settings, keep static findings but explicitly say which settings-backed checks were skipped.
+The `SECRET_KEY` above is a placeholder for scan-only use; never put a real secret in scan env values. If the scanner cannot import settings, keep static findings but explicitly say which settings-backed checks were skipped.
 
 ## Phase 2: Read the Rule Buckets, Not Just Counts
 
@@ -117,7 +118,7 @@ Report a compact table:
 | Admin `mark_safe` preview | HYGIENE | URL is escaped, constant HTML otherwise | Convert to `format_html` |
 | AI pipeline multiple saves | FALSE POSITIVE/HYGIENE | Saves status before/after long external calls | Do not wrap whole function; maybe add comment/tests |
 
-Then list only the **top 3-7 REAL fixes**. Put hygiene work behind those.
+Then list only the **top 3-7 REAL fixes**. Put hygiene work behind those. Cite `file:line` for every row, and stop after the table; apply fixes only if the user asks.
 
 ## Phase 5: Turn Findings into Project Policy
 

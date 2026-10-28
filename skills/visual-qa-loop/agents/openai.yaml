@@ -4,6 +4,6 @@ interface:
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#DB2777"
-  default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
+  default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts outside the repo unless asked."
 policy:
   allow_implicit_invocation: false

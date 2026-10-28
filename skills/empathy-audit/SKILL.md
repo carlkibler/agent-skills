@@ -41,7 +41,7 @@ Technical reviews catch bugs in isolation. Empathy audits catch the things that 
 
 Before reviewing, establish the review surface:
 
-1. **Read project docs** — `CLAUDE.md`, README, architecture docs
+1. **Read project docs** — `CLAUDE.md` / `AGENTS.md`, README, architecture docs
 2. **Identify the audience** — who uses this? what do they care about?
 3. **Map the hot paths** — what code runs most often? what touches user files/data?
 4. **Size the review** — pick the scope:
@@ -295,15 +295,31 @@ Read the relevant source files, then make one pass through each lens sequentiall
 
 For full codebase audits, use parallel agents for efficiency and perspective diversity.
 
-#### Environment Detection
+#### Who runs each lens
 
-Use the direct Claude CLI for the fresh-eyes lenses. Check once:
+Default: every lens runs as an in-session subagent. Fresh-eyes lenses get only the lens prompt, the relevant code, and a 1-3 sentence project description. An outside CLI can supply a different model's view of those lenses, but only after the permission check below.
 
-```bash
-command -v claude >/dev/null 2>&1 && echo "claude available"
-```
+**External model CLIs (ask first)**
 
-Use `claude -p --model opus` for the hardest external review and `claude -p` for the other outsider lens. If Claude is unavailable, run those lenses as subagents and report that the external cross-check did not run. Do not fall back to another provider.
+In-session subagents need no extra permission and are the default for every role below.
+Launching a separate agent CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) is different:
+it spends the user's quota and sends project content to that provider. Before the first launch:
+
+1. Read `${XDG_CONFIG_HOME:-$HOME/.config}/agent-skills/external-clis.json` if it exists.
+   A CLI listed under `skills.empathy-audit.allow` or top-level `allow` may run without asking;
+   one listed under `deny` (either level) must not run. Skill-level entries win.
+2. Otherwise run `command -v claude codex omp pi`, then ask once: which installed CLIs may this
+   skill launch, and should the answer apply to this run, always for this skill, or always?
+3. For "always", create or update the file (merge; never drop other skills' entries), e.g.
+   `{"allow": ["codex"], "deny": [], "skills": {"empathy-audit": {"allow": ["claude", "codex"]}}}`.
+4. Bound every call (`timeout 600 …`). Report which CLI and model actually answered. If none
+   ran, say the outside cross-check did not happen rather than presenting subagent output as one.
+
+Equivalent one-shot forms: `claude -p --model <m> "<prompt>"`,
+`codex exec -m <m> --sandbox read-only "<prompt>"`, `omp -p --model <m> "<prompt>"`, `pi -p "<prompt>"`.
+Prefer a CLI from a different company than the current session for outsider roles.
+
+Tiers for the hardest fresh-eyes lens: strongest; for other outsider lenses: balanced.
 
 #### Agent Assignment
 
@@ -311,22 +327,22 @@ Assign lenses to maximize perspective diversity:
 
 | Lens | Best agent type | Why |
 |---|---|---|
-| User Empathy | External LLM (fresh eyes) | No familiarity bias — sees the product as a user would |
+| User Empathy | Fresh-eyes (subagent, or approved external CLI) | No familiarity bias — sees the product as a user would |
 | Machine Empathy | Code-aware subagent | Needs to read actual implementations, timers, loops |
 | Developer Empathy | Code-aware subagent | Needs to evaluate naming, structure, coupling |
-| Support Empathy | External LLM + code-aware | External for "what would confuse a user?", code-aware for "is this logged?" |
+| Support Empathy | Fresh-eyes + code-aware | fresh-eyes for "what would confuse a user?", code-aware for "is this logged?" |
 
-When dispatching to external LLMs, include:
+When dispatching to fresh-eyes lenses (including any external CLI), include:
 1. The lens prompt (from Phase 2)
-2. The relevant source code (pipe file contents)
+2. The relevant source code (inline the file contents; an external CLI cannot see your session)
 3. A brief project description (1-3 sentences)
 
 When dispatching to subagents, include:
 1. The lens prompt
 2. Instructions to read specific files
-3. The project CLAUDE.md for context
+3. The project's CLAUDE.md / AGENTS.md for context
 
-#### Prompt Template for External LLMs
+#### Prompt Template for Fresh-Eyes Lenses
 
 ```
 You are conducting an empathy audit of [PROJECT] — [1-sentence description].
@@ -351,10 +367,10 @@ You are conducting an empathy audit of this codebase through the [LENS NAME] len
 [LENS PROMPT FROM PHASE 2]
 
 Read these files: [FILE LIST]
-Also read CLAUDE.md for project context.
+Also read the project's agent instructions (CLAUDE.md / AGENTS.md) for context.
 
 Produce 5-10 findings. Include BOTH positive and negative findings.
-Be specific — cite file:line references.
+Use the Finding Format above. Be specific — cite file:line references.
 ```
 
 ## Phase 4: Synthesis

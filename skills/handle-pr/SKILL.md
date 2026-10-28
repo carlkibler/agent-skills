@@ -22,12 +22,34 @@ Verify required tools once, upfront:
 
 ```bash
 which gh && gh auth status
-command -v claude >/dev/null 2>&1 && echo "claude available"
 ```
 
-`claude -p` is the only second-opinion path. Use `claude -p --model opus` for the final quality pass. If it fails, report the failure; do not fall back to another provider.
+For the final quality pass, use an in-session subagent by default. An outside model CLI is optional
+and governed by the policy below.
 
-Check for MCP GitHub tools by attempting `mcp__github__list_pull_requests` with a trivial call. Note whether MCP is available — use it where noted, fall back to `gh` otherwise.
+## External model CLIs (ask first)
+
+In-session subagents need no extra permission and are the default for every role below.
+Launching a separate agent CLI (`claude -p`, `codex exec`, `omp -p`, `pi -p`) is different:
+it spends the user's quota and sends project content to that provider. Before the first launch:
+
+1. Read `${XDG_CONFIG_HOME:-$HOME/.config}/agent-skills/external-clis.json` if it exists.
+   A CLI listed under `skills.handle-pr.allow` or top-level `allow` may run without asking;
+   one listed under `deny` (either level) must not run. Skill-level entries win.
+2. Otherwise run `command -v claude codex omp pi`, then ask once: which installed CLIs may this
+   skill launch, and should the answer apply to this run, always for this skill, or always?
+3. For "always", create or update the file (merge; never drop other skills' entries), e.g.
+   `{"allow": ["codex"], "deny": [], "skills": {"handle-pr": {"allow": ["claude", "codex"]}}}`.
+4. Bound every call (`timeout 600 ...`). Report which CLI and model actually answered. If none
+   ran, say the outside cross-check did not happen rather than presenting subagent output as one.
+
+Equivalent one-shot forms: `claude -p --model <m> "<prompt>"`,
+`codex exec -m <m> --sandbox read-only "<prompt>"`, `omp -p --model <m> "<prompt>"`, `pi -p "<prompt>"`.
+Prefer a CLI from a different company than the current session for outsider roles.
+Pick a capability tier, not a pinned model name: fast, balanced, or strongest. Use each CLI's
+current model list or default to map the tier; omit `--model` if unsure.
+
+If GitHub MCP tools are available in this harness (e.g. `mcp__github__list_pull_requests`), use them where noted; otherwise use `gh`.
 
 ---
 

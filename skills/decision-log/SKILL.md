@@ -42,11 +42,11 @@ Ask the user (or infer from context):
 4. **Context** — What would a future reader need to know to understand this decision? (related files, external constraints, deadlines, team knowledge gaps)
 5. **Revisit triggers** — Under what conditions should this decision be reconsidered?
 
-If the user is in the middle of implementation, infer as much as possible from context (open files, recent commits, current CLAUDE.md discussion) and ask only what's missing.
+If the user is in the middle of implementation, infer as much as possible from context (open files, recent commits, project instruction files) and ask only what's missing.
 
 ## Phase 2: Write the Decision Log Entry
 
-Create or append to `.decisions/YYYYMMDD-<slug>.md` in the project root. Use today's date and a kebab-case slug from the decision title.
+If the repo already keeps decisions elsewhere (e.g. `docs/adr/`, `docs/decisions/`), follow that convention. Otherwise create `.decisions/YYYYMMDD-<slug>.md` in the project root (one file per decision; never overwrite an existing entry, supersede it instead). Use today's date and a kebab-case slug from the decision title.
 
 ### File format
 

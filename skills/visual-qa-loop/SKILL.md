@@ -7,7 +7,7 @@ local_only: true
 group: "Dev Workflow"
 usage: "/visual-qa-loop:run"
 summary: "Catch visual regressions with repeatable before/after screenshots and tight review notes."
-default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts under agent-notes."
+default_prompt: "Run visual QA for this UI change. Capture before/after screenshots with stable viewport(s), compare them, fix obvious regressions, and save artifacts outside the repo unless asked."
 ---
 
 # Visual QA Loop
@@ -36,13 +36,17 @@ Third-order stance: static screenshots are receipts, not the whole truth. Look f
 
 Identify the exact pages/windows/states to capture. Prefer the smallest set that covers the changed surface. Include transition states when relevant: loading, empty, error, first-run, disabled, hover/focus, and post-action success/failure.
 
-For web/file targets on this machine, use `chrome-shot` rather than raw Chrome commands:
+Pick the artifact directory first: the project's existing notes/artifacts location if its instructions name one, otherwise a temp directory. Do not add screenshots to the repo unless asked.
+
+Use whatever screenshot path is available, in this order: a project or machine wrapper (for example `chrome-shot`, if `command -v chrome-shot` succeeds), a browser automation tool (Playwright, agent-browser, or an MCP browser), headless Chrome, or `screencapture` for native macOS windows. Example with `chrome-shot`:
 
 ```bash
-mkdir -p ~/dev/agent-notes/<project>/visual-qa/<run>
-chrome-shot -o ~/dev/agent-notes/<project>/visual-qa/<run>/home-1440.png http://localhost:3000/
-chrome-shot --size 390x1200 -o ~/dev/agent-notes/<project>/visual-qa/<run>/home-mobile.png http://localhost:3000/
+ART=<artifact-dir>/visual-qa/<run>; mkdir -p "$ART"
+chrome-shot -o "$ART/home-1440.png" http://localhost:3000/
+chrome-shot --size 390x1200 -o "$ART/home-mobile.png" http://localhost:3000/
 ```
+
+If no tool can capture the target, stop and say so rather than reviewing from code alone.
 
 ## Phase 2: Capture Before and After
 
@@ -66,7 +70,7 @@ Check:
 
 ## Phase 4: Iterate Once Before Reporting
 
-If an obvious regression is visible, fix it and recapture. Do not hand back known-bad screenshots unless blocked.
+If an obvious regression is visible, fix it and recapture once (a second failed pass goes in the report, not a third loop). Only fix regressions in the changed surface. Do not hand back known-bad screenshots unless blocked.
 
 ## Phase 5: Report Evidence
 

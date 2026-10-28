@@ -33,6 +33,8 @@ Use this skill when reviewing:
 - features that rename, move, delete, sync, upload, or otherwise mutate user data
 - products where “creepy”, “shady”, or “I don’t trust it” would be fatal
 
+Use `status-copy-trust-audit` instead when the problem is specific CLI/status wording or repeated-run output; use `support-storm` instead when you need the predicted support inbox, not the product-side trust gaps.
+
 ## Core Principle
 
 Trust breaks when there is a mismatch between:
@@ -46,7 +48,7 @@ Audit both the reality and the vibe. A technically defensible flow can still fee
 
 ## Step 1: Gather the trust surface
 
-Read enough context to map:
+Read the code, docs, and UI strings (do not guess from the product name) enough to map:
 - target user
 - product promise
 - first-run flow
@@ -98,7 +100,7 @@ Ask:
 
 ## Step 3: Generate trust failures
 
-Produce 6-12 concrete trust risks. For each, include:
+Produce 6-12 concrete trust risks (fewer is fine for a small feature; do not pad). For each, include:
 - **Trust failure** — one sentence
 - **What the user expected**
 - **What actually happens**
